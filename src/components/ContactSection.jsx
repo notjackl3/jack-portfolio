@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FaDiscord, FaGithub, FaInstagram, FaLinkedin } from 'react-icons/fa';
 
 const ContactSection = () => {
+  const [discordLabel, setDiscordLabel] = useState('discord');
+
+  const onDiscordClick = async () => {
+    setDiscordLabel('notjackl3');
+    try {
+      await navigator.clipboard?.writeText?.('notjackl3');
+    } catch {
+      // ignore (clipboard may be unavailable depending on browser/security context)
+    }
+  };
+
   return (
     <section id="contact" className="section tab-content">
       <div className="contact-content">
@@ -27,7 +38,7 @@ const ContactSection = () => {
 
             <a
               className="contact-social"
-              href="https://www.linkedin.com"
+              href="https://www.linkedin.com/in/huu-an-duc-le/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
@@ -37,21 +48,20 @@ const ContactSection = () => {
               <span className="contact-social-label">linkedin</span>
             </a>
 
-            <a
+            <button
+              type="button"
               className="contact-social"
-              href="https://discord.com"
-              target="_blank"
-              rel="noopener noreferrer"
               aria-label="Discord"
-              title="Discord"
+              title="Discord (click to copy username)"
+              onClick={onDiscordClick}
             >
               <FaDiscord size={22} />
-              <span className="contact-social-label">discord</span>
-            </a>
+              <span className="contact-social-label">{discordLabel}</span>
+            </button>
 
             <a
               className="contact-social"
-              href="https://instagram.com"
+              href="https://instagram.com/notjackl3"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"

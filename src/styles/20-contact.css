@@ -41,6 +41,9 @@
     background: transparent;
     box-shadow: none;
     color: var(--text-muted);
+    border: 0;
+    cursor: pointer;
+    font: inherit;
 }
 
 .contact-social-label {

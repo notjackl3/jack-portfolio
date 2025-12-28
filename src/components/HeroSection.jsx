@@ -331,10 +331,10 @@ const HeroSection = () => {
             >
               resume.pdf
             </button>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub" className="outline-button">
+            <a href="https://github.com/notjackl3" target="_blank" rel="noopener noreferrer" title="GitHub" className="outline-button">
               <FaGithub size={24} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="outline-button">
+            <a href="https://www.linkedin.com/in/huu-an-duc-le/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="outline-button">
               <FaLinkedin size={24} />
             </a>
           </div>
