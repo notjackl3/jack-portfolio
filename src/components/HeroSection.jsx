@@ -1,8 +1,20 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import locationsRaw from '../data/my-locations.geojson?raw';
 import { locationDetails } from '../data/locationDetails';
+import me from '../data/assets/me.jpeg';
+import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
 const markerPngUrl = new URL('../data/assets/marker.png', import.meta.url).href;
+
+const zoomBasedReveal = (maxVal) => [
+  'interpolate',
+  ['linear'],
+  ['zoom'],
+  11,
+  0,
+  13,
+  maxVal
+];
 
 const HeroSection = () => {
   const mapContainerRef = useRef(null);
@@ -122,6 +134,18 @@ const HeroSection = () => {
         labelLayerId
       );
 
+      map.setSnow({
+        density: zoomBasedReveal(0.85),
+        intensity: 1.0,
+        'center-thinning': 0.1,
+        direction: [0, 50],
+        opacity: 1.0,
+        color: `#ffffff`,
+        'flake-size': 0.85,
+        vignette: zoomBasedReveal(0.3),
+        'vignette-color': `#ffffff`
+      });
+
       // Load locations from GeoJSON 
       map.addSource('my-locations', {
         type: 'geojson',
@@ -183,7 +207,7 @@ const HeroSection = () => {
           'text-ignore-placement': false
         },
         paint: {
-          'text-color': '#D70040',
+          'text-color': '#1a1a1a',
           'text-halo-color': '#fff',
           'text-halo-width': 1.5
         }
@@ -200,8 +224,8 @@ const HeroSection = () => {
             10,
             0
           ],
-          'circle-color': 'rgba(74, 144, 226, 0.25)',
-          'circle-stroke-color': '#4A90E2',
+          'circle-color': 'rgba(0, 0, 0, 0.1)',
+          'circle-stroke-color': '#1a1a1a',
           'circle-stroke-width': [
             'case',
             ['boolean', ['feature-state', 'selected'], false],
@@ -255,6 +279,28 @@ const HeroSection = () => {
 
   return (
     <section className="hero-section tab-content">
+      <div className="profile-section">
+        <img src={me} alt="Jack Le" className="avatar" />
+        <div className="profile-intro">
+          <h1 className="profile-name">
+            <span style={{ color: 'var(--primary-accent)' }}>Hey, I'm Jack Le</span>
+          </h1>
+          <h2 className="profile-role">I am a Fullstack Engineer ☺️</h2>
+          <p className="profile-desc">
+            - I use React/TypeScript for frontend, and Django/Python or SpringBoot/Java for backend.
+          </p>
+          <div className="profile-contact">
+            <a href="#" className="outline-button resume">resume.pdf</a>  
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub" className="outline-button">
+              <FaGithub size={24} color="var(--text-dark)" />
+            </a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="outline-button">
+              <FaLinkedin size={24} color="var(--text-dark)" />
+            </a>
+          </div>
+        </div>
+      </div>
+
       <div className="map-row">
         <div className="map-container">
           <div ref={mapContainerRef} id="map" />
@@ -335,33 +381,6 @@ const HeroSection = () => {
             )}
           </div>
         </aside>
-      </div>
-
-      <div className="profile-section">
-        <div className="avatar-container">
-          <img src="https://via.placeholder.com/120x120/4A90E2/FFFFFF?text=JD" alt="Jack's Avatar" className="avatar" />
-        </div>
-
-        <h2 className="name">Jack Doe</h2>
-
-        <p className="description">
-          Full-stack developer passionate about creating innovative web solutions.
-          I specialize in modern technologies and clean, efficient code.
-        </p>
-
-        <div className="skills-section">
-          <h3>Skills</h3>
-          <div className="skills-grid">
-            <span className="skill-tag">JavaScript</span>
-            <span className="skill-tag">React</span>
-            <span className="skill-tag">Node.js</span>
-            <span className="skill-tag">Python</span>
-            <span className="skill-tag">TypeScript</span>
-            <span className="skill-tag">CSS</span>
-            <span className="skill-tag">HTML</span>
-            <span className="skill-tag">MongoDB</span>
-          </div>
-        </div>
       </div>
     </section>
   );

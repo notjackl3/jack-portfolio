@@ -4,6 +4,7 @@ import HeroSection from './components/HeroSection';
 import ProjectsSection from './components/ProjectsSection';
 import ExperiencesSection from './components/ExperiencesSection';
 import ContactSection from './components/ContactSection';
+import SkillsSection from './components/SkillsSection';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -22,6 +23,8 @@ function App() {
         return <ExperiencesSection />;
       case 'contact':
         return <ContactSection />;
+      case 'skills':
+        return <SkillsSection />;
       default:
         return <HeroSection />;
     }

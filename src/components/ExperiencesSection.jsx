@@ -35,7 +35,6 @@ const ExperienceCard = ({ experience }) => {
 const ExperiencesSection = () => {
   return (
     <section id="experiences" className="section tab-content">
-      <h2>Experiences</h2>
       <div className="experiences-timeline">
         {experiences.map(experience => (
           <ExperienceCard key={experience.id} experience={experience} />
