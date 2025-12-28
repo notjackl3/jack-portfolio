@@ -5,6 +5,7 @@
     --active-accent: #000000;
     --hover-bg: #f8f8f8;
     --hover-border: #cccccc;
+    --bg-border: var(--hover-border);
     --text-dark: #1a1a1a;
     --text-main: #333;
     --text-muted: #666;
@@ -225,7 +226,7 @@ body {
     height: 1px;
     bottom: -1px;
     left: 0;
-    background-color: var(--text-dark);
+    background-color: var(--bg-border);
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s ease-out;
@@ -277,7 +278,7 @@ body {
 
 .location-item:hover {
     background: var(--secondary-accent);
-    border-color: var(--hover-border);
+    border-color: var(--bg-border);
 }
 
 .location-item:active {
@@ -425,7 +426,7 @@ body {
     height: 2px;
     bottom: -2px;
     left: 0;
-    background-color: var(--primary-accent);
+    background-color: var(--bg-border);
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s ease-out;
@@ -466,7 +467,7 @@ body {
     height: 2px;
     bottom: -2px;
     left: 0;
-    background-color: var(--primary-accent);
+    background-color: var(--bg-border);
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.3s ease-out;
@@ -655,7 +656,7 @@ body {
 
 .contact-item a:hover {
     color: var(--hover-border);
-    border-bottom-color: var(--hover-border);
+    border-bottom-color: var(--bg-border);
 }
 
 /* Navigation active state */
@@ -672,7 +673,7 @@ body {
     right: 0;
     bottom: 0;
     height: 2px;
-    background-color: var(--hover-border);
+    background-color: var(--bg-border);
     transform: scaleX(0);
     transform-origin: bottom right;
     transition: transform 0.25s ease;
@@ -830,7 +831,7 @@ body {
 }
 
 .projects-filter-option:hover {
-    border-color: var(--primary-accent);
+    border-color: var(--bg-border);
     color: var(--primary-accent);
 }
 
