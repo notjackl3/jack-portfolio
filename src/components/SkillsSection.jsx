@@ -50,6 +50,7 @@ const SkillsSection = () => {
   const rafRef = useRef(null);
   const lastTRef = useRef(0);
   const mouseRef = useRef({ active: false, x: 0, y: 0 });
+  const tickRef = useRef(0);
 
   // Simulation state stored in a ref (so we can animate without re-rendering every frame)
   const simRef = useRef({
@@ -61,7 +62,8 @@ const SkillsSection = () => {
     vy: [],
     w: [],
     h: [],
-    r: [],
+    hw: [],
+    hh: [],
   });
 
   const measureStageAndBubbles = () => {
@@ -74,27 +76,31 @@ const SkillsSection = () => {
 
     const w = [];
     const h = [];
-    const r = [];
+    const hw = [];
+    const hh = [];
 
     for (let i = 0; i < skills.length; i++) {
       const el = bubbleRefs.current[i];
       if (!el) {
         w[i] = 80;
         h[i] = 32;
-        r[i] = 40;
+        hw[i] = 40;
+        hh[i] = 16;
         continue;
       }
       const rect = el.getBoundingClientRect();
       w[i] = rect.width;
       h[i] = rect.height;
-      r[i] = Math.max(rect.width, rect.height) * 0.5;
+      hw[i] = rect.width * 0.5;
+      hh[i] = rect.height * 0.5;
     }
 
     simRef.current.stageW = stageW;
     simRef.current.stageH = stageH;
     simRef.current.w = w;
     simRef.current.h = h;
-    simRef.current.r = r;
+    simRef.current.hw = hw;
+    simRef.current.hh = hh;
   };
 
   const applyDomPositions = () => {
@@ -109,26 +115,58 @@ const SkillsSection = () => {
   };
 
   useLayoutEffect(() => {
-    // Seed positions near the center, then measure and position properly.
+    // Measure + seed positions spread across the stage (avoid starting overlapped in the center).
     const stageEl = stageRef.current;
     if (!stageEl) return;
 
     measureStageAndBubbles();
 
     const { stageW, stageH } = simRef.current;
-    const cx = stageW / 2;
-    const cy = stageH / 2;
 
     const x = new Array(skills.length);
     const y = new Array(skills.length);
     const vx = new Array(skills.length);
     const vy = new Array(skills.length);
 
+    const pad = 10;
+
     for (let i = 0; i < skills.length; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const radius = Math.min(stageW, stageH) * (0.08 + Math.random() * 0.22);
-      x[i] = cx + Math.cos(angle) * radius;
-      y[i] = cy + Math.sin(angle) * radius;
+      const hw = simRef.current.hw[i] ?? 40;
+      const hh = simRef.current.hh[i] ?? 16;
+      const minX = hw + pad;
+      const maxX = stageW - hw - pad;
+      const minY = hh + pad;
+      const maxY = stageH - hh - pad;
+
+      // Try a few times to place without overlap; fall back to random.
+      let placed = false;
+      for (let attempt = 0; attempt < 80; attempt++) {
+        const px = minX + Math.random() * Math.max(1, maxX - minX);
+        const py = minY + Math.random() * Math.max(1, maxY - minY);
+        let overlap = false;
+        for (let j = 0; j < i; j++) {
+          const dx = Math.abs(px - x[j]);
+          const dy = Math.abs(py - y[j]);
+          const ox = hw + (simRef.current.hw[j] ?? 40) + 2 - dx;
+          const oy = hh + (simRef.current.hh[j] ?? 16) + 2 - dy;
+          if (ox > 0 && oy > 0) {
+            overlap = true;
+            break;
+          }
+        }
+        if (!overlap) {
+          x[i] = px;
+          y[i] = py;
+          placed = true;
+          break;
+        }
+      }
+
+      if (!placed) {
+        x[i] = minX + Math.random() * Math.max(1, maxX - minX);
+        y[i] = minY + Math.random() * Math.max(1, maxY - minY);
+      }
+
       vx[i] = (Math.random() - 0.5) * 0.9;
       vy[i] = (Math.random() - 0.5) * 0.9;
     }
@@ -172,6 +210,7 @@ const SkillsSection = () => {
       const dtMs = lastTRef.current ? t - lastTRef.current : 16.67;
       lastTRef.current = t;
       const dt = Math.min(34, Math.max(8, dtMs)) / 16.67; // normalized ~60fps
+      tickRef.current = (tickRef.current + dtMs) % 1000000;
 
       const wander = 0.055; // random hover force
       const damping = 0.988;
@@ -179,11 +218,17 @@ const SkillsSection = () => {
       const mousePush = 0.42; // higher => stronger mouse interaction
       const mouseRadius = Math.min(s.stageW, s.stageH) * 0.22;
       const mouseRadius2 = mouseRadius * mouseRadius;
+      const swirl = 0.012; // gentle time-based nudge to prevent "locking"
 
       // Apply forces
       for (let i = 0; i < n; i++) {
         s.vx[i] += (Math.random() - 0.5) * wander * dt;
         s.vy[i] += (Math.random() - 0.5) * wander * dt;
+
+        // Small deterministic swirl so packs keep circulating (balanced x/y)
+        const phase = (tickRef.current * 0.0012) + i * 0.7;
+        s.vx[i] += Math.cos(phase) * swirl * dt;
+        s.vy[i] += Math.sin(phase) * swirl * dt;
 
         // Mouse repulsion (creates collisions/movement when hovering over/near bubbles)
         if (mouseRef.current.active) {
@@ -217,12 +262,13 @@ const SkillsSection = () => {
         s.x[i] += s.vx[i] * dt;
         s.y[i] += s.vy[i] * dt;
 
-        const ri = s.r[i] ?? 24;
         const pad = 6;
-        const minX = ri + pad;
-        const maxX = s.stageW - ri - pad;
-        const minY = ri + pad;
-        const maxY = s.stageH - ri - pad;
+        const hw = s.hw[i] ?? 40;
+        const hh = s.hh[i] ?? 16;
+        const minX = hw + pad;
+        const maxX = s.stageW - hw - pad;
+        const minY = hh + pad;
+        const maxY = s.stageH - hh - pad;
 
         if (s.x[i] < minX) {
           s.x[i] = minX;
@@ -241,45 +287,65 @@ const SkillsSection = () => {
         }
       }
 
-      // Collisions: simple separation + a bit of random "bump apart"
+      // Collisions: softer AABB separation to avoid jitter in dense packs
       for (let i = 0; i < n; i++) {
         for (let j = i + 1; j < n; j++) {
           const dx = s.x[j] - s.x[i];
           const dy = s.y[j] - s.y[i];
-          const dist = Math.hypot(dx, dy);
-          const minDist = (s.r[i] ?? 24) + (s.r[j] ?? 24) + 2;
+          const gap = 2;
+          const ox = (s.hw[i] ?? 40) + (s.hw[j] ?? 40) + gap - Math.abs(dx);
+          const oy = (s.hh[i] ?? 16) + (s.hh[j] ?? 16) + gap - Math.abs(dy);
 
-          if (dist > 0 && dist < minDist) {
-            const overlap = minDist - dist;
+          if (ox > 0 && oy > 0) {
+            const slop = 0.75; // ignore tiny overlaps to reduce micro-jitter
+            const sx = dx < 0 ? -1 : 1;
+            const sy = dy < 0 ? -1 : 1;
 
-            // Mostly separate along the collision normal, but add a small random twist.
-            let nx = dx / dist;
-            let ny = dy / dist;
-            const twist = (Math.random() - 0.5) * 0.55;
-            nx += twist;
-            ny -= twist;
-            const nlen = Math.hypot(nx, ny) || 1;
-            nx /= nlen;
-            ny /= nlen;
+            const corr = 0.28; // only correct a fraction of overlap per frame
+            const maxStep = 3.25; // cap correction so it doesn't explode
 
-            const push = overlap * 0.5;
-            s.x[i] -= nx * push;
-            s.y[i] -= ny * push;
-            s.x[j] += nx * push;
-            s.y[j] += ny * push;
+            // Separate on the axis of least penetration (stable), with a tiny sideways drift
+            if (ox < oy) {
+              const push = Math.min(maxStep, Math.max(0, ox - slop) * corr);
+              if (push > 0) {
+                const drift = Math.sin((tickRef.current * 0.0015) + i * 0.7 + j) * 0.15;
+                s.x[i] -= sx * push;
+                s.x[j] += sx * push;
+                s.y[i] -= drift;
+                s.y[j] += drift;
 
-            s.vx[i] -= nx * 0.12;
-            s.vy[i] -= ny * 0.12;
-            s.vx[j] += nx * 0.12;
-            s.vy[j] += ny * 0.12;
-          } else if (dist === 0) {
-            // Perfect overlap: random nudge
-            const angle = Math.random() * Math.PI * 2;
-            const nudge = 2;
-            s.x[i] += Math.cos(angle) * nudge;
-            s.y[i] += Math.sin(angle) * nudge;
+                // Gentle velocity damping along the push axis
+                s.vx[i] *= 0.92;
+                s.vx[j] *= 0.92;
+              }
+            } else {
+              const push = Math.min(maxStep, Math.max(0, oy - slop) * corr);
+              if (push > 0) {
+                const drift = Math.cos((tickRef.current * 0.0015) + i * 0.7 + j) * 0.15;
+                s.y[i] -= sy * push;
+                s.y[j] += sy * push;
+                s.x[i] -= drift;
+                s.x[j] += drift;
+
+                s.vy[i] *= 0.92;
+                s.vy[j] *= 0.92;
+              }
+            }
           }
         }
+      }
+
+      // Re-clamp after collision resolution
+      for (let i = 0; i < n; i++) {
+        const pad = 6;
+        const hw = s.hw[i] ?? 40;
+        const hh = s.hh[i] ?? 16;
+        const minX = hw + pad;
+        const maxX = s.stageW - hw - pad;
+        const minY = hh + pad;
+        const maxY = s.stageH - hh - pad;
+        s.x[i] = Math.min(maxX, Math.max(minX, s.x[i]));
+        s.y[i] = Math.min(maxY, Math.max(minY, s.y[i]));
       }
 
       applyDomPositions();
@@ -315,8 +381,8 @@ const SkillsSection = () => {
               // Extra little "kick" when you hover directly over a bubble
               const s = simRef.current;
               if (!s.vx?.length) return;
-              s.vx[i] += (Math.random() - 0.5) * 2.4;
-              s.vy[i] += (Math.random() - 0.5) * 2.4;
+              s.vx[i] += (Math.random() - 0.5) * 1.2;
+              s.vy[i] += (Math.random() - 0.5) * 1.2;
             }}
           >
             {skill}

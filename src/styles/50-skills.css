@@ -85,7 +85,7 @@
 
 @media (max-width: 768px) {
     .skills-bubbles-stage {
-        height: min(420px, 58vh);
+        height: min(560px, 72vh);
         /* Match Projects/Experiences side padding on mobile */
         width: calc(100% - 30px);
         margin-left: 15px;
@@ -101,7 +101,7 @@
 
 @media (max-width: 420px) {
     .skills-bubbles-stage {
-        height: min(380px, 54vh);
+        height: min(520px, 70vh);
     }
 
     .skills-bubble {
