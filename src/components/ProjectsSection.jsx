@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { projects } from '../data/projects';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub, FaGlobe } from 'react-icons/fa';
 
-const ProjectCard = ({ project }) => {
-  // Check if this is a hackathon project and parse the title
+const ProjectCard = ({ project, onImageLoaded, registerImageEl }) => {
   const isHackathonProject = project.title.includes('|') || project.title.includes('~');
   let appName = project.title;
   let hackathonName = '';
@@ -19,7 +18,13 @@ const ProjectCard = ({ project }) => {
     <div className="project-card">
       {project.image && (
         <div className="project-image">
-          <img src={project.image} alt={`${project.title} screenshot`} />
+          <img
+            src={project.image}
+            alt={`${project.title} screenshot`}
+            ref={(el) => registerImageEl?.(project.id, el)}
+            onLoad={() => onImageLoaded?.(project.id)}
+            onError={() => onImageLoaded?.(project.id)}
+          />
         </div>
       )}
 
@@ -51,7 +56,7 @@ const ProjectCard = ({ project }) => {
           )}
           {project.liveUrl && (
             <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="project-link-icon" aria-label="live preview">
-              <FaExternalLinkAlt size={18} />
+              <FaGlobe size={18} />
             </a>
           )}
         </div>
@@ -64,6 +69,8 @@ const ProjectsSection = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef(null);
+  const [loadedImageIds, setLoadedImageIds] = useState(() => new Set());
+  const imageElsRef = useRef(new Map());
 
   useEffect(() => {
     const onPointerDown = (e) => {
@@ -87,9 +94,67 @@ const ProjectsSection = () => {
   }, [isFilterMenuOpen]);
 
   const filteredProjects = useMemo(() => {
-    if (activeFilter === 'all') return projects;
-    return projects.filter((p) => (p.category || 'personal') === activeFilter);
+    const filtered =
+      activeFilter === 'all'
+        ? projects
+        : projects.filter((p) => (p.category || 'personal') === activeFilter);
+
+    return [...filtered].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
   }, [activeFilter]);
+
+  const projectsWithImages = useMemo(
+    () => filteredProjects.filter((p) => Boolean(p.image)),
+    [filteredProjects]
+  );
+
+  const areProjectImagesLoaded = useMemo(() => {
+    if (projectsWithImages.length === 0) return true;
+    return projectsWithImages.every((p) => loadedImageIds.has(p.id));
+  }, [projectsWithImages, loadedImageIds]);
+
+  const applyFilter = (nextFilter) => {
+    // Reset synchronously during the click/change event so we don't "flash" into a hidden state
+    // after render (which can happen with cached images and missing onLoad events).
+    setLoadedImageIds(new Set());
+    setActiveFilter(nextFilter);
+  };
+
+  const handleImageLoaded = (projectId) => {
+    setLoadedImageIds((prev) => {
+      if (prev.has(projectId)) return prev;
+      const next = new Set(prev);
+      next.add(projectId);
+      return next;
+    });
+  };
+
+  const registerImageEl = (projectId, el) => {
+    if (!projectId) return;
+    if (el) imageElsRef.current.set(projectId, el);
+    else imageElsRef.current.delete(projectId);
+  };
+
+  useLayoutEffect(() => {
+    // Important: when switching filters, many images are already in cache, so onLoad may not fire.
+    // This ensures we still mark them as loaded and the grid becomes flip-ready.
+    for (const p of projectsWithImages) {
+      const el = imageElsRef.current.get(p.id);
+      if (!el) continue;
+
+      // If already fully loaded from cache, mark immediately.
+      if (el.complete && el.naturalWidth > 0) {
+        handleImageLoaded(p.id);
+        continue;
+      }
+
+      // Try decode() when available to get a deterministic "ready" signal.
+      if (typeof el.decode === 'function') {
+        el.decode()
+          .then(() => handleImageLoaded(p.id))
+          .catch(() => handleImageLoaded(p.id));
+      }
+    }
+  }, [projectsWithImages]);
 
   const filterOptions = useMemo(
     () => ([
@@ -129,7 +194,7 @@ const ProjectsSection = () => {
                   aria-checked={activeFilter === opt.value}
                   className={`projects-filter-option ${activeFilter === opt.value ? 'active' : ''}`}
                   onClick={() => {
-                    setActiveFilter(opt.value);
+                    applyFilter(opt.value);
                     setIsFilterMenuOpen(false);
                   }}
                 >
@@ -140,9 +205,19 @@ const ProjectsSection = () => {
           )}
         </div>
       </div>
-      <div className="projects-grid">
-        {filteredProjects.map(project => (
-          <ProjectCard key={project.id} project={project} />
+      <div className={`projects-grid ${areProjectImagesLoaded ? 'is-flip-ready' : ''}`}>
+        {filteredProjects.map((project, index) => (
+          <div
+            key={project.id}
+            className="project-card-anim-wrap"
+            style={{ '--card-index': index }}
+          >
+            <ProjectCard
+              project={project}
+              onImageLoaded={handleImageLoaded}
+              registerImageEl={registerImageEl}
+            />
+          </div>
         ))}
       </div>
     </section>

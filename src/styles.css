@@ -206,6 +206,14 @@ body {
     flex-direction: column;
 }
 
+.section p {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1rem;
+    width: 100%;
+    margin: 0 auto 30px;
+}
+
 .location-back {
     appearance: none;
     color: var(--text-dark);
@@ -387,13 +395,13 @@ body {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: var(--text-dark);
+    color: var(--text-muted);
     transition: all 0.3s ease;
     line-height: 1;
 }
 
 .profile-contact a:hover {
-    color: var(--primary-accent);
+    color: var(--bg-border);
     transform: translateY(-2px);
 }
 
@@ -740,14 +748,6 @@ body {
     text-transform: lowercase;
 }
 
-.section p {
-    text-align: center;
-    color: var(--text-muted);
-    font-size: 1rem;
-    width: 100%;
-    margin: 0 auto 30px;
-}
-
 .projects-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -876,9 +876,46 @@ body {
     position: relative;
     overflow: hidden;
     transition: transform 0.2s linear;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
-.project-card:hover {
+/* Flip-in animation on load */
+.project-card-anim-wrap {
+    perspective: 1200px;
+    transform: translateZ(0);
+    transition: transform 0.2s linear;
+}
+
+.projects-grid:not(.is-flip-ready) .project-card {
+    opacity: 0;
+}
+
+.projects-grid.is-flip-ready .project-card-anim-wrap .project-card {
+    animation: projectCardFlipIn 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: calc((var(--card-index, 0) * 70ms));
+    will-change: transform, opacity;
+}
+
+@keyframes projectCardFlipIn {
+    from {
+        opacity: 0;
+        transform: rotateY(90deg);
+    }
+    to {
+        opacity: 1;
+        transform: rotateY(0deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .project-card-anim-wrap .project-card {
+        animation: none;
+    }
+}
+
+.project-card-anim-wrap:hover {
     transform: translateY(-7px);
 }
 
@@ -896,6 +933,9 @@ body {
     height: auto;
     display: block;
     object-fit: cover;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .project-content {
@@ -913,7 +953,7 @@ body {
 }
 
 .project-title {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: 700;
     color: var(--text-dark);
     margin: 0;
@@ -924,54 +964,63 @@ body {
     font-size: 0.9rem;
     font-weight: 300;
     opacity: 0.8;
-    margin-top: 0.3em;
     color: var(--text-muted);
 }
 
 .project-description {
     color: var(--text-muted);
     line-height: 1.5;
-    margin-top: 0.8em;
-    margin-bottom: 0;
     font-size: 1rem;
     text-align: center;
-    flex: 1;
+    flex: 0 0 auto;
+}
+
+.section .project-description {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--text-muted);
 }
 
 .project-tech {
     display: flex;
     flex-wrap: wrap;
     gap: 0;
-    margin: 0.9em 0;
+    margin: 0.9em 0 0;
     justify-content: center;
 }
 
 .tech-tag {
     background-color: transparent;
+    border: 1px solid var(--bg-border);
     color: var(--text-muted);
     padding: 0;
-    border-radius: 0;
+    border-radius: 0.5rem;
     font-size: 0.75rem;
     font-weight: 500;
-    border: 0;
     margin: 0.35em;
+    padding: 0.35em 0.7em;
 }
 
 .project-links {
     display: flex;
     gap: 15px;
     justify-content: center;
-    margin-top: 0;
+    margin-top: 0.8em;
 }
 
 .project-link-icon {
-    color: var(--text-dark);
+    color: var(--text-muted);
     transition: all 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 1;
     padding: 0;
+}
+
+.project-link-icon:hover {
+    color: var(--bg-border);
 }
 
 /* Skills section */

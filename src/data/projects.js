@@ -8,128 +8,120 @@ import operaid from './assets/operaid.png';
 import wordDiff from './assets/word-diff.png';
 import yaas from './assets/yaas.png';
 import imageGallery from './assets/image-gallery.png';
-import lereplacer from './assets/lereplacer.png';
+import leReplacer from './assets/lereplacer.png';
 import resumeForMe from './assets/resume-for-me.png';
 
 export const projects = [
   {
     id: 1,
-    title: "Street Roamer S3000",
-    description: "A high-performance autonomous navigation system for complex urban environments.",
-    technologies: ["Python", "PyTorch", "ROS", "OpenCV"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    title: "Street Roamer S3000 | WallyHacks, Winner 🏆",
+    description: "A robot that can detects faulty street lights and bumpy obstacles by just sensing the road",
+    technologies: ["C++", "Arduino"],
+    githubUrl: "https://github.com/scriptgenerator64/wallyhacks-redhackhackers",
+    liveUrl: "https://devpost.com/software/street-roamer-s3000",
     image: streetRoamer,
-    category: "school"
+    category: "hackathon"
   },
   {
     id: 2,
-    title: "UTM Live | HackUTM",
-    description: "Real-time campus event tracking and navigation for University of Toronto students.",
-    technologies: ["React", "Firebase", "Google Maps API"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: utmLive,
-    category: "hackathon"
+    title: "Resume Builder",
+    description: "A basic resume builder, tailors resumes and produce keyword-optimized PDFs for ATS scoring",
+    technologies: ["Python", "OpenAI", "Tkinter", "PyQt5"],
+    githubUrl: "https://github.com/notjackl3/resume-builder",
+    image: resumeBuilder,
+    category: "personal"
   },
   {
     id: 3,
-    title: "Organese | TOHacks",
-    description: "AI-driven schedule optimizer that helps students manage extracurriculars and academics.",
-    technologies: ["Node.js", "Express", "TensorFlow.js"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: organese,
-    category: "hackathon"
+    title: "Youtube as a Service",
+    description: "An unlimited storage app, losslessly compresses/retrieves any files into/from Youtube videos",
+    technologies: ["Python", "Javascript", "OpenCV", "Numpy", "Google Cloud Platform", "AWS"],
+    githubUrl: "https://github.com/notjackl3/youtube-as-a-service",
+    image: yaas,
+    category: "personal"
   },
   {
     id: 4,
-    title: "GooseGoGeese",
-    description: "A fun, interactive multiplayer game featuring competitive goose-themed challenges.",
-    technologies: ["Socket.io", "Canvas API", "Node.js"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: gooseGoGeese,
+    title: "Word Diff",
+    description: "A version control app, users can track real-time changes between two offline Word documents",
+    technologies: ["Python/Flask", "Python-docx"],
+    githubUrl: "https://github.com/notjackl3/word-diff",
+    image: wordDiff,
     category: "personal"
   },
   {
     id: 5,
     title: "Job Hunter",
-    description: "Automated job application tracker and dashboard for streamlined career hunting.",
-    technologies: ["React", "PostgreSQL", "FastAPI"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    description: "Automated job application tracker and dashboard for streamlined career hunting",
+    technologies: ["Python/Django", "Beautiful Soup", "OpenAI", "PostgreSQL", "Matplotlib"],
+    githubUrl: "https://github.com/notjackl3/job-hunter",
     image: jobHunter,
     category: "personal"
   },
   {
     id: 6,
-    title: "Resume Builder",
-    description: "Minimalist tool to generate ATS-friendly resumes in multiple professional formats.",
-    technologies: ["React", "Tailwind CSS", "PDFKit"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: resumeBuilder,
+    title: "Organese",
+    description: "A scheduling app, to create personalized timetables, share bookings, and manage tasks",
+    technologies: ["Python/Django", "Javascript", "Bootstrap", "PostgreSQL"],
+    githubUrl: "https://github.com/notjackl3/organese",  
+    image: organese,
     category: "personal"
   },
   {
     id: 7,
-    title: "OperaID",
-    description: "Biometric identification system designed for rapid access control in industrial settings.",
-    technologies: ["Java", "SpringBoot", "Docker"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: operaid,
-    category: "school"
-  },
-  {
-    id: 8,
-    title: "Word Diff",
-    description: "A visual text comparison tool that highlights subtle differences between document versions.",
-    technologies: ["React", "TypeScript", "Vite"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: wordDiff,
-    category: "personal"
-  },
-  {
-    id: 9,
-    title: "YAAS",
-    description: "Yet Another Auth Service - a highly secure, easy-to-integrate authentication provider for modern web apps.",
-    technologies: ["Node.js", "Redis", "JWT", "OAuth"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: yaas,
-    category: "personal"
-  },
-  {
-    id: 10,
     title: "Image Gallery",
-    description: "A responsive image gallery with advanced filtering and lightbox capabilities.",
-    technologies: ["React", "Framer Motion", "Unsplash API"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    description: "An image gallery using many cloud technologies, users can upload/download images publicly",
+    technologies: ["Python/FastAPI", "AWS"],
+    githubUrl: "https://github.com/notjackl3/image-gallery",
     image: imageGallery,
     category: "personal"
   },
   {
-    id: 11,
-    title: "Le Replacer",
-    description: "A versatile text replacement tool for bulk editing and code refactoring.",
-    technologies: ["JavaScript", "Regex", "Node.js"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
-    image: lereplacer,
+    id: 8,
+    title: "UTM Live",
+    description: "An interactive, 3D map, allows students to find the perfect study spots around the campus!",
+    technologies: ["Python/Django", "Mapbox", "PostgreSQL"],
+    githubUrl: "https://github.com/notjackl3/utm-live",
+    liveUrl: "https://jack-le.com/utm-live.onrender.com/",
+    image: utmLive,
     category: "personal"
   },
   {
-    id: 12,
+    id: 9,
+    title: "GooseGoGeese | Hack The North 2025",
+    description: "A minigame that detects humans and objects, then, a series of tasks chosen by your friends must be completed!",
+    technologies: ["Python/FastAPI", "Javascript/React.js", "Tailwind", "YOLO", "OpenCV", "MediaPipe"],
+    githubUrl: "https://github.com/notjackl3/HTN2025",
+    image: gooseGoGeese,
+    category: "hackathon"
+  },
+  {
+    id: 10,
     title: "Resume For Me",
-    description: "AI-powered resume optimization tool that tailors your CV for specific job descriptions.",
-    technologies: ["React", "OpenAI API", "Node.js"],
-    githubUrl: "https://github.com",
-    liveUrl: "https://example.com",
+    description: "A feature-based resume builder, helps students craft their resume easily following jake's template",
+    technologies: ["Python/Django", "Javascript/React.js", "Tailwind", "AWS"],
+    githubUrl: "https://github.com/notjackl3/jake-resume-for-me",
     image: resumeForMe,
     category: "personal"
+  },
+  {
+    id: 11,
+    title: "Operaid | TechTO Hackathon",
+    description: "A voice-controled solution for doctor to look up and record patient information",
+    technologies: ["Python/FastAPI", "Javascript/React.js", "Tailwind", "PostgreSQL/Supabase", "ElevenLabs", "OpenAI"],
+    githubUrl: "https://generous-cogwheel-353742.framer.app/",
+    liveUrl: "https://operaid.vercel.app/",
+    image: operaid,
+    category: "hackathon"
+  },
+  {
+    id: 12,
+    title: "LeReplacer | Go On Hack, Winner 🏆",
+    description: "A google extension that uses face-detection algorithm to replace all the faces on your screen with Lebron James",
+    technologies: ["Javascript/Node.js", "MediaPipe", "Twitter API", "Gemini API"],
+    githubUrl: "https://github.com/ShreyShingala/LeReplacerExtension",
+    liveUrl: "https://devpost.com/software/lereplacer",
+    image: leReplacer,
+    category: "hackathon"
   }
 ];

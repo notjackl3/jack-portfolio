@@ -292,10 +292,10 @@ const HeroSection = () => {
           <div className="profile-contact">
             <a href="#" className="outline-button resume">resume.pdf</a>  
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub" className="outline-button">
-              <FaGithub size={24} color="var(--text-dark)" />
+              <FaGithub size={24} />
             </a>
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="outline-button">
-              <FaLinkedin size={24} color="var(--text-dark)" />
+              <FaLinkedin size={24} />
             </a>
           </div>
         </div>
