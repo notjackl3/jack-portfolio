@@ -326,17 +326,30 @@ body {
 }
 
 .location-images {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    /* Masonry-style layout to minimize gaps while preserving aspect ratios */
+    column-count: 2;
+    column-gap: 8px;
 }
 
 .location-images img {
     width: 100%;
-    height: 90px;
-    object-fit: cover;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
+    height: auto;
+    display: block;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    margin: 0 0 8px;
+}
+
+@media (min-width: 900px) {
+    .location-images {
+        column-count: 3;
+    }
+}
+
+@media (max-width: 480px) {
+    .location-images {
+        column-count: 1;
+    }
 }
 
 .location-muted {

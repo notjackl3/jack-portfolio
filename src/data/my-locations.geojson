@@ -12,7 +12,7 @@
         ],
         "type": "Point"
       },
-      "id": "1a1654db730a3d4e57bef7afd6829fab"
+      "id": "trg-international"
     },
     {
       "type": "Feature",
@@ -26,7 +26,7 @@
         ],
         "type": "Point"
       },
-      "id": "23ef92f76d78885518eddea60b5617c3"
+      "id": "utm-career-center"
     },
     {
       "type": "Feature",
@@ -40,7 +40,7 @@
         ],
         "type": "Point"
       },
-      "id": "246f70896dd0c0133bd855708df29bac"
+      "id": "go-on-hacks"
     },
     {
       "type": "Feature",
@@ -54,7 +54,7 @@
         ],
         "type": "Point"
       },
-      "id": "68a0b4cb292c78a093dc47e53cb97d91"
+      "id": "ember-hacks"
     },
     {
       "type": "Feature",
@@ -68,7 +68,7 @@
         ],
         "type": "Point"
       },
-      "id": "a0b0a4700bc409413bc657444c104867"
+      "id": "university-of-toronto"
     },
     {
       "type": "Feature",
@@ -82,7 +82,7 @@
         ],
         "type": "Point"
       },
-      "id": "ba7c3e0d756a574dee0ec25a0fa112ff"
+      "id": "techto-hackathon"
     },
     {
       "type": "Feature",
@@ -96,35 +96,77 @@
         ],
         "type": "Point"
       },
-      "id": "c7fe2e8e4da779bfd5c5a8d570cebae8"
+      "id": "hack-the-north"
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Computer Science Mentor"
+        "name": "Ignition Hacks"
       },
       "geometry": {
         "coordinates": [
-          -79.666246,
-          43.550487
+          -79.38,
+          43.66
         ],
         "type": "Point"
       },
-      "id": "db269bd1d70b264e771120112ccee6f8"
+      "id": "ignition-hacks"
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "UofT Blueprint"
+        "name": "AWS Summit"
       },
       "geometry": {
         "coordinates": [
-          -79.398751,
-          43.662743
+          -79.3851,
+          43.6431
         ],
         "type": "Point"
       },
-      "id": "e231b9d1c3d3236026cfd4bceca5900f"
+      "id": "aws-summit"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Google DevFest"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.38,
+          43.65
+        ],
+        "type": "Point"
+      },
+      "id": "google-devfest"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Murder Mystery Party"
+      },
+      "geometry": {
+        "coordinates": [
+          -123.25101,
+          49.27398
+        ],
+        "type": "Point"
+      },
+      "id": "murder-mystery-party"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shut Up & Code"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.38203,
+          43.6499
+        ],
+        "type": "Point"
+      },
+      "id": "shut-up-and-code"
     }
   ],
   "type": "FeatureCollection"
