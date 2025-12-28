@@ -72,7 +72,7 @@
     background-color: transparent;
     border-radius: 0;
     box-shadow: none;
-    padding: 0 0 40px 30px;
+    padding: 0 0 10px 30px;
     margin-bottom: 0;
     margin-left: 0;
     position: relative;
@@ -163,6 +163,11 @@
     line-height: 1.5;
     margin-bottom: 15px;
     font-size: 0.9rem;
+    text-align: left;
+}
+
+/* Override global `.section p { text-align: center; }` */
+.section .experience-description {
     text-align: left;
 }
 

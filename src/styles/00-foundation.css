@@ -468,6 +468,75 @@ body {
     padding: 0.3rem 0.5rem;
 }
 
+button.outline-button.resume {
+    appearance: none;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+}
+
+.resume-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 24px 16px;
+}
+
+.resume-menu {
+    width: min(350px, calc(100vw - 30px));
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    box-shadow: rgba(100, 100, 111, 0.18) 0px 14px 40px 0px;
+    padding: 14px;
+    border-radius: 14px;
+}
+
+.resume-menu-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    text-transform: lowercase;
+    letter-spacing: -0.2px;
+}
+
+.resume-menu-options {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.resume-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    text-decoration: none;
+    background: transparent;
+    transition: all 0.15s ease;
+    text-transform: lowercase;
+    font-weight: 500;
+}
+
+.resume-option:hover {
+    border-color: var(--bg-border);
+    color: var(--primary-accent);
+    background: color-mix(in srgb, var(--bg-white) 80%, var(--hover-bg));
+    transform: translateY(-2px);
+}
+
+.resume-option:active {
+    transform: translateY(0);
+}
+
 .project-link {
     text-decoration: none;
     font-weight: 500;

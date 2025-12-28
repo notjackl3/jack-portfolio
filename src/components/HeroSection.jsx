@@ -22,6 +22,8 @@ const HeroSection = () => {
   const [selectedLocationId, setSelectedLocationId] = useState(null);
   const [panelMode, setPanelMode] = useState('list'); // 'list' | 'details'
   const prevSelectedIdRef = useRef(null);
+  const [isResumeMenuOpen, setIsResumeMenuOpen] = useState(false);
+  const resumeMenuRef = useRef(null);
 
   const locations = useMemo(() => {
     try {
@@ -38,6 +40,16 @@ const HeroSection = () => {
       coordinates: f.geometry?.coordinates
     }))
     .filter((x) => x.id && Array.isArray(x.coordinates) && x.coordinates.length === 2);
+
+  const randomizedLocationList = useMemo(() => {
+    // Randomize once per component mount (so it changes on refresh, but stays stable while browsing)
+    const arr = [...locationList];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }, [locationList]);
 
   const selectedLocation = useMemo(() => {
     if (!selectedLocationId) return null;
@@ -277,6 +289,26 @@ const HeroSection = () => {
     });
   };
 
+  useEffect(() => {
+    if (!isResumeMenuOpen) return;
+
+    const onPointerDown = (e) => {
+      const menuEl = resumeMenuRef.current;
+      if (menuEl && !menuEl.contains(e.target)) setIsResumeMenuOpen(false);
+    };
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') setIsResumeMenuOpen(false);
+    };
+
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('pointerdown', onPointerDown);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [isResumeMenuOpen]);
+
   return (
     <section className="hero-section tab-content">
       <div className="profile-section">
@@ -290,7 +322,15 @@ const HeroSection = () => {
             - I use React/TypeScript for frontend, and Django/Python or SpringBoot/Java for backend.
           </p>
           <div className="profile-contact">
-            <a href="#" className="outline-button resume">resume.pdf</a>  
+            <button
+              type="button"
+              className="outline-button resume resume-trigger"
+              aria-haspopup="dialog"
+              aria-expanded={isResumeMenuOpen}
+              onClick={() => setIsResumeMenuOpen((v) => !v)}
+            >
+              resume.pdf
+            </button>
             <a href="https://github.com" target="_blank" rel="noopener noreferrer" title="GitHub" className="outline-button">
               <FaGithub size={24} />
             </a>
@@ -300,6 +340,27 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+
+      {isResumeMenuOpen ? (
+        <div className="resume-overlay" role="presentation">
+          <div className="resume-menu" role="dialog" aria-label="Choose a resume" ref={resumeMenuRef}>
+            <div className="resume-menu-options">
+              <a className="resume-option" href="/resume-fullstack.pdf" target="_blank" rel="noopener noreferrer">
+                fullstack
+              </a>
+              <a className="resume-option" href="/resume-frontend.pdf" target="_blank" rel="noopener noreferrer">
+                frontend
+              </a>
+              <a className="resume-option" href="/resume-backend.pdf" target="_blank" rel="noopener noreferrer">
+                backend
+              </a>
+              <a className="resume-option" href="/resume-cloud.pdf" target="_blank" rel="noopener noreferrer">
+                cloud
+              </a>
+            </div>
+          </div>
+        </div>
+      ) : null}
 
       <div className="map-row">
         <div className="map-container">
@@ -313,7 +374,7 @@ const HeroSection = () => {
                   <div />
                 </div>
                 <div className="locations-list">
-                  {locationList.map((loc) => (
+                  {randomizedLocationList.map((loc) => (
                     <button
                       key={loc.id}
                       type="button"
@@ -323,7 +384,7 @@ const HeroSection = () => {
                         setPanelMode('details');
                       }}
                     >
-                      {loc.name}
+                      {locationDetails?.[loc.id]?.title ?? loc.name}
                     </button>
                   ))}
                 </div>

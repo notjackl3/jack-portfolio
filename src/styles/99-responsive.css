@@ -147,6 +147,12 @@
         padding: 0 15px;
     }
 
+    /* Match Projects/Experiences side padding on mobile */
+    .contact-content {
+        padding: 0 15px;
+        box-sizing: border-box;
+    }
+
     .nav-links {
         gap: 15px;
     }

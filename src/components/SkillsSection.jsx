@@ -192,9 +192,15 @@ const SkillsSection = () => {
       mouseRef.current.active = true;
       mouseRef.current.x = e.clientX - r.left;
       mouseRef.current.y = e.clientY - r.top;
+
+      // Drive the cursor ring via CSS variables (so it stays smooth and cheap to render)
+      stageEl.style.setProperty('--mx', `${mouseRef.current.x}px`);
+      stageEl.style.setProperty('--my', `${mouseRef.current.y}px`);
+      stageEl.style.setProperty('--mactive', '1');
     };
     const onPointerLeave = () => {
       mouseRef.current.active = false;
+      stageEl?.style.setProperty('--mactive', '0');
     };
     stageEl?.addEventListener('pointermove', onPointerMove);
     stageEl?.addEventListener('pointerleave', onPointerLeave);

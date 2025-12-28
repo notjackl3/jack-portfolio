@@ -26,8 +26,21 @@ const ExperiencesSection = () => {
   };
 
   const filteredExperiences = useMemo(() => {
-    if (activeFilter === 'all') return experiences;
-    return experiences.filter((e) => (e.type || 'work') === activeFilter);
+    const base =
+      activeFilter === 'all'
+        ? experiences
+        : experiences.filter((e) => (e.type || 'work') === activeFilter);
+
+    return [...base].sort((a, b) => {
+      // Primary: newest -> oldest (highest id -> lowest id)
+      const byTime = (b.id || 0) - (a.id || 0);
+      if (byTime !== 0) return byTime;
+
+      // Tiebreaker only (rare): stable-ish grouping
+      const ta = (a.type || 'work').toString();
+      const tb = (b.type || 'work').toString();
+      return ta.localeCompare(tb);
+    });
   }, [activeFilter]);
 
   useEffect(() => {
@@ -52,9 +65,8 @@ const ExperiencesSection = () => {
     const obs = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('is-inview');
-          obs.unobserve(entry.target);
+          if (entry.isIntersecting) entry.target.classList.add('is-inview');
+          else entry.target.classList.remove('is-inview');
         });
       },
       { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }

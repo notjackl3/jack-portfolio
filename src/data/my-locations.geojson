@@ -167,8 +167,22 @@
         "type": "Point"
       },
       "id": "shut-up-and-code"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "WallyHacks"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.66587,
+          43.55101
+        ],
+        "type": "Point"
+      },
+      "id": "wallyhacks"
     }
   ],
   "type": "FeatureCollection"
-  
 }
+

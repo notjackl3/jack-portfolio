@@ -2,7 +2,7 @@
 .contact-content {
     text-align: center;
     width: 100%;
-    margin: 0 auto;
+    margin: 1.5rem 0 0;
 }
 
 .contact-info p {
@@ -14,34 +14,38 @@
 
 .contact-methods {
     display: flex;
-    flex-direction: column;
-    gap: 12px;
+    flex-direction: row;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
     text-align: center;
     width: 100%;
 }
 
-.contact-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-}
-
-.contact-item strong {
-    color: var(--text-dark);
-    font-weight: 500;
-}
-
-.contact-item a {
-    color: var(--text-main);
+.contact-info a {
+    color: var(--text-muted);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: all 0.2s ease;
 }
 
-.contact-item a:hover {
+.contact-info a:hover {
     color: var(--hover-border);
-    border-bottom-color: var(--bg-border);
+}
+
+.contact-social {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 14px;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted);
+}
+
+.contact-social-label {
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: -0.2px;
 }
 
