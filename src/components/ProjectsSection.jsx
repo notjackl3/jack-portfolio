@@ -69,6 +69,9 @@ const ProjectsSection = () => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef(null);
+  const filterTriggerRef = useRef(null);
+  const filterMenuElRef = useRef(null);
+  const [filterMenuPos, setFilterMenuPos] = useState(null);
   const [loadedImageIds, setLoadedImageIds] = useState(() => new Set());
   const imageElsRef = useRef(new Map());
 
@@ -169,6 +172,49 @@ const ProjectsSection = () => {
   const activeFilterLabel =
     filterOptions.find((o) => o.value === activeFilter)?.label ?? 'all';
 
+  useLayoutEffect(() => {
+    if (!isFilterMenuOpen) return;
+
+    const placeMenu = () => {
+      const triggerEl = filterTriggerRef.current;
+      const menuEl = filterMenuElRef.current;
+      if (!triggerEl || !menuEl) return;
+
+      const isMobile = window.matchMedia('(max-width: 480px)').matches;
+      if (!isMobile) {
+        setFilterMenuPos(null);
+        return;
+      }
+
+      const rect = triggerEl.getBoundingClientRect();
+      const menuWidth = menuEl.offsetWidth || 0;
+      const viewportW = window.innerWidth;
+      const margin = 15;
+      const gap = 10;
+
+      const desiredLeft = rect.right + gap;
+      const clampedLeft = Math.max(
+        margin,
+        Math.min(desiredLeft, viewportW - margin - menuWidth)
+      );
+
+      setFilterMenuPos({
+        left: clampedLeft,
+        top: rect.top + rect.height / 2,
+      });
+    };
+
+    // Wait a frame so offsetWidth is correct after render.
+    const raf = requestAnimationFrame(placeMenu);
+    window.addEventListener('resize', placeMenu);
+    window.addEventListener('scroll', placeMenu, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('resize', placeMenu);
+      window.removeEventListener('scroll', placeMenu);
+    };
+  }, [isFilterMenuOpen, activeFilterLabel]);
+
   return (
     <section id="projects" className="section tab-content projects-section">
       <div className="projects-filter-row">
@@ -179,13 +225,20 @@ const ProjectsSection = () => {
             aria-haspopup="menu"
             aria-expanded={isFilterMenuOpen}
             onClick={() => setIsFilterMenuOpen((v) => !v)}
+            ref={filterTriggerRef}
           >
             {activeFilterLabel}
             <span className="projects-filter-caret" aria-hidden="true">▾</span>
           </button>
 
           {isFilterMenuOpen && (
-            <div className="projects-filter-menu" role="menu" aria-label="Project type">
+            <div
+              className="projects-filter-menu"
+              role="menu"
+              aria-label="Project type"
+              ref={filterMenuElRef}
+              style={filterMenuPos ? { left: filterMenuPos.left, top: filterMenuPos.top } : undefined}
+            >
               {filterOptions.map((opt) => (
                 <button
                   key={opt.value}

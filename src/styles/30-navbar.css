@@ -1,0 +1,58 @@
+/* Navigation active state */
+.nav-links a.active {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+/* Underline animation (hover + persistent active) */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--bg-border);
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease;
+}
+
+.nav-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+.nav-links a.active::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Mobile nav (hamburger + dropdown) */
+.nav-hamburger {
+    display: none;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    padding: 10px 12px;
+    margin-left: auto;
+    cursor: pointer;
+    gap: 10px;
+    align-items: center;
+}
+
+.nav-hamburger-label {
+    font-size: 2rem;
+    color: var(--text-muted);
+    letter-spacing: -0.2px;
+    text-transform: lowercase;
+}
+
+.nav-hamburger:hover .nav-hamburger-label {
+    color: var(--primary-accent);
+}
+
+.nav-dropdown {
+    display: none;
+}
+

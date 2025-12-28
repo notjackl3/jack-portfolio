@@ -285,7 +285,7 @@ const HeroSection = () => {
           <h1 className="profile-name">
             <span style={{ color: 'var(--primary-accent)' }}>Hey, I'm Jack Le</span>
           </h1>
-          <h2 className="profile-role">I am a Fullstack Engineer ☺️</h2>
+          <h2 className="profile-role">I do Fullstack Development ☺️</h2>
           <p className="profile-desc">
             - I use React/TypeScript for frontend, and Django/Python or SpringBoot/Java for backend.
           </p>
@@ -382,6 +382,12 @@ const HeroSection = () => {
           </div>
         </aside>
       </div>
+
+      {panelMode === 'list' ? (
+        <p style={{ color: 'var(--text-muted)', fontSize: '12px', marginTop: '5px' }}>
+          feel free to select one of my memories
+        </p>
+      ) : null}
     </section>
   );
 };

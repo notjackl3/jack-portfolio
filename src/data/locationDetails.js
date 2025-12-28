@@ -30,7 +30,7 @@ export const locationDetails = {
     images: []
   },
   "ember-hacks": {
-    title: "Ember Hacks",
+    title: "EmberHacks",
     subtitle: "My first time organizing a hackathon",
     description: "I organized my first hackathon for 100+ hackers. I stayed back overnight and it was a wonderful experience!",
     images: []

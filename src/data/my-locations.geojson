@@ -45,7 +45,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Ember Hacks"
+        "name": "EmberHacks"
       },
       "geometry": {
         "coordinates": [

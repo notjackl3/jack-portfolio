@@ -1,0 +1,47 @@
+/* Contact Section */
+.contact-content {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.contact-info p {
+    font-size: 1rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+    width: 100%;
+}
+
+.contact-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+}
+
+.contact-item strong {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+.contact-item a {
+    color: var(--text-main);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.contact-item a:hover {
+    color: var(--hover-border);
+    border-bottom-color: var(--bg-border);
+}
+

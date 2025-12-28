@@ -1,45 +1,91 @@
 export const experiences = [
   {
     id: 1,
-    company: "Tech Solutions Inc.",
-    position: "Senior Full-Stack Developer",
-    duration: "Jan 2022 - Present",
-    location: "New York, NY",
-    description: "Lead development of web applications serving 100k+ users. Architected microservices infrastructure and mentored junior developers.",
-    achievements: [
-      "Reduced application load time by 40% through optimization",
-      "Implemented CI/CD pipeline increasing deployment frequency by 300%",
-      "Led team of 5 developers on critical client projects"
-    ],
-    technologies: ["React", "Node.js", "AWS", "Docker", "Kubernetes"]
+    company: "SOON",
+    position: "Founder",
+    type: "work",
+    duration: "December 2025 - Present",
+    description: "I am currently building a platform for young entrepreneurs to connect with mentors and resources."
   },
   {
     id: 2,
-    company: "StartupXYZ",
-    position: "Full-Stack Developer",
-    duration: "Jun 2020 - Dec 2021",
-    location: "San Francisco, CA",
-    description: "Developed and maintained multiple client-facing applications. Collaborated with design team to implement pixel-perfect UIs.",
-    achievements: [
-      "Built responsive web app from scratch serving 50k+ users",
-      "Integrated third-party APIs and payment systems",
-      "Improved code quality with comprehensive testing suite"
-    ],
-    technologies: ["Vue.js", "Python", "PostgreSQL", "Redis", "Jest"]
+    company: "University of Toronto",
+    position: "Research Assistant",
+    type: "work",
+    duration: "September 2025 - Present",
+    description: "—"
   },
   {
     id: 3,
-    company: "Freelance",
-    position: "Web Developer",
-    duration: "Mar 2019 - May 2020",
-    location: "Remote",
-    description: "Delivered custom web solutions for small businesses and startups. Specialized in modern JavaScript frameworks and responsive design.",
-    achievements: [
-      "Completed 15+ successful client projects",
-      "Maintained 98% client satisfaction rating",
-      "Developed reusable component library for faster development"
-    ],
-    technologies: ["React", "Express.js", "MongoDB", "SASS", "Git"]
+    company: "GenAI Genesis",
+    position: "Director of Operation",
+    type: "work",
+    duration: "October 2025 - Present",
+    description: "—"
+  },
+  {
+    id: 4,
+    company: "UTM Career Center",
+    position: "Tech Support Assistant",
+    type: "work",
+    duration: "August 2025 - Present",
+    description: "—"
+  },
+  {
+    id: 5,
+    company: "EmberHacks",
+    position: "Organizer",
+    type: "volunteer",
+    duration: "May 2025 - October 2025",
+    description: "—"
+  },
+  {
+    id: 6,
+    company: "UofT Blueprint",
+    position: "Software Project Lead",
+    type: "volunteer",
+    duration: "—",
+    description: "—"
+  },
+  {
+    id: 7,
+    company: "UTMFA",
+    position: "Tech Assiciate",
+    type: "work",
+    duration: "—",
+    description: "—"
+  },
+  {
+    id: 8,
+    company: "Ignition Hacks",
+    position: "Hackathon Mentor",
+    type: "volunteer",
+    duration: "—",
+    description: "—"
+  },
+  {
+    id: 9,
+    company: "TRG International",
+    position: "Standard Operation Procedure Intern",
+    type: "work",
+    duration: "—",
+    description: "—"
+  },
+  {
+    id: 10,
+    company: "UTMSAM",
+    position: "Vice President of Tech",
+    type: "volunteer",
+    duration: "—",
+    description: "—"
+  },
+  {
+    id: 11,
+    company: "University of Toronto",
+    position: "Computer Science Mentor",
+    type: "volunteer",
+    duration: "—",
+    description: "—"
   }
 ];
 
