@@ -1,0 +1,131 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "TRG International"
+      },
+      "geometry": {
+        "coordinates": [
+          106.719878,
+          10.782204
+        ],
+        "type": "Point"
+      },
+      "id": "1a1654db730a3d4e57bef7afd6829fab"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "UTM Career Center"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.662211,
+          43.548302
+        ],
+        "type": "Point"
+      },
+      "id": "23ef92f76d78885518eddea60b5617c3"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Go On Hacks"
+      },
+      "geometry": {
+        "coordinates": [
+          -80.492244,
+          43.45076
+        ],
+        "type": "Point"
+      },
+      "id": "246f70896dd0c0133bd855708df29bac"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ember Hacks"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.666345,
+          43.550479
+        ],
+        "type": "Point"
+      },
+      "id": "68a0b4cb292c78a093dc47e53cb97d91"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "University of Toronto"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.661532,
+          43.548052
+        ],
+        "type": "Point"
+      },
+      "id": "a0b0a4700bc409413bc657444c104867"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "TechTO Hackathon"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.382409,
+          43.670868
+        ],
+        "type": "Point"
+      },
+      "id": "ba7c3e0d756a574dee0ec25a0fa112ff"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hack The North"
+      },
+      "geometry": {
+        "coordinates": [
+          -80.538655,
+          43.473069
+        ],
+        "type": "Point"
+      },
+      "id": "c7fe2e8e4da779bfd5c5a8d570cebae8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Computer Science Mentor"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.666246,
+          43.550487
+        ],
+        "type": "Point"
+      },
+      "id": "db269bd1d70b264e771120112ccee6f8"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "UofT Blueprint"
+      },
+      "geometry": {
+        "coordinates": [
+          -79.398751,
+          43.662743
+        ],
+        "type": "Point"
+      },
+      "id": "e231b9d1c3d3236026cfd4bceca5900f"
+    }
+  ],
+  "type": "FeatureCollection"
+}
