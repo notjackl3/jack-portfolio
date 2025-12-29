@@ -10,6 +10,9 @@ import yaas from './assets/yaas.png';
 import imageGallery from './assets/image-gallery.png';
 import leReplacer from './assets/lereplacer.png';
 import resumeForMe from './assets/resume-for-me.png';
+import paint from './assets/paint.png';
+import lightUpTheShadow from './assets/light-up-the-shadow.png';
+import catchIt from './assets/catch-it.png';
 
 export const projects = [
   {
@@ -116,6 +119,22 @@ export const projects = [
   },
   {
     id: 12,
+    title: "Paint App",
+    description: "An interactive paint app, allows users to draw on a canvas with functionalities just like Photoshop",
+    technologies: ["Java", "JavaFX", "JUnit"],
+    image: paint,
+    category: "school"
+  },
+  {
+    id: 13,
+    title: "Light Up The Shadow",
+    description: "A survival game where the player must navigate through the board to complete quests while avoiding the shadows",
+    technologies: ["Assembly"],
+    image: lightUpTheShadow,
+    category: "school"
+  },
+  {
+    id: 14,
     title: "LeReplacer | Go On Hack, Winner 🏆",
     description: "A google extension that uses face-detection algorithm to replace all the faces on your screen with Lebron James",
     technologies: ["Javascript/Node.js", "MediaPipe", "Twitter API", "Gemini API"],
@@ -123,5 +142,15 @@ export const projects = [
     liveUrl: "https://devpost.com/software/lereplacer",
     image: leReplacer,
     category: "hackathon"
+  },
+  {
+    id: 15,
+    title: "Catch It",
+    description: "A cross-platform mobile/web app that allows commuters to search public transportations with multiple stops and routes (something current maps lack)",
+    technologies: ["TypeScript", "React Native", "Google Cloud Platform"],
+    githubUrl: "https://github.com/notjackl3/catch-it",
+    liveUrl: "https://catch-it-sigma.vercel.app/",
+    image: catchIt,
+    category: "personal"
   }
 ];

@@ -22,6 +22,7 @@ const SkillsSection = () => {
       "Flask",
       "Tailwind",
       "Bootstrap",
+      "React Native",
 
       // Technologies
       "Git",

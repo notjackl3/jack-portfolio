@@ -348,14 +348,11 @@ const HeroSection = () => {
               <a className="resume-option" href="/resume-fullstack.pdf" target="_blank" rel="noopener noreferrer">
                 fullstack
               </a>
-              <a className="resume-option" href="/resume-frontend.pdf" target="_blank" rel="noopener noreferrer">
-                frontend
-              </a>
               <a className="resume-option" href="/resume-backend.pdf" target="_blank" rel="noopener noreferrer">
                 backend
               </a>
-              <a className="resume-option" href="/resume-cloud.pdf" target="_blank" rel="noopener noreferrer">
-                cloud
+              <a className="resume-option" href="/resume-mobile.pdf" target="_blank" rel="noopener noreferrer">
+                mobile
               </a>
             </div>
           </div>
@@ -430,7 +427,7 @@ const HeroSection = () => {
                         </div>
                       ) : (
                         <div className="location-muted" style={{ fontSize: 12 }}>
-                          No images yet. Add an array of image URLs in <code>src/data/locationDetails.js</code>.
+                          Images to be added soon.
                         </div>
                       )}
                     </>
