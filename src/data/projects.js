@@ -1,18 +1,18 @@
-import streetRoamer from '../assets/street-roamer-s3000.png';
-import utmLive from '../assets/utm-live.png';
-import organese from '../assets/organese.png';
-import gooseGoGeese from '../assets/goosegogeese.png';
-import jobHunter from '../assets/job-hunter.png';
-import resumeBuilder from '../assets/resume-builder.png';
-import operaid from '../assets/operaid.png';
-import wordDiff from '../assets/word-diff.png';
-import yaas from '../assets/yaas.png';
-import imageGallery from '../assets/image-gallery.png';
-import leReplacer from '../assets/lereplacer.png';
-import resumeForMe from '../assets/resume-for-me.png';
-import paint from '../assets/paint.png';
-import lightUpTheShadow from '../assets/light-up-the-shadow.png';
-import catchIt from '../assets/catch-it.png';
+import streetRoamer from '../assets/street-roamer-s3000.jpg';
+import utmLive from '../assets/utm-live.jpg';
+import organese from '../assets/organese.jpg';
+import gooseGoGeese from '../assets/goosegogeese.jpg';
+import jobHunter from '../assets/job-hunter.jpg';
+import resumeBuilder from '../assets/resume-builder.jpg';
+import operaid from '../assets/operaid.jpg';
+import wordDiff from '../assets/word-diff.jpg';
+import yaas from '../assets/yaas.jpg';
+import imageGallery from '../assets/image-gallery.jpg';
+import leReplacer from '../assets/lereplacer.jpg';
+import resumeForMe from '../assets/resume-for-me.jpg';
+import paint from '../assets/paint.jpg';
+import lightUpTheShadow from '../assets/light-up-the-shadow.jpg';
+import catchIt from '../assets/catch-it.jpg';
 
 export const projects = [
   {
