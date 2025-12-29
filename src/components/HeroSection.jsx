@@ -67,8 +67,7 @@ const HeroSection = () => {
 
     if (typeof window === 'undefined' || !window.mapboxgl) return;
 
-    window.mapboxgl.accessToken =
-      'pk.eyJ1Ijoibm90amFja2wzIiwiYSI6ImNtY3NxOWlkaDE1YXQyanEwYWI0MjZicWYifQ.TmrkcNK6jBFrQ37uJucAAg';
+    window.mapboxgl.accessToken = import.meta.env.MAPBOX_ACCESS_TOKEN;
 
     const map = new window.mapboxgl.Map({
       container: mapContainerRef.current,
