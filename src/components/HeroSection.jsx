@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { locationDetails } from '../data/locationDetails';
+import me from '../assets/me.jpeg';
+import markerPngUrl from '../assets/marker.png';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
-const markerPngUrl = '/assets/marker.png';
+// markerPngUrl comes from Vite import above
 
 const zoomBasedReveal = (maxVal) => [
   'interpolate',
@@ -326,7 +328,7 @@ const HeroSection = () => {
   return (
     <section className="hero-section tab-content">
       <div className="profile-section">
-        <img src="/assets/me.jpeg" alt="Jack Le" className="avatar" />
+        <img src={me} alt="Jack Le" className="avatar" />
         <div className="profile-intro">
           <h1 className="profile-name">
             <span style={{ color: 'var(--primary-accent)' }}>Hey, I'm Jack Le</span>

@@ -1,18 +1,14 @@
-const trgImages = [
-  '/assets/trg/trg1.jpeg',
-  '/assets/trg/trg2.jpeg',
-  '/assets/trg/trg3.jpeg',
-  '/assets/trg/trg4.jpeg',
-  '/assets/trg/trg5.jpeg',
-  '/assets/trg/trg6.jpeg',
-];
+const trgImages = Object.entries(
+  import.meta.glob('../assets/trg/*.{png,jpg,jpeg,JPG,JPEG}', { eager: true, import: 'default' })
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, src]) => src);
 
-const ccImages = [
-  '/assets/cc/cc1.JPG',
-  '/assets/cc/cc2.jpg',
-  '/assets/cc/cc3.jpg',
-  '/assets/cc/cc4.jpg',
-];
+const ccImages = Object.entries(
+  import.meta.glob('../assets/cc/*.{png,jpg,jpeg,JPG,JPEG}', { eager: true, import: 'default' })
+)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([, src]) => src);
 
 export const locationDetails = {
   "trg-international": {
