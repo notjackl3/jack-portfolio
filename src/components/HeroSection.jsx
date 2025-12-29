@@ -1,10 +1,8 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import locationsRaw from '../data/my-locations.geojson?raw';
 import { locationDetails } from '../data/locationDetails';
-import me from '../data/assets/me.jpeg';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 
-const markerPngUrl = new URL('../data/assets/marker.png', import.meta.url).href;
+const markerPngUrl = '/assets/marker.png';
 
 const zoomBasedReveal = (maxVal) => [
   'interpolate',
@@ -24,13 +22,22 @@ const HeroSection = () => {
   const prevSelectedIdRef = useRef(null);
   const [isResumeMenuOpen, setIsResumeMenuOpen] = useState(false);
   const resumeMenuRef = useRef(null);
+  const [locations, setLocations] = useState(null);
 
-  const locations = useMemo(() => {
-    try {
-      return JSON.parse(locationsRaw);
-    } catch {
-      return { type: 'FeatureCollection', features: [] };
-    }
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch('/my-locations.geojson', { cache: 'no-store' });
+        const json = await res.json();
+        if (!cancelled) setLocations(json);
+      } catch {
+        if (!cancelled) setLocations({ type: 'FeatureCollection', features: [] });
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const locationList = (locations?.features || [])
@@ -64,10 +71,18 @@ const HeroSection = () => {
   useEffect(() => {
     if (mapRef.current) return;
     if (!mapContainerRef.current) return;
+    if (!locations) return;
 
     if (typeof window === 'undefined' || !window.mapboxgl) return;
 
-    window.mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+    const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+    if (!token) {
+      console.error(
+        'Missing Mapbox token. Add VITE_MAPBOX_ACCESS_TOKEN to your .env / Vercel env vars.'
+      );
+      return;
+    }
+    window.mapboxgl.accessToken = token;
 
     const map = new window.mapboxgl.Map({
       container: mapContainerRef.current,
@@ -255,7 +270,7 @@ const HeroSection = () => {
         mapRef.current = null;
       }
     };
-  }, []);
+  }, [locations]);
 
   const flyToLocation = (loc) => {
     const map = mapRef.current;
@@ -311,7 +326,7 @@ const HeroSection = () => {
   return (
     <section className="hero-section tab-content">
       <div className="profile-section">
-        <img src={me} alt="Jack Le" className="avatar" />
+        <img src="/assets/me.jpeg" alt="Jack Le" className="avatar" />
         <div className="profile-intro">
           <h1 className="profile-name">
             <span style={{ color: 'var(--primary-accent)' }}>Hey, I'm Jack Le</span>
