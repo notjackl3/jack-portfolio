@@ -139,13 +139,14 @@
     transition: transform 0.2s linear;
 }
 
-.projects-grid:not(.is-flip-ready) .project-card {
+/* Progressive reveal: show each card as its own image loads (no "wait for all") */
+.project-card-anim-wrap.has-image:not(.is-loaded) {
     opacity: 0;
 }
 
-.projects-grid.is-flip-ready .project-card-anim-wrap .project-card {
+.project-card-anim-wrap.is-loaded .project-card {
     animation: projectCardFlipIn 650ms cubic-bezier(0.22, 1, 0.36, 1) both;
-    animation-delay: calc((var(--card-index, 0) * 70ms));
+    animation-delay: 0ms;
     will-change: transform, opacity;
 }
 

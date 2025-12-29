@@ -110,11 +110,6 @@ const ProjectsSection = () => {
     [filteredProjects]
   );
 
-  const areProjectImagesLoaded = useMemo(() => {
-    if (projectsWithImages.length === 0) return true;
-    return projectsWithImages.every((p) => loadedImageIds.has(p.id));
-  }, [projectsWithImages, loadedImageIds]);
-
   const applyFilter = (nextFilter) => {
     // Reset synchronously during the click/change event so we don't "flash" into a hidden state
     // after render (which can happen with cached images and missing onLoad events).
@@ -139,7 +134,7 @@ const ProjectsSection = () => {
 
   useLayoutEffect(() => {
     // Important: when switching filters, many images are already in cache, so onLoad may not fire.
-    // This ensures we still mark them as loaded and the grid becomes flip-ready.
+    // This ensures we still mark them as loaded so each card can reveal immediately.
     for (const p of projectsWithImages) {
       const el = imageElsRef.current.get(p.id);
       if (!el) continue;
@@ -258,11 +253,15 @@ const ProjectsSection = () => {
           )}
         </div>
       </div>
-      <div className={`projects-grid ${areProjectImagesLoaded ? 'is-flip-ready' : ''}`}>
+      <div className="projects-grid">
         {filteredProjects.map((project, index) => (
+          (() => {
+            const hasImage = Boolean(project.image);
+            const isLoaded = !hasImage || loadedImageIds.has(project.id);
+            return (
           <div
             key={project.id}
-            className="project-card-anim-wrap"
+            className={`project-card-anim-wrap ${hasImage ? 'has-image' : ''} ${isLoaded ? 'is-loaded' : ''}`}
             style={{ '--card-index': index }}
           >
             <ProjectCard
@@ -271,6 +270,8 @@ const ProjectsSection = () => {
               registerImageEl={registerImageEl}
             />
           </div>
+            );
+          })()
         ))}
       </div>
     </section>
