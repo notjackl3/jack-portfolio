@@ -110,6 +110,11 @@ const ProjectsSection = () => {
     [filteredProjects]
   );
 
+  const areAllProjectImagesLoaded = useMemo(() => {
+    if (projectsWithImages.length === 0) return true;
+    return projectsWithImages.every((p) => loadedImageIds.has(p.id));
+  }, [projectsWithImages, loadedImageIds]);
+
   const applyFilter = (nextFilter) => {
     // Reset synchronously during the click/change event so we don't "flash" into a hidden state
     // after render (which can happen with cached images and missing onLoad events).
@@ -253,6 +258,13 @@ const ProjectsSection = () => {
           )}
         </div>
       </div>
+
+      {!areAllProjectImagesLoaded ? (
+        <div className="projects-loading-hint" aria-live="polite">
+          poor internet connection? please wait for the images to load, you can explore other sections in the meantime and come back later
+        </div>
+      ) : null}
+
       <div className="projects-grid">
         {filteredProjects.map((project, index) => (
           (() => {
