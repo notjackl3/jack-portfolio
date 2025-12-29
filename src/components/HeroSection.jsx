@@ -67,7 +67,7 @@ const HeroSection = () => {
 
     if (typeof window === 'undefined' || !window.mapboxgl) return;
 
-    window.mapboxgl.accessToken = import.meta.env.MAPBOX_ACCESS_TOKEN;
+    window.mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
     const map = new window.mapboxgl.Map({
       container: mapContainerRef.current,
