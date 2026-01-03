@@ -168,7 +168,7 @@ body {
 .location-details-panel {
     order: 2;
     width: 500px;
-    max-height: 150px;
+    max-height: 200px;
     background: var(--bg-white);
     padding: 14px;
     display: flex;
@@ -181,7 +181,7 @@ body {
 }
 
 .location-details-panel.expanded {
-    max-height: 200px;
+    max-height: 250px;
 }
 
 .panel-content-fade {
