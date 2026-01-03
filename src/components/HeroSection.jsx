@@ -361,14 +361,17 @@ const HeroSection = () => {
         <div className="resume-overlay" role="presentation">
           <div className="resume-menu" role="dialog" aria-label="Choose a resume" ref={resumeMenuRef}>
             <div className="resume-menu-options">
-              <a className="resume-option" href="/resume-fullstack.pdf" target="_blank" rel="noopener noreferrer">
+              <a className="resume-option" href="/jack-le-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">
                 fullstack
               </a>
-              <a className="resume-option" href="/resume-backend.pdf" target="_blank" rel="noopener noreferrer">
+              <a className="resume-option" href="/jack-le-backend-resume.pdf" target="_blank" rel="noopener noreferrer">
                 backend
               </a>
-              <a className="resume-option" href="/resume-mobile.pdf" target="_blank" rel="noopener noreferrer">
+              <a className="resume-option" href="/jack-le-mobile-resume.pdf" target="_blank" rel="noopener noreferrer">
                 mobile
+              </a>
+              <a className="resume-option" href="/jack-le-cloud-resume.pdf" target="_blank" rel="noopener noreferrer">
+                cloud
               </a>
             </div>
           </div>
