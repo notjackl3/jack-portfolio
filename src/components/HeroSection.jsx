@@ -335,7 +335,7 @@ const HeroSection = () => {
           </h1>
           <h2 className="profile-role">I do Fullstack Development ☺️</h2>
           <p className="profile-desc">
-            - I use React/TypeScript for frontend, and Django/Python or SpringBoot/Java for backend.
+            - I use React/TypeScript for frontend, and Django/Python or Spring Boot/Java for backend.
           </p>
           <div className="profile-contact">
             <button
