@@ -18,7 +18,7 @@ export const projects = [
   {
     id: 1,
     title: "Street Roamer S3000 | WallyHacks, Winner 🏆",
-    description: "A robot that can detects faulty street lights and bumpy obstacles by just sensing the road",
+    description: "A robot that can detect faulty street lights and bumpy obstacles by just sensing the road",
     technologies: ["C++", "Arduino"],
     githubUrl: "https://github.com/scriptgenerator64/wallyhacks-redhackhackers",
     liveUrl: "https://devpost.com/software/street-roamer-s3000",
@@ -28,7 +28,7 @@ export const projects = [
   {
     id: 2,
     title: "Resume Builder",
-    description: "A basic resume builder, tailors resumes and produce keyword-optimized PDFs for ATS scoring",
+    description: "A basic resume builder, tailors resumes and produces keyword-optimized PDFs for ATS scoring",
     technologies: ["Python", "OpenAI", "Tkinter", "PyQt5"],
     githubUrl: "https://github.com/notjackl3/resume-builder",
     image: resumeBuilder,
@@ -36,9 +36,9 @@ export const projects = [
   },
   {
     id: 3,
-    title: "Youtube as a Service",
-    description: "An unlimited storage app, losslessly compresses/retrieves any files into/from Youtube videos",
-    technologies: ["Python", "Javascript", "OpenCV", "Numpy", "Google Cloud Platform", "AWS"],
+    title: "YouTube as a Service",
+    description: "An unlimited storage app, losslessly compresses/retrieves any files into/from YouTube videos",
+    technologies: ["Python", "JavaScript", "OpenCV", "Numpy", "Google Cloud Platform", "AWS"],
     githubUrl: "https://github.com/notjackl3/youtube-as-a-service",
     image: yaas,
     category: "personal"
@@ -64,8 +64,8 @@ export const projects = [
   {
     id: 6,
     title: "Organese",
-    description: "A scheduling app, to create personalized timetables, share bookings, and manage tasks",
-    technologies: ["Python/Django", "Javascript", "Bootstrap", "PostgreSQL"],
+    description: "A scheduling app to create personalized timetables, share bookings, and manage tasks",
+    technologies: ["Python/Django", "JavaScript", "Bootstrap", "PostgreSQL"],
     githubUrl: "https://github.com/notjackl3/organese",  
     image: organese,
     category: "personal"
@@ -82,7 +82,7 @@ export const projects = [
   {
     id: 8,
     title: "UTM Live",
-    description: "An interactive, 3D map, allows students to find the perfect study spots around the campus!",
+    description: "An interactive 3D map that allows students to find the perfect study spots around campus!",
     technologies: ["Python/Django", "Mapbox", "PostgreSQL"],
     githubUrl: "https://github.com/notjackl3/utm-live",
     liveUrl: "https://jack-le.com/utm-live.onrender.com/",
@@ -92,8 +92,8 @@ export const projects = [
   {
     id: 9,
     title: "GooseGoGeese | Hack The North 2025",
-    description: "A minigame that detects humans and objects, then, a series of tasks chosen by your friends must be completed!",
-    technologies: ["Python/FastAPI", "Javascript/React.js", "Tailwind", "YOLO", "OpenCV", "MediaPipe"],
+    description: "A minigame that detects humans and objects, then a series of tasks chosen by your friends must be completed!",
+    technologies: ["Python/FastAPI", "JavaScript/React.js", "Tailwind", "YOLO", "OpenCV", "MediaPipe"],
     githubUrl: "https://github.com/notjackl3/HTN2025",
     image: gooseGoGeese,
     category: "hackathon"
@@ -101,8 +101,8 @@ export const projects = [
   {
     id: 10,
     title: "Resume For Me",
-    description: "A feature-based resume builder, helps students craft their resume easily following jake's template",
-    technologies: ["Python/Django", "Javascript/React.js", "Tailwind", "AWS"],
+    description: "A feature-based resume builder, helps students craft their resume easily following Jake's template",
+    technologies: ["Python/Django", "JavaScript/React.js", "Tailwind", "AWS"],
     githubUrl: "https://github.com/notjackl3/jake-resume-for-me",
     image: resumeForMe,
     category: "personal"
@@ -110,8 +110,8 @@ export const projects = [
   {
     id: 11,
     title: "Operaid | TechTO Hackathon",
-    description: "A voice-controled solution for doctor to look up and record patient information",
-    technologies: ["Python/FastAPI", "Javascript/React.js", "Tailwind", "PostgreSQL/Supabase", "ElevenLabs", "OpenAI"],
+    description: "A voice-controlled solution for doctors to look up and record patient information",
+    technologies: ["Python/FastAPI", "JavaScript/React.js", "Tailwind", "PostgreSQL/Supabase", "ElevenLabs", "OpenAI"],
     githubUrl: "https://generous-cogwheel-353742.framer.app/",
     liveUrl: "https://operaid.vercel.app/",
     image: operaid,
@@ -136,8 +136,8 @@ export const projects = [
   {
     id: 14,
     title: "LeReplacer | Go On Hack, Winner 🏆",
-    description: "A google extension that uses face-detection algorithm to replace all the faces on your screen with Lebron James",
-    technologies: ["Javascript/Node.js", "MediaPipe", "Twitter API", "Gemini API"],
+    description: "A Google extension that uses face-detection algorithms to replace all the faces on your screen with LeBron James",
+    technologies: ["JavaScript/Node.js", "MediaPipe", "Twitter API", "Gemini API"],
     githubUrl: "https://github.com/ShreyShingala/LeReplacerExtension",
     liveUrl: "https://devpost.com/software/lereplacer",
     image: leReplacer,
@@ -146,7 +146,7 @@ export const projects = [
   {
     id: 15,
     title: "Catch It",
-    description: "A cross-platform mobile/web app that allows commuters to search public transportations with multiple stops and routes (something current maps lack)",
+    description: "A cross-platform mobile/web app that allows commuters to search public transportation with multiple stops and routes (something current maps lack)",
     technologies: ["TypeScript", "React Native", "Google Cloud Platform"],
     githubUrl: "https://github.com/notjackl3/catch-it",
     liveUrl: "https://catch-it-sigma.vercel.app/",

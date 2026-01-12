@@ -5,7 +5,7 @@ export const experiences = [
     position: "Content Creator & Video Editor",
     type: "work",
     duration: "May 2020 - Jun 2024",
-    description: "▶️ Achieved 3,000,000 views on Youtube, edited a tons of videos, took on exciting freelance projects"
+    description: "▶️ Achieved 3,000,000 views on YouTube, edited tons of videos, took on exciting freelance projects"
   },
   {
     id: 2,
@@ -45,7 +45,7 @@ export const experiences = [
     position: "President",
     type: "volunteer",
     duration: "Sep 2023 - May 2024",
-    description: "🖥️ Brought design opportunities and guidances to students"
+    description: "🖥️ Brought design opportunities and guidance to students"
   },
   {
     id: 7,
@@ -53,7 +53,7 @@ export const experiences = [
     position: "Computer Science Mentor",
     type: "volunteer",
     duration: "September 2024 - May 2025",
-    description: "🗣️ Contributed 600+ responses into course forums. Attended office hours not to ask, but to listen and solve other people's problems"
+    description: "🗣️ Contributed 600+ responses to course forums. Attended office hours not to ask, but to listen and solve other people's problems"
   },
   {
     id: 8,
@@ -74,7 +74,7 @@ export const experiences = [
   {
     id: 10,
     company: "TRG International",
-    position: "Standard Operation Procedure Intern",
+    position: "Standard Operating Procedure Intern",
     type: "work",
     duration: "May 2025 - August 2025",
     description: "📊 Unlocked \"Star Intern 🌟\" title, developed tools that maximise workflow, supported cross-functional projects, attracted new talents, and was the first intern to message the CEO"
@@ -124,7 +124,7 @@ export const experiences = [
     company: "GenAI Genesis",
     position: "Director of Operations",
     type: "volunteer",
-    duration: "September 2025 - Present",
+    duration: "August 2025 - Present",
     description: "🤖 Organizing Canada's largest AI hackathon"
   },
   {
@@ -132,15 +132,23 @@ export const experiences = [
     company: "UTMFA",
     position: "Tech Associate",
     type: "volunteer",
-    duration: "September 2025 - Present",
+    duration: "August 2025 - Present",
     description: "💰 Hosting interesting info sessions and speaker keynotes"
   },
   {
     id: 18,
     company: "SOON",
     position: "Founder",
-    type: "work",
+    type: "volunteer",
     duration: "December 2025 - Present",
-    description: "🌟 Creating Something Out Of Nothing, connecting young talents with companies to work on real projects."
+    description: "🌟 Creating Something Out Of Nothing, connecting young talents with companies to work on real projects"
+  },
+  {
+    id: 19,
+    company: "University of Toronto",
+    position: "Software Engineer",
+    type: "work",
+    duration: "January 2026 - Present",
+    description: "💬 Building a live-chat platform"
   }
 ];

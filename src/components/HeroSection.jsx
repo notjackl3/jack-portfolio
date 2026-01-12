@@ -333,7 +333,7 @@ const HeroSection = () => {
           <h1 className="profile-name">
             <span style={{ color: 'var(--primary-accent)' }}>Hey, I'm Jack Le</span>
           </h1>
-          <h2 className="profile-role">I do Fullstack Development ☺️</h2>
+          <h2 className="profile-role">I do full-stack development ☺️</h2>
           <p className="profile-desc">
             - I use React/TypeScript for frontend, and Django/Python or Spring Boot/Java for backend.
           </p>
@@ -414,7 +414,7 @@ const HeroSection = () => {
                       className="location-back"
                       onClick={() => setPanelMode('list')}
                     >
-                      back
+                      Back
                     </button>
                   </div>
                 </div>
@@ -462,7 +462,7 @@ const HeroSection = () => {
 
       {panelMode === 'list' ? (
         <p style={{ color: 'var(--text-muted)', fontSize: '12px', marginTop: '5px' }}>
-          feel free to select one of my memories
+          Feel free to select one of my memories
         </p>
       ) : null}
     </section>

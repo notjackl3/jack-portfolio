@@ -261,7 +261,7 @@ const ProjectsSection = () => {
 
       {!areAllProjectImagesLoaded ? (
         <div className="projects-loading-hint" aria-live="polite">
-          poor internet connection? please wait for the images to load, you can explore other sections in the meantime and come back later
+          Poor internet connection? Please wait for the images to load. You can explore other sections in the meantime and come back later.
         </div>
       ) : null}
 

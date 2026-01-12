@@ -33,8 +33,8 @@ A clean, compact portfolio website built with React, featuring a light theme and
    - Copy the token
 
 3. **Configure Mapbox**:
-   - Open `src/components/HeroSection.jsx`
-   - Replace `'YOUR_MAPBOX_ACCESS_TOKEN'` with your actual token
+   - Create a `.env` file in the project root
+   - Add: `VITE_MAPBOX_ACCESS_TOKEN=your_token_here`
 
 4. **Start Development Server**:
    ```bash

@@ -16,6 +16,8 @@ const SkillsSection = () => {
 
       // Frameworks
       "Django",
+      "Node.js",
+      "Express.js",
       "Next.js",
       "React.js",
       "FastAPI",
@@ -26,8 +28,9 @@ const SkillsSection = () => {
 
       // Technologies
       "Git",
-      "Github",
+      "GitHub",
       "PostgreSQL",
+      "MongoDB",
       "AWS",
       "Google Cloud Platform",
       "Docker",
@@ -38,7 +41,7 @@ const SkillsSection = () => {
       // Coding Tools
       "VS Code",
       "IntelliJ",
-      "Pycharm",
+      "PyCharm",
       "Gemini CLI",
       "Cursor",
       "Claude",
