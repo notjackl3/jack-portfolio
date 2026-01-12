@@ -20,7 +20,8 @@ const ContactSection = () => {
           <p>
             Feel free to contact me at{' '}
             <a href="mailto:huuanducle@gmail.com">huuanducle@gmail.com</a> for work purposes,{' '}
-            <a href="mailto:jack.le@mail.utoronto.ca">jack.le@mail.utoronto.ca</a> for school purposes.
+            <a href="mailto:jack.le@mail.utoronto.ca">jack.le@mail.utoronto.ca</a> for school purposes,{' '}
+            <a href="mailto:jackl32482005@gmail.com">jackl32482005@gmail.com</a> for personal matters.
           </p>
 
           <div className="contact-methods">
