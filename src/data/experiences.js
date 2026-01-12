@@ -104,7 +104,7 @@ export const experiences = [
     description: "⚙️ Making sure technologies are accessible to all students"
   },
   {
-    id: 14,
+    id: 16,
     company: "UofT Blueprint",
     position: "Software Project Lead",
     type: "work",
@@ -112,7 +112,7 @@ export const experiences = [
     description: "🛠️ Leading a software team to create a management system for Toronto Rape Crisis Center"
   },
   {
-    id: 15,
+    id: 17,
     company: "University of Toronto",
     position: "Research Assistant",
     type: "work",
@@ -120,7 +120,7 @@ export const experiences = [
     description: "🔎 Working on CopilotLens, an AI tool for students"
   },
   {
-    id: 16,
+    id: 15,
     company: "GenAI Genesis",
     position: "Director of Operations",
     type: "volunteer",
@@ -128,7 +128,7 @@ export const experiences = [
     description: "🤖 Organizing Canada's largest AI hackathon"
   },
   {
-    id: 17,
+    id: 14,
     company: "UTMFA",
     position: "Tech Associate",
     type: "volunteer",
