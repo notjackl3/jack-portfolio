@@ -13,6 +13,8 @@ import resumeForMe from '../assets/resume-for-me.jpg';
 import paint from '../assets/paint.jpg';
 import lightUpTheShadow from '../assets/light-up-the-shadow.jpg';
 import catchIt from '../assets/catch-it.jpg';
+import vibeLearn from '../assets/vibe-learn.png';
+import skysync from '../assets/skysync.png';
 
 export const projects = [
   {
@@ -152,5 +154,24 @@ export const projects = [
     liveUrl: "https://catch-it-sigma.vercel.app/",
     image: catchIt,
     category: "personal"
+  },
+  {
+    id: 16,
+    title: "Vibe Learn",
+    description: "An event-driven VS Code extension that streams real-time code changes (10K+ lines/minute) for learning purposes",
+    technologies: ["Java", "Spring Boot", "Apache Kafka", "MongoDB", "Docker", "Grafana"],
+    githubUrl: "https://github.com/notjackl3/vibe-learn",
+    image: vibeLearn,
+    category: "personal"
+  },
+  {
+    id: 17,
+    title: "SkySync",
+    description: "SkySync lets airplanes to fly like birds, in formation, cutting fuel burn and CO2, analyzed using 1.6M+ flight records",
+    technologies: ["Python", "JavaScript", "Express.js", "Node.js", "React.js", "MongoDB"],
+    liveUrl: "https://devpost.com/software/skysync-wapxj0",
+    githubUrl: "https://github.com/shubhmgrg/DeltaHacks12",
+    image: skysync,
+    category: "hackathon"
   }
 ];
