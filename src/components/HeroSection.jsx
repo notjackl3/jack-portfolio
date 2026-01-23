@@ -373,6 +373,9 @@ const HeroSection = () => {
               <a className="resume-option" href="/jack-le-cloud-resume.pdf" target="_blank" rel="noopener noreferrer">
                 cloud
               </a>
+              <a className="resume-option" href="/jack-le-data-resume.pdf" target="_blank" rel="noopener noreferrer">
+                analyst
+              </a>
             </div>
           </div>
         </div>
