@@ -15,6 +15,8 @@ import lightUpTheShadow from '../assets/light-up-the-shadow.jpg';
 import catchIt from '../assets/catch-it.jpg';
 import vibeLearn from '../assets/vibe-learn.png';
 import skysync from '../assets/skysync.png';
+import bigBrother from '../assets/big-brother.png';
+import videoEditor from '../assets/video-editor.png';
 
 export const projects = [
   {
@@ -165,8 +167,27 @@ export const projects = [
     category: "personal"
   },
   {
+    id: 18,
+    title: "Big Bro | UofTHacks 13, Winner 🏆",
+    description: "A Chrome extension that guides you through websites using contextual awareness and natural language. It can click, type, highlight, and more!",
+    technologies: ["TypeScript/React.js", "Python/FastAPI", "MongoDB", "Neo4j", "OpenAI", "ElevenLabs", "Voyage AI"],
+    githubUrl: "https://github.com/notjackl3/big-brother",
+    liveUrl: "https://devpost.com/software/big-bro-tsv0i9",
+    image: bigBrother,
+    category: "hackathon"
+  },
+  {
+    id: 19,
+    title: "Video Editor | HackAI x Stan Hackathon",
+    description: "A browser-based video editor with AI-powered music generation, automatic clip cutting, and various editing features",
+    technologies: ["TypeScript/React.js", "Python/FastAPI", "FFmpeg", "OpenAI"],
+    githubUrl: "https://github.com/notjackl3/stan-hackathon",
+    image: videoEditor,
+    category: "hackathon"
+  },
+  {
     id: 17,
-    title: "SkySync",
+    title: "SkySync | DeltaHacks 12",
     description: "SkySync lets airplanes to fly like birds, in formation, cutting fuel burn and CO2, analyzed using 1.6M+ flight records",
     technologies: ["Python", "JavaScript", "Express.js", "Node.js", "React.js", "MongoDB"],
     liveUrl: "https://devpost.com/software/skysync-wapxj0",
