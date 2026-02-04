@@ -17,8 +17,19 @@ import vibeLearn from '../assets/vibe-learn.png';
 import skysync from '../assets/skysync.png';
 import bigBrother from '../assets/big-brother.png';
 import videoEditor from '../assets/video-editor.png';
+import bananaBrownies from '../assets/banana-brownies.png';
 
 export const projects = [
+  {
+    id: 20,
+    title: "Banana Brownies | UTRA Hacks, Winner 🏆",
+    description: "An interactive 3D, 1:1 replica showcase of our robot. Voice commands and natural language queries are used to highlight robot components. Users can drive the robot too! (with WASD/B/Shift)",
+    technologies: ["TypeScript/React.js", "Three.js", "Node.js/Express", "Arduino", "C++", "ElevenLabs", "Gemini"],
+    githubUrl: "https://github.com/arxvpatel/UTRA-Hacks",
+    liveUrl: "https://yellow-brownies.vercel.app/",
+    image: bananaBrownies,
+    category: "hackathon"
+  },
   {
     id: 1,
     title: "Street Roamer S3000 | WallyHacks, Winner 🏆",
