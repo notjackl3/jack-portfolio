@@ -333,7 +333,7 @@ const HeroSection = () => {
           <h1 className="profile-name">
             <span style={{ color: 'var(--primary-accent)' }}>Hey, I'm Jack Le</span>
           </h1>
-          <h2 className="profile-role">I do fullstack development ☺️</h2>
+          <h2 className="profile-role">I am a fullstack engineer ☺️</h2>
           <p className="profile-desc">
             - I use React/TypeScript for frontend, and Django/Python or Spring Boot/Java for backend.
           </p>

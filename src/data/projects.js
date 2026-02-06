@@ -179,7 +179,7 @@ export const projects = [
   },
   {
     id: 18,
-    title: "Big Bro | UofTHacks 13, Winner 🏆",
+    title: "Big Brother | UofTHacks 13, Winner 🏆",
     description: "A Chrome extension that guides you through websites using contextual awareness and natural language. It can click, type, highlight, and more!",
     technologies: ["TypeScript/React.js", "Python/FastAPI", "MongoDB", "Neo4j", "OpenAI", "ElevenLabs", "Voyage AI"],
     githubUrl: "https://github.com/notjackl3/big-brother",
