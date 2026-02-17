@@ -106,7 +106,7 @@ export const experiences = [
   {
     id: 16,
     company: "UofT Blueprint",
-    position: "Software Project Lead",
+    position: "Software Tech Lead",
     type: "work",
     duration: "August 2025 - Present",
     description: "🛠️ Leading a software team to create a management system for Toronto Rape Crisis Center"
@@ -141,7 +141,7 @@ export const experiences = [
     position: "Founder",
     type: "volunteer",
     duration: "December 2025 - Present",
-    description: "🌟 Creating Something Out Of Nothing, connecting young talents with companies to work on real projects"
+    description: "🌟 Creating Something Out Of Nothing, bridging student talents with top-notch companies"
   },
   {
     id: 19,
@@ -150,5 +150,21 @@ export const experiences = [
     type: "work",
     duration: "January 2026 - Present",
     description: "💬 Building a live-chat platform"
+  },
+  {
+    id: 20,
+    company: "Stealth Startup",
+    position: "Software Engineer Intern",
+    type: "work",
+    duration: "January 2026 - Present",
+    description: "🛍️ Developing a platform for small businesses"
+  },
+  {
+    id: 21,
+    company: "UTMIST",
+    position: "Infrastructure Engineer",
+    type: "work",
+    duration: "February 2026 - Present",
+    description: "🚧 Handling VM infrastructures for LLMs"
   }
 ];
