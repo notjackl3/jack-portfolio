@@ -364,7 +364,7 @@ const HeroSection = () => {
               <a className="resume-option" href="/jack-le-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">
                 fullstack
               </a>
-              <a className="resume-option" href="/jack-le-backend-resume.pdf" target="_blank" rel="noopener noreferrer">
+              {/* <a className="resume-option" href="/jack-le-backend-resume.pdf" target="_blank" rel="noopener noreferrer">
                 backend
               </a>
               <a className="resume-option" href="/jack-le-mobile-resume.pdf" target="_blank" rel="noopener noreferrer">
@@ -375,7 +375,7 @@ const HeroSection = () => {
               </a>
               <a className="resume-option" href="/jack-le-data-resume.pdf" target="_blank" rel="noopener noreferrer">
                 analyst
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
