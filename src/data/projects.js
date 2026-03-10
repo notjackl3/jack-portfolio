@@ -19,8 +19,39 @@ import bigBrother from '../assets/big-brother.png';
 import videoEditor from '../assets/video-editor.png';
 import bananaBrownies from '../assets/banana-brownies.png';
 import kingsview from '../assets/kingsview.png';
+import eroute from '../assets/eroute.png';
+import handTiles from '../assets/hand-tiles.png';
+import startooth from '../assets/startooth.png';
 
 export const projects = [
+  {
+    id: 22,
+    title: "StarTooth | Dental Hackathon, Winner 🏆",
+    description: "A dual-view web app for patients and dentists to visualize 3D jaw models generated from CT scans",
+    technologies: ["TypeScript/React.js", "Three.js", "Node.js", "OpenAI"],
+    githubUrl: "https://github.com/notjackl3/smilehacks",
+    image: startooth,
+    category: "hackathon"
+  },
+  {
+    id: 24,
+    title: "ERoute | Hack Canada, Winner 🏆",
+    description: "A smart healthcare routing platform with AI-powered triage that classifies patient severity, then find hospitals by live traffic, ER congestion and wait times",
+    technologies: ["TypeScript/Next.js", "Three.js", "Mapbox", "MongoDB", "OpenAI"],
+    githubUrl: "https://github.com/phintruong/ERoute",
+    liveUrl: "https://eroute.vercel.app/",
+    image: eroute,
+    category: "hackathon"
+  },
+  {
+    id: 23,
+    title: "Hands Tiles | DeerHacks",
+    description: "Piano Tiles rhythm game controlled entirely by hand gestures via webcam with 3D spatial audio",
+    technologies: ["TypeScript/React.js", "Node.js/Express", "MediaPipe", "Web Audio API", "SQLite"],
+    githubUrl: "https://github.com/notjackl3/table-tiles",
+    image: handTiles,
+    category: "personal"
+  },
   {
     id: 21,
     title: "KingsView | QHacks, Winner 🏆",
