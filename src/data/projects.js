@@ -22,11 +22,32 @@ import kingsview from '../assets/kingsview.png';
 import eroute from '../assets/eroute.png';
 import handTiles from '../assets/hand-tiles.png';
 import startooth from '../assets/startooth.png';
+import chucTet from '../assets/chuc-tet.png';
+import omni from '../assets/omni.png';
 
 export const projects = [
   {
+    id: 26,
+    title: "Omni | Hack The Future, 1st place 🥇",
+    description: "An AI supply chain agent that monitors disruptions, assesses risk, and proposes mitigation strategies for mid-market manufacturers",
+    technologies: ["TypeScript/React.js", "Tailwind", "Python/FastAPI", "Google ADK", "Gemini", "Supabase"],
+    githubUrl: "https://github.com/phuonganhdangamy/htf-agent-zero",
+    liveUrl: "https://www.canva.com/design/DAHD1kKh8dc/TTAXYQWqQtN1BwgM-j90uw/edit?utm_content=DAHD1kKh8dc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton",
+    image: omni,
+    category: "hackathon"
+  },
+  {
     id: 22,
-    title: "StarTooth | Dental Hackathon, Winner 🏆",
+    title: "Chúc Tết",
+    description: "A Lunar New Year app for my family to receive lì xì envelopes with my messages and send photos back via the photobooth",
+    technologies: ["TypeScript/React.js", "Vite", "Cloudflare"],
+    githubUrl: "https://github.com/notjackl3/chuc-tet",
+    image: chucTet,
+    category: "personal"
+  },
+  {
+    id: 23,
+    title: "StarTooth | Dental Hackathon, 3rd Place 🥉",
     description: "A dual-view web app for patients and dentists to visualize 3D jaw models generated from CT scans",
     technologies: ["TypeScript/React.js", "Three.js", "Node.js", "OpenAI"],
     githubUrl: "https://github.com/notjackl3/smilehacks",
@@ -34,7 +55,7 @@ export const projects = [
     category: "hackathon"
   },
   {
-    id: 24,
+    id: 25,
     title: "ERoute | Hack Canada, Winner 🏆",
     description: "A smart healthcare routing platform with AI-powered triage that classifies patient severity, then find hospitals by live traffic, ER congestion and wait times",
     technologies: ["TypeScript/Next.js", "Three.js", "Mapbox", "MongoDB", "OpenAI"],
@@ -44,7 +65,7 @@ export const projects = [
     category: "hackathon"
   },
   {
-    id: 23,
+    id: 24,
     title: "Hands Tiles | DeerHacks",
     description: "Piano Tiles rhythm game controlled entirely by hand gestures via webcam with 3D spatial audio",
     technologies: ["TypeScript/React.js", "Node.js/Express", "MediaPipe", "Web Audio API", "SQLite"],
