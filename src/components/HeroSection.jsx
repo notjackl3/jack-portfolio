@@ -335,7 +335,7 @@ const HeroSection = () => {
           </h1>
           <h2 className="profile-role">I am a fullstack engineer ☺️</h2>
           <p className="profile-desc">
-            - I am currently on a hackathon streak, 12 hackathons in a row this year, and I won 6.
+            - I am currently on a hackathon streak, 13 hackathons in a row this year, and I won 7.
           </p>
           <div className="profile-contact">
             <button

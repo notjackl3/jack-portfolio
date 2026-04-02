@@ -24,8 +24,39 @@ import handTiles from '../assets/hand-tiles.png';
 import startooth from '../assets/startooth.png';
 import chucTet from '../assets/chuc-tet.png';
 import omni from '../assets/omni.png';
+import soon from '../assets/soon.png';
+import vibe from '../assets/vibe.png';
+import its2016 from '../assets/2016.png';
 
 export const projects = [
+  {
+    id: 30,
+    title: "SOON",
+    description: "A website I built for SOON hackathon which I founded. We bring 40 hackers to a private house to build projects for companies in a weekend.",
+    technologies: ["TypeScript/React.js", "Vite"],
+    liveUrl: "https://soonhackathon.ca/",
+    image: soon,
+    category: "personal"
+  },
+  {
+    id: 29,
+    title: "It's Still 2016 | Stupid Ideas Hackathon, Winner 🏆",
+    description: "A fake 2016 internet inside a fake Chrome browser with pixel-accurate recreations of Google, YouTube, Twitter, Vine, Spotify, and 20+ easter eggs",
+    technologies: ["Claude", "Codex", "OpenAI"],
+    githubUrl: "https://devpost.com/software/2016-browser",
+    liveUrl: "https://stupid-hackathon-gamma.vercel.app/",
+    image: its2016,
+    category: "hackathon"
+  },
+  {
+    id: 28,
+    title: "VIBE | Hack The Globe",
+    description: "An AI interview platform for deaf and hard-of-hearing candidates, featuring real-time sign-to-speech , live transcription, and answers builder",
+    technologies: ["Next.js", "Socket.IO", "MediaPipe", "Deepgram", "ElevenLabs", "OpenAI"],
+    liveUrl: "https://vibe-lac-mu.vercel.app",
+    image: vibe,
+    category: "hackathon"
+  },
   {
     id: 26,
     title: "Omni | Hack The Future, 1st place 🥇",
