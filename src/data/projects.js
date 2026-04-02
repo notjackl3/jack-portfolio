@@ -32,7 +32,7 @@ export const projects = [
   {
     id: 30,
     title: "SOON",
-    description: "A website I built for SOON hackathon which I founded. We bring 40 hackers to a private house to build projects for companies in a weekend.",
+    description: "A landing page and portal I built for SOON hackathon (which I founded). We bring 40 hackers to a private house to build projects for companies in a weekend.",
     technologies: ["TypeScript/React.js", "Vite"],
     liveUrl: "https://soonhackathon.ca/",
     image: soon,
