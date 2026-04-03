@@ -5,6 +5,7 @@ import ProjectsSection from './components/ProjectsSection';
 import ExperiencesSection from './components/ExperiencesSection';
 import ContactSection from './components/ContactSection';
 import SkillsSection from './components/SkillsSection';
+import HackathonsSection from './components/HackathonsSection';
 
 function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -21,6 +22,8 @@ function App() {
         return <ProjectsSection />;
       case 'experiences':
         return <ExperiencesSection />;
+      case 'hackathons':
+        return <HackathonsSection />;
       case 'contact':
         return <ContactSection />;
       case 'skills':
@@ -33,7 +36,7 @@ function App() {
   return (
     <div className="App">
       <Navbar onNavigate={switchTab} activeTab={activeTab} />
-      <main className="main-content">
+      <main className={`main-content${activeTab === 'hackathons' ? ' main-content--full' : ''}`}>
         {renderActiveTab()}
       </main>
     </div>

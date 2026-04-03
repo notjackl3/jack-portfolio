@@ -8,6 +8,7 @@ const Navbar = ({ onNavigate, activeTab }) => {
     { id: 'home', label: 'Home' },
     { id: 'projects', label: 'Projects' },
     { id: 'experiences', label: 'Experiences' },
+    { id: 'hackathons', label: 'Hackathons' },
     { id: 'skills', label: 'Skills' },
     { id: 'contact', label: 'Contact' }
   ];
@@ -44,7 +45,7 @@ const Navbar = ({ onNavigate, activeTab }) => {
   }, []);
 
   return (
-    <nav className={`navbar ${isMenuOpen ? 'navbar--menu-open' : ''}`} ref={navRef}>
+    <nav className={`navbar ${isMenuOpen ? 'navbar--menu-open' : ''} ${activeTab === 'hackathons' ? 'navbar--dark' : ''}`} ref={navRef}>
       <div className="nav-container">
         <button
           type="button"
