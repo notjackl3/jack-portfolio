@@ -8,7 +8,7 @@ const Navbar = ({ onNavigate, activeTab }) => {
     { id: 'home', label: 'Home' },
     { id: 'projects', label: 'Projects' },
     { id: 'experiences', label: 'Experiences' },
-    { id: 'hackathons', label: 'Hackathons' },
+    { id: 'hackathons', label: 'The Streak' },
     { id: 'skills', label: 'Skills' },
     { id: 'contact', label: 'Contact' }
   ];

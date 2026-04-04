@@ -26,8 +26,9 @@
 
 .hackathons-bg-number {
   position: absolute;
-  top: 0;
+  top: 50%;
   left: 3vw;
+  transform: translateY(-50%);
   font-size: 48vw;
   font-weight: 900;
   line-height: 0.82;
@@ -103,7 +104,7 @@
   margin: 0;
 }
 
-/* ── Slide — positioned left ── */
+/* ── Slide — centered vertically ── */
 
 .hackathon-slide {
   position: absolute;
@@ -113,13 +114,32 @@
   width: 58vw;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.45s ease;
+  transition: opacity 0.45s ease, transform 0.45s ease;
   z-index: 1;
+  will-change: transform, opacity;
 }
 
 .hackathon-slide.active {
   opacity: 1;
   pointer-events: auto;
+  transform: translateY(-50%);
+}
+
+/* ── Slide transition — rise (direction-aware) ── */
+
+.hackathons-viewport[data-dir="next"] .hackathon-slide:not(.active):not(.exiting) {
+  transform: translateY(calc(-50% + 55px));
+}
+.hackathons-viewport[data-dir="next"] .hackathon-slide.exiting {
+  transform: translateY(calc(-50% - 55px));
+  opacity: 0;
+}
+.hackathons-viewport[data-dir="prev"] .hackathon-slide:not(.active):not(.exiting) {
+  transform: translateY(calc(-50% - 55px));
+}
+.hackathons-viewport[data-dir="prev"] .hackathon-slide.exiting {
+  transform: translateY(calc(-50% + 55px));
+  opacity: 0;
 }
 
 /* ── Slide headlight (shines in when focused) ── */
@@ -145,24 +165,8 @@
 /* ── Idle pulse animation ── */
 
 @keyframes hackathon-idle-pulse {
-  0%, 100% {
-    outline-color: rgba(255, 255, 255, 0.06);
-    box-shadow:
-      inset 0 1.5px 0 rgba(255, 255, 255, 0.12),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-      0 8px 32px rgba(0, 0, 0, 0.60),
-      0 2px 6px rgba(0, 0, 0, 0.30),
-      0 0 0 0 rgba(255, 255, 255, 0);
-  }
-  50% {
-    outline-color: rgba(255, 255, 255, 0.30);
-    box-shadow:
-      inset 0 1.5px 0 rgba(255, 255, 255, 0.12),
-      inset 0 -1px 0 rgba(255, 255, 255, 0.04),
-      0 8px 32px rgba(0, 0, 0, 0.60),
-      0 2px 6px rgba(0, 0, 0, 0.30),
-      0 0 18px 2px rgba(255, 255, 255, 0.05);
-  }
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.85; }
 }
 
 /* ── Glass text card ── */
@@ -175,35 +179,25 @@
   background: rgba(14, 14, 18, 0.88);
   backdrop-filter: blur(12px) saturate(120%);
   -webkit-backdrop-filter: blur(12px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px dashed rgba(255, 255, 255, 0.55);
   box-shadow:
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
     0 8px 32px rgba(0, 0, 0, 0.60),
     0 2px 6px rgba(0, 0, 0, 0.30);
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,0.15) transparent;
   cursor: pointer;
-  opacity: 0.45;
-  outline: 2px dashed transparent;
-  outline-offset: 4px;
-  transition: opacity 0.3s ease, box-shadow 0.3s ease;
-  animation: hackathon-idle-pulse 2.8s ease-in-out infinite;
-}
-
-.hackathon-slide-content:hover {
-  outline-color: rgba(255, 255, 255, 0.22);
+  transition: opacity 0.3s ease, border 0.25s ease, box-shadow 0.3s ease;
+  animation: hackathon-idle-pulse 1.2s ease-in-out infinite;
 }
 
 .hackathon-slide-content.focused {
   opacity: 1;
-  outline-color: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.40);
   cursor: auto;
   animation: none;
   box-shadow:
     inset 0 80px 60px -30px rgba(255, 255, 255, 0.06),
     inset 0 1.5px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.04),
     0 8px 32px rgba(0, 0, 0, 0.60),
     0 2px 6px rgba(0, 0, 0, 0.30);
 }
@@ -252,6 +246,10 @@
   margin: 0;
 }
 
+.hackathon-slide-content .hackathon-highlight + .hackathon-highlight {
+  margin-top: 1em;
+}
+
 /* ── Cursor tip ── */
 
 .hackathon-cursor-tip {
@@ -281,9 +279,9 @@
 /* ── Images inside the card — masonry columns ── */
 
 .hackathon-slide-images {
-  columns: 2;
+  columns: 3;
   column-gap: 6px;
-  margin-top: 16px;
+  margin-top: 2em;
 }
 
 .hackathon-slide-image {
@@ -368,6 +366,7 @@
   background: rgba(255, 255, 255, 0.90);
   transform: scale(1.4);
 }
+
 
 /* ── Responsive ── */
 

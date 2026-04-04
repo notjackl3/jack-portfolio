@@ -15,6 +15,7 @@ const HackathonsSection = () => {
   const isTransitioning = useRef(false);
   const boxFocused      = useRef(false);
   const wheelAccum      = useRef(0);
+  const dirRef          = useRef('next');
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
@@ -66,11 +67,32 @@ const HackathonsSection = () => {
   const goTo = (index) => {
     const clamped = Math.max(-1, Math.min(hackathons.length - 1, index));
     if (clamped === activeIndex.current) return;
+
+    const dir = clamped > activeIndex.current ? 'next' : 'prev';
+    dirRef.current = dir;
+
+    const vp = viewportRef.current;
+    if (vp) {
+      vp.setAttribute('data-dir', dir);
+      const currentSlide = vp.querySelector('.hackathon-slide.active');
+      if (currentSlide) currentSlide.classList.add('exiting');
+    }
+
     activeIndex.current = clamped;
     isTransitioning.current = true;
     setBoxFocus(false);
     updateSlide(clamped);
-    setTimeout(() => { isTransitioning.current = false; }, TRANSITION_MS);
+
+    if (clamped >= 0 && window.matchMedia('(max-width: 480px)').matches) {
+      const slides = vp?.querySelectorAll('.hackathon-slide');
+      const content = slides?.[clamped]?.querySelector('.hackathon-slide-content');
+      if (content) setBoxFocus(true, content);
+    }
+
+    setTimeout(() => {
+      isTransitioning.current = false;
+      vp?.querySelectorAll('.hackathon-slide.exiting').forEach(el => el.classList.remove('exiting'));
+    }, TRANSITION_MS + 100);
   };
 
   useEffect(() => {
@@ -109,7 +131,11 @@ const HackathonsSection = () => {
       tip.style.left = `${e.clientX - rect.left}px`;
       tip.style.top  = `${e.clientY - rect.top}px`;
       const inBox = e.target.closest('.hackathon-slide-content');
-      tip.classList.toggle('visible', !!inBox && !boxFocused.current && activeIndex.current >= 0);
+      const showClickToView = !!inBox && !boxFocused.current && activeIndex.current >= 0;
+      const showClickToLeave = !inBox && boxFocused.current && activeIndex.current >= 0;
+      if (showClickToView) tip.textContent = 'click to view';
+      else if (showClickToLeave) tip.textContent = 'click to leave';
+      tip.classList.toggle('visible', showClickToView || showClickToLeave);
     };
 
     const onMouseLeave = () => {
@@ -139,15 +165,21 @@ const HackathonsSection = () => {
   return (
     <section id="hackathons" className="section tab-content hackathons-section">
       <div className="hackathons-sticky">
-        <div className="hackathons-bg-number" ref={bgNumberRef} aria-hidden="true">1</div>
 
-        <div className="hackathons-viewport" ref={viewportRef}>
+        <div className="hackathons-viewport anim-rise" ref={viewportRef}>
+
+          {/* Big background number — inside viewport so it shares the same coordinate space */}
+          <div className="hackathons-bg-number" ref={bgNumberRef} aria-hidden="true">1</div>
 
           {/* Intro screen */}
           <div className="hackathon-intro">
             <div className="hackathon-intro-body">
               <p className="hackathon-intro-quote">
-                "Starting 2026, I went to 14 hackathons in a row, 12 weeks straight. Here is my story."
+                "Starting 2026, I went to 15 hackathons in a row, 12 weeks straight.
+                <br />
+                Competed in 12, judged 1, organized 1, founded 1.
+                <br />
+                Here is my story..."
               </p>
               <p className="hackathon-intro-hint">scroll to begin ↓</p>
             </div>
@@ -164,7 +196,10 @@ const HackathonsSection = () => {
                 <div className="hackathon-slide-content">
                   <h3 className="hackathon-name">{h.name}</h3>
                   {h.award && <div className="hackathon-award">🏆 {h.award}</div>}
-                  <p className="hackathon-highlight">{h.highlight}</p>
+                  {Array.isArray(h.highlight)
+                    ? h.highlight.map((para, pi) => <p key={pi} className="hackathon-highlight">{para}</p>)
+                    : <p className="hackathon-highlight">{h.highlight}</p>
+                  }
                   {imgs.length > 0 && (
                     <div className="hackathon-slide-images">
                       {imgs.map((src, j) => (
@@ -180,7 +215,7 @@ const HackathonsSection = () => {
           })}
         </div>
 
-        {/* Nav row: arrow · dots · arrow */}
+        {/* Nav row: arrow · dots · arrow · anim picker */}
         <div className="hackathons-nav-row">
           <button
             className="hackathon-nav-arrow"
