@@ -3,6 +3,18 @@
 .main-content.main-content--full {
   max-width: none;
   margin-bottom: 0;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .main-content.main-content--full {
+    padding: 0;
+    margin: 0;
+  }
+  .App:has(.hackathons-section),
+  body:has(.hackathons-section) {
+    background: #0a0a0c;
+  }
 }
 
 .hackathons-section {
@@ -496,19 +508,200 @@
 .hackathon-dot-nav:hover  { background: rgba(255,255,255,0.55); transform: scale(1.3); }
 .hackathon-dot-nav.active { background: rgba(255,255,255,0.90); transform: scale(1.4); }
 
-/* ── Responsive ── */
+/* ── Mobile-only elements: hidden on desktop ── */
+
+.hackathon-mobile-name,
+.hackathon-mobile-hint,
+.hackathon-mobile-return,
+.hackathon-mobile-quote { display: none; }
+
+/* ── Mobile redesign (≤ 768px) ── */
 
 @media (max-width: 768px) {
-  .hackathon-slide { right: 3vw; width: 72vw; }
-}
 
-@media (max-width: 480px) {
-  .hackathon-slide  { right: 4vw; left: 4vw; width: auto; }
-  .hackathon-wheel-wrap { display: none; }
+  /* ── Clock: centered, fully visible ── */
+  .hackathon-wheel-wrap {
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    width:  min(76vw, 48vh);
+    height: min(76vw, 48vh);
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.4s ease;
+  }
+
+  /* hide clock when card is open */
+  .hackathons-viewport.mobile-card-view .hackathon-wheel-wrap {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Big number: centered over the clock ── */
+  .hackathons-bg-number {
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    font-size: 30vw;
+    transition: opacity 0.4s ease;
+    z-index: 1;
+  }
+
+  /* ── Hide desktop-only intro ── */
+  .hackathon-intro { display: none; }
+
+  /* ── Quote above clock ── */
+  .hackathon-mobile-quote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: calc(40% - min(76vw, 48vh) / 2 - 10px);
+    padding: 50px 8vw 10px;
+    text-align: center;
+    font-size: clamp(0.72rem, 2.2vw, 0.9rem);
+    font-style: italic;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.60);
+    line-height: 1.65;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    margin: 0;
+  }
+
+  .hackathons-viewport.mobile-card-view .hackathon-mobile-quote {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Name below clock ── */
+  .hackathon-mobile-name {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: calc(40% + min(76vw, 48vh) / 2 + 22px);
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.80);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+  }
+
+  /* ── Drag hint ── */
+  .hackathon-mobile-hint {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: calc(40% + min(76vw, 48vh) / 2 + 56px);
+    transform: translateX(-50%);
+    text-align: center;
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.22);
+    white-space: nowrap;
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+    margin: 0;
+  }
+
+  .hackathons-viewport.mobile-card-view .hackathon-mobile-name,
+  .hackathons-viewport.mobile-card-view .hackathon-mobile-hint {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* ── Return button ── */
+  .hackathon-mobile-return {
+    display: block;
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .hackathons-viewport.mobile-card-view .hackathon-mobile-return {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Use dynamic viewport height so browser chrome doesn't cut the card ── */
+  .hackathons-section,
+  .hackathons-sticky {
+    height: calc(100dvh - 80px);
+  }
+
+  /* ── Cards: full-width, below return button ── */
+  .hackathon-slide {
+    right: 5vw;
+    left: 5vw;
+    width: auto;
+    top: 54px;
+    bottom: 0;
+    height: auto;
+    transform: none;
+  }
+
   .hackathon-slide::before { display: none; }
-  .hackathon-slide-content { padding: 14px 16px; }
+
+  .hackathon-slide-content {
+    padding: 16px 18px;
+    padding-bottom: 28px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .hackathon-slide-content .hackathon-name      { font-size: 1.65rem; }
-  .hackathon-slide-content .hackathon-highlight { font-size: 0.88rem; }
+  .hackathon-slide-content .hackathon-highlight { font-size: 0.9rem; }
   .hackathon-slide-image  { filter: brightness(1) saturate(1); }
   .hackathon-cursor-tip   { display: none; }
+
+  /* ── Mobile card animations ── */
+  @keyframes card-emerge-mobile {
+    from { opacity: 0; transform: scale(0.94); filter: blur(4px); }
+    to   { opacity: 1; transform: scale(1);    filter: blur(0);   }
+  }
+  @keyframes card-recede-mobile {
+    from { opacity: 1; transform: scale(1);    filter: blur(0);   }
+    to   { opacity: 0; transform: scale(0.94); filter: blur(4px); }
+  }
+
+  .hackathon-slide.card-emerge {
+    animation: card-emerge-mobile 320ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  }
+  .hackathon-slide.card-recede {
+    animation: card-recede-mobile 200ms ease-in forwards;
+  }
+
+  /* ── Wheel labels: hidden on mobile ── */
+  .hackathon-wheel-label { display: none; }
+
+  /* ── Nav row: hide on mobile (replaced by return button) ── */
+  .hackathons-nav-row { display: none; }
 }
