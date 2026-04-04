@@ -1,26 +1,37 @@
 import { useEffect, useRef } from 'react';
 import { hackathons } from '../data/hackathons';
 
-const WHEEL_THRESHOLD = 60;
-const TRANSITION_MS   = 500;
+const WHEEL_THRESHOLD = 55;
+const RECEDE_MS       = 160;
+const EMERGE_MS       = 310;
+const COMMIT_DELAY    = 380;   // ms after scroll stops → show card
+const SLOT_DEG        = 360 / hackathons.length;
+
+const wheelAngle = (n) => 270 - n * SLOT_DEG;
 
 const HackathonsSection = () => {
-  const bgNumberRef     = useRef(null);
-  const viewportRef     = useRef(null);
-  const dotsRef         = useRef(null);
-  const prevBtnRef      = useRef(null);
-  const nextBtnRef      = useRef(null);
-  const cursorTipRef    = useRef(null);
-  const activeIndex     = useRef(-1);
-  const isTransitioning = useRef(false);
-  const boxFocused      = useRef(false);
-  const wheelAccum      = useRef(0);
-  const dirRef          = useRef('next');
+  const bgNumberRef    = useRef(null);
+  const viewportRef    = useRef(null);
+  const wheelRef       = useRef(null);
+  const wheelWrapRef   = useRef(null);
+  const dotsRef        = useRef(null);
+  const prevBtnRef     = useRef(null);
+  const nextBtnRef     = useRef(null);
+  const cursorTipRef   = useRef(null);
+
+  const activeIndex    = useRef(-1);   // card currently on screen
+  const previewIndex   = useRef(-1);   // wheel position during scroll
+  const isScrolling    = useRef(false);
+  const boxFocused     = useRef(false);
+  const wheelAccum     = useRef(0);
+  const commitTimer    = useRef(null);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = ''; };
   }, []);
+
+  /* ── helpers ── */
 
   const setBoxFocus = (focused, contentEl = null) => {
     boxFocused.current = focused;
@@ -30,89 +41,141 @@ const HackathonsSection = () => {
     if (focused) cursorTipRef.current?.classList.remove('visible');
   };
 
-  const updateArrows = (index) => {
-    if (prevBtnRef.current) prevBtnRef.current.disabled = index <= -1;
-    if (nextBtnRef.current) nextBtnRef.current.disabled = index >= hackathons.length - 1;
+  const updateArrows = (idx) => {
+    if (prevBtnRef.current) prevBtnRef.current.disabled = idx <= -1;
+    if (nextBtnRef.current) nextBtnRef.current.disabled = idx >= hackathons.length - 1;
   };
 
-  const updateSlide = (index) => {
-    const viewport = viewportRef.current;
-    const bgNum    = bgNumberRef.current;
-    const dots     = dotsRef.current;
-    const isIntro  = index < 0;
+  /* Spin the wheel + update number — no card change */
+  const spinTo = (rawIndex) => {
+    const idx     = Math.max(-1, Math.min(hackathons.length - 1, rawIndex));
+    const isIntro = idx < 0;
+    previewIndex.current = idx;
 
-    if (bgNum) {
-      bgNum.style.opacity = isIntro ? '0' : '1';
-      if (!isIntro) bgNum.textContent = index + 1;
+    if (wheelRef.current && !isIntro) {
+      wheelRef.current.style.transform = `rotate(${wheelAngle(idx)}deg)`;
+    }
+    wheelWrapRef.current?.classList.toggle('visible', !isIntro);
+
+    if (bgNumberRef.current) {
+      bgNumberRef.current.style.opacity = isIntro ? '0' : '1';
+      if (!isIntro) bgNumberRef.current.textContent = idx + 1;
     }
 
-    const intro = viewport?.querySelector('.hackathon-intro');
-    if (intro) intro.classList.toggle('active', isIntro);
-
-    if (viewport) {
-      viewport.querySelectorAll('.hackathon-slide').forEach((slide, i) => {
-        slide.classList.toggle('active', i === index);
-      });
-    }
-
-    if (dots) {
-      dots.querySelectorAll('.hackathon-dot-nav').forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-      });
-    }
-
-    updateArrows(index);
+    dotsRef.current?.querySelectorAll('.hackathon-dot-nav').forEach((dot, i) => {
+      dot.classList.toggle('active', i === idx);
+    });
+    updateArrows(idx);
   };
 
-  const goTo = (index) => {
-    const clamped = Math.max(-1, Math.min(hackathons.length - 1, index));
-    if (clamped === activeIndex.current) return;
-
-    const dir = clamped > activeIndex.current ? 'next' : 'prev';
-    dirRef.current = dir;
-
-    const vp = viewportRef.current;
-    if (vp) {
-      vp.setAttribute('data-dir', dir);
-      const currentSlide = vp.querySelector('.hackathon-slide.active');
-      if (currentSlide) currentSlide.classList.add('exiting');
+  /* Remove whatever card is visible */
+  const recedeActiveCard = (cb) => {
+    const vp  = viewportRef.current;
+    const cur = vp?.querySelector('.hackathon-slide.active');
+    if (cur) {
+      cur.classList.add('card-recede');
+      setTimeout(() => {
+        cur.classList.remove('active', 'card-recede');
+        cb?.();
+      }, RECEDE_MS);
+    } else {
+      cb?.();
     }
-
-    activeIndex.current = clamped;
-    isTransitioning.current = true;
-    setBoxFocus(false);
-    updateSlide(clamped);
-
-    if (clamped >= 0 && window.matchMedia('(max-width: 480px)').matches) {
-      const slides = vp?.querySelectorAll('.hackathon-slide');
-      const content = slides?.[clamped]?.querySelector('.hackathon-slide-content');
-      if (content) setBoxFocus(true, content);
-    }
-
-    setTimeout(() => {
-      isTransitioning.current = false;
-      wheelAccum.current = 0;
-      vp?.querySelectorAll('.hackathon-slide.exiting').forEach(el => el.classList.remove('exiting'));
-    }, TRANSITION_MS + 100);
   };
+
+  /* Show card for previewIndex — called when scroll stops */
+  const commitCard = () => {
+    isScrolling.current = false;
+    const vp  = viewportRef.current;
+    const idx = previewIndex.current;
+
+    if (idx < 0) {
+      // Back to intro
+      vp?.querySelector('.hackathon-intro')?.classList.add('active');
+      activeIndex.current = -1;
+      return;
+    }
+
+    // Deactivate all, activate target
+    vp?.querySelectorAll('.hackathon-slide').forEach((s, i) => {
+      s.classList.toggle('active', i === idx);
+    });
+    const newSlide = vp?.querySelectorAll('.hackathon-slide')[idx];
+    if (newSlide) {
+      newSlide.classList.add('card-emerge');
+      setTimeout(() => newSlide.classList.remove('card-emerge'), EMERGE_MS + 30);
+    }
+    activeIndex.current = idx;
+  };
+
+  /* Nav arrows / dots — immediate spin + card */
+  const goTo = (rawIndex) => {
+    const idx = Math.max(-1, Math.min(hackathons.length - 1, rawIndex));
+    if (idx === activeIndex.current && !isScrolling.current) return;
+
+    clearTimeout(commitTimer.current);
+    viewportRef.current?.querySelector('.hackathon-intro')?.classList.remove('active');
+
+    spinTo(idx);
+
+    recedeActiveCard(() => {
+      isScrolling.current = false;
+      commitCard();
+    });
+  };
+
+  /* ── event wiring ── */
 
   useEffect(() => {
+    const vp = viewportRef.current;
+    if (!vp) return;
+
     const onWheel = (e) => {
       const inBox = e.target.closest('.hackathon-slide-content');
 
-      // If box is focused and cursor is inside it — let it scroll naturally
+      // focused + inside box → natural scroll
       if (boxFocused.current && inBox) return;
 
-      // If box is focused but cursor drifted outside — deselect and navigate
-      if (boxFocused.current && !inBox) setBoxFocus(false);
+      // focused + outside box → unfocus only, no nav
+      if (boxFocused.current && !inBox) {
+        setBoxFocus(false);
+        e.preventDefault();
+        return;
+      }
 
       e.preventDefault();
-      if (isTransitioning.current) return;
+
+      /* ── enter scroll mode ── */
+      if (!isScrolling.current) {
+        isScrolling.current = true;
+        previewIndex.current = activeIndex.current;
+
+        // recede card immediately
+        const cur = vp.querySelector('.hackathon-slide.active');
+        if (cur) {
+          cur.classList.add('card-recede');
+          setTimeout(() => cur.classList.remove('active', 'card-recede'), RECEDE_MS);
+        }
+
+        // hide intro
+        vp.querySelector('.hackathon-intro')?.classList.remove('active');
+
+        // ensure wheel is visible if we have a position
+        if (activeIndex.current >= 0) {
+          wheelWrapRef.current?.classList.add('visible');
+        }
+      }
+
+      /* ── accumulate + advance preview ── */
       wheelAccum.current += e.deltaY;
       if (Math.abs(wheelAccum.current) >= WHEEL_THRESHOLD) {
-        goTo(activeIndex.current + (wheelAccum.current > 0 ? 1 : -1));
+        spinTo(previewIndex.current + (wheelAccum.current > 0 ? 1 : -1));
         wheelAccum.current = 0;
       }
+
+      /* ── debounce: commit card when scroll stops ── */
+      clearTimeout(commitTimer.current);
+      commitTimer.current = setTimeout(commitCard, COMMIT_DELAY);
     };
 
     const onViewportClick = (e) => {
@@ -125,34 +188,30 @@ const HackathonsSection = () => {
     };
 
     const onMouseMove = (e) => {
-      const tip = cursorTipRef.current;
-      const vp  = viewportRef.current;
-      if (!tip || !vp) return;
+      const tip  = cursorTipRef.current;
+      if (!tip) return;
       const rect = vp.getBoundingClientRect();
       tip.style.left = `${e.clientX - rect.left}px`;
       tip.style.top  = `${e.clientY - rect.top}px`;
-      const inBox = e.target.closest('.hackathon-slide-content');
-      const showClickToView = !!inBox && !boxFocused.current && activeIndex.current >= 0;
-      const showClickToLeave = !inBox && boxFocused.current && activeIndex.current >= 0;
-      if (showClickToView) tip.textContent = 'click to view';
+      const inBox            = e.target.closest('.hackathon-slide-content');
+      const showClickToView  = !!inBox && !boxFocused.current && activeIndex.current >= 0;
+      const showClickToLeave = !inBox  &&  boxFocused.current && activeIndex.current >= 0;
+      if (showClickToView)       tip.textContent = 'click to view';
       else if (showClickToLeave) tip.textContent = 'click to leave';
       tip.classList.toggle('visible', showClickToView || showClickToLeave);
     };
 
-    const onMouseLeave = () => {
-      cursorTipRef.current?.classList.remove('visible');
-    };
+    const onMouseLeave = () => cursorTipRef.current?.classList.remove('visible');
 
-    const vp = viewportRef.current;
-    if (!vp) return;
-
-    vp.addEventListener('wheel',      onWheel,          { passive: false });
-    vp.addEventListener('click',      onViewportClick,  { passive: true  });
-    vp.addEventListener('mousemove',  onMouseMove,      { passive: true  });
-    vp.addEventListener('mouseleave', onMouseLeave,     { passive: true  });
+    vp.addEventListener('wheel',      onWheel,         { passive: false });
+    vp.addEventListener('click',      onViewportClick, { passive: true  });
+    vp.addEventListener('mousemove',  onMouseMove,     { passive: true  });
+    vp.addEventListener('mouseleave', onMouseLeave,    { passive: true  });
     window.addEventListener('keydown', onKeyDown);
 
-    updateSlide(-1);
+    /* init */
+    vp.querySelector('.hackathon-intro')?.classList.add('active');
+    updateArrows(-1);
 
     return () => {
       vp.removeEventListener('wheel',      onWheel);
@@ -160,19 +219,32 @@ const HackathonsSection = () => {
       vp.removeEventListener('mousemove',  onMouseMove);
       vp.removeEventListener('mouseleave', onMouseLeave);
       window.removeEventListener('keydown', onKeyDown);
+      clearTimeout(commitTimer.current);
     };
   }, []);
 
   return (
     <section id="hackathons" className="section tab-content hackathons-section">
       <div className="hackathons-sticky">
+        <div className="hackathons-viewport" ref={viewportRef}>
 
-        <div className="hackathons-viewport anim-rise" ref={viewportRef}>
-
-          {/* Big background number — inside viewport so it shares the same coordinate space */}
+          {/* Big number — left, unchanged */}
           <div className="hackathons-bg-number" ref={bgNumberRef} aria-hidden="true">1</div>
 
-          {/* Intro screen */}
+          {/* Clock wheel — right edge, half off-screen */}
+          <div className="hackathon-wheel-wrap" ref={wheelWrapRef} aria-hidden="true">
+            <div className="hackathon-wheel" ref={wheelRef}>
+              {hackathons.map((h, i) => (
+                <div key={i} className="hackathon-wheel-tick"
+                     style={{ '--angle': `${i * SLOT_DEG}deg` }}>
+                  <span className="hackathon-wheel-label">{h.name}</span>
+                </div>
+              ))}
+            </div>
+            <div className="hackathon-wheel-notch" />
+          </div>
+
+          {/* Intro */}
           <div className="hackathon-intro">
             <div className="hackathon-intro-body">
               <p className="hackathon-intro-quote">
@@ -186,10 +258,7 @@ const HackathonsSection = () => {
             </div>
           </div>
 
-          {/* Hackathon slides */}
-          {/* Cursor tip */}
-          <div className="hackathon-cursor-tip" ref={cursorTipRef}>click to view</div>
-
+          {/* Cards */}
           {hackathons.map((h, i) => {
             const imgs = h.images || (h.image ? [h.image] : []);
             return (
@@ -214,34 +283,24 @@ const HackathonsSection = () => {
               </div>
             );
           })}
+
+          <div className="hackathon-cursor-tip" ref={cursorTipRef}>click to view</div>
         </div>
 
-        {/* Nav row: arrow · dots · arrow · anim picker */}
+        {/* Nav row */}
         <div className="hackathons-nav-row">
-          <button
-            className="hackathon-nav-arrow"
-            ref={prevBtnRef}
-            aria-label="Previous hackathon"
-            onClick={() => goTo(activeIndex.current - 1)}
-          >←</button>
+          <button className="hackathon-nav-arrow" ref={prevBtnRef}
+            aria-label="Previous" onClick={() => goTo(activeIndex.current - 1)}>←</button>
 
           <div className="hackathons-nav-dots" ref={dotsRef}>
             {hackathons.map((h, i) => (
-              <button
-                key={h.id}
-                className="hackathon-dot-nav"
-                aria-label={`Go to ${h.name}`}
-                onClick={() => goTo(i)}
-              />
+              <button key={h.id} className="hackathon-dot-nav"
+                aria-label={`Go to ${h.name}`} onClick={() => goTo(i)} />
             ))}
           </div>
 
-          <button
-            className="hackathon-nav-arrow"
-            ref={nextBtnRef}
-            aria-label="Next hackathon"
-            onClick={() => goTo(activeIndex.current + 1)}
-          >→</button>
+          <button className="hackathon-nav-arrow" ref={nextBtnRef}
+            aria-label="Next" onClick={() => goTo(activeIndex.current + 1)}>→</button>
         </div>
       </div>
     </section>
