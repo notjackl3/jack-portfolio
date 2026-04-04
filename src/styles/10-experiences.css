@@ -8,6 +8,7 @@
 /* Experiences: type legend + dot colors (work/volunteer) */
 :root {
     --exp-work: #2d7ff9;
+    --exp-swe: #a855f7;
     --exp-volunteer: #22c55e;
 }
 
@@ -53,6 +54,10 @@
 
 .experiences-type-pill.work {
     color: var(--exp-work);
+}
+
+.experiences-type-pill.swe {
+    color: var(--exp-swe);
 }
 
 .experiences-type-pill.volunteer {
@@ -113,6 +118,10 @@
     transform: translateX(-50%);
     box-shadow: none;
     z-index: 1;
+}
+
+.experience-card.swe::before {
+    background-color: var(--exp-swe);
 }
 
 .experience-card.volunteer::before {

@@ -29,17 +29,25 @@ const ExperiencesSection = () => {
     const base =
       activeFilter === 'all'
         ? experiences
-        : experiences.filter((e) => (e.type || 'work') === activeFilter);
+        : activeFilter === 'work'
+          ? experiences.filter((e) => e.type === 'work' || e.type === 'swe')
+          : experiences.filter((e) => (e.type || 'work') === activeFilter);
+
+    const months = { jan:0, feb:1, mar:2, apr:3, may:4, jun:5, jul:6, aug:7, sep:8, oct:9, nov:10, dec:11,
+      january:0, february:1, march:2, april:3, june:5, july:6, august:7, september:8, october:9, november:10, december:11 };
+    const parseStart = (duration = '') => {
+      const part = duration.split('-')[0].trim().toLowerCase().split(/\s+/);
+      const m = months[part[0]] ?? 0;
+      const y = parseInt(part[1], 10) || 0;
+      return y * 12 + m;
+    };
+    const isPresent = (duration = '') => duration.toLowerCase().includes('present');
 
     return [...base].sort((a, b) => {
-      // Primary: newest -> oldest (highest id -> lowest id)
-      const byTime = (b.id || 0) - (a.id || 0);
-      if (byTime !== 0) return byTime;
-
-      // Tiebreaker only (rare): stable-ish grouping
-      const ta = (a.type || 'work').toString();
-      const tb = (b.type || 'work').toString();
-      return ta.localeCompare(tb);
+      const aPresent = isPresent(a.duration);
+      const bPresent = isPresent(b.duration);
+      if (aPresent !== bPresent) return aPresent ? -1 : 1;
+      return parseStart(b.duration) - parseStart(a.duration);
     });
   }, [activeFilter]);
 
@@ -92,6 +100,13 @@ const ExperiencesSection = () => {
           onClick={() => toggleFilter('work')}
         >
           work
+        </button>
+        <button
+          type="button"
+          className={`experiences-type-pill swe ${activeFilter === 'swe' ? 'active' : ''}`}
+          onClick={() => toggleFilter('swe')}
+        >
+          swe
         </button>
         <button
           type="button"

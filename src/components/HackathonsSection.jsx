@@ -91,6 +91,7 @@ const HackathonsSection = () => {
 
     setTimeout(() => {
       isTransitioning.current = false;
+      wheelAccum.current = 0;
       vp?.querySelectorAll('.hackathon-slide.exiting').forEach(el => el.classList.remove('exiting'));
     }, TRANSITION_MS + 100);
   };

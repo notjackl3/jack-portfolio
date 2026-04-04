@@ -102,7 +102,7 @@ export const projects = [
     technologies: ["TypeScript/React.js", "Node.js/Express", "MediaPipe", "Web Audio API", "SQLite"],
     githubUrl: "https://github.com/notjackl3/table-tiles",
     image: handTiles,
-    category: "personal"
+    category: "hackathon"
   },
   {
     id: 21,
