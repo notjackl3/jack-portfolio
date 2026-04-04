@@ -522,7 +522,7 @@
   /* ── Clock: centered, fully visible ── */
   .hackathon-wheel-wrap {
     left: 50%;
-    top: 40%;
+    top: 58%;
     transform: translate(-50%, -50%);
     width:  min(76vw, 48vh);
     height: min(76vw, 48vh);
@@ -540,7 +540,7 @@
   /* ── Big number: centered over the clock ── */
   .hackathons-bg-number {
     left: 50%;
-    top: 40%;
+    top: 58%;
     transform: translate(-50%, -50%);
     font-size: 30vw;
     transition: opacity 0.4s ease;
@@ -559,7 +559,7 @@
     left: 0;
     right: 0;
     top: 0;
-    height: calc(40% - min(76vw, 48vh) / 2 - 10px);
+    height: calc(58% - min(76vw, 48vh) / 2 - 10px);
     padding: 50px 8vw 10px;
     text-align: center;
     font-size: clamp(0.72rem, 2.2vw, 0.9rem);
@@ -584,7 +584,7 @@
     display: block;
     position: absolute;
     left: 50%;
-    top: calc(40% + min(76vw, 48vh) / 2 + 22px);
+    top: calc(58% + min(76vw, 48vh) / 2 + 22px);
     transform: translateX(-50%);
     text-align: center;
     font-size: 1rem;
@@ -604,7 +604,7 @@
     display: block;
     position: absolute;
     left: 50%;
-    top: calc(40% + min(76vw, 48vh) / 2 + 56px);
+    top: calc(58% + min(76vw, 48vh) / 2 + 56px);
     transform: translateX(-50%);
     text-align: center;
     font-size: 0.62rem;
