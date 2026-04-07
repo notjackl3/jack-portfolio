@@ -14,7 +14,7 @@ export const experiences = [
     position: "Founder",
     type: "volunteer",
     duration: "December 2025 - Present",
-    description: "🌟 Creating Something Out Of Nothing, bridging student talents with top-notch companies"
+    description: "🌟 Creating Something Out Of Nothing, hosting a hackathon for 40 people at a private house for companies"
   },
   {
     id: 17,
@@ -30,7 +30,7 @@ export const experiences = [
     position: "Tech Support Assistant",
     type: "work",
     duration: "August 2025 - March 2026",
-    description: "⚙️ Making sure technologies are accessible to all students"
+    description: "⚙️ Made sure technologies were accessible to all students"
   },
   {
     id: 9,
@@ -47,7 +47,7 @@ export const experiences = [
     position: "Software Engineer",
     type: "swe",
     duration: "January 2026 - April 2026",
-    description: "💬 Building a live-chat platform"
+    description: "💬 Built a live-chat platform"
   },
   {
     id: 20,
@@ -55,7 +55,7 @@ export const experiences = [
     position: "Software Engineer Intern",
     type: "swe",
     duration: "January 2026 - March 2026",
-    description: "🛍️ Developing a platform for small businesses"
+    description: "🛍️ Developed a platform for small businesses"
   },
   {
     id: 16,
@@ -63,7 +63,7 @@ export const experiences = [
     position: "Software Tech Lead",
     type: "swe",
     duration: "August 2025 - April 2026",
-    description: "🛠️ Leading a software team to create a management system for Toronto Rape Crisis Center"
+    description: "🛠️ Led a software team to create a management system for Toronto Rape Crisis Center"
   },
   {
     id: 15,
@@ -71,7 +71,7 @@ export const experiences = [
     position: "Director of Operations",
     type: "volunteer",
     duration: "August 2025 - March 2026",
-    description: "🤖 Organizing Canada's largest AI hackathon"
+    description: "🤖 Organized Canada's largest AI hackathon"
   },
   {
     id: 14,
@@ -79,7 +79,7 @@ export const experiences = [
     position: "Tech Associate",
     type: "volunteer",
     duration: "August 2025 - April 2026",
-    description: "💰 Hosting interesting info sessions and speaker keynotes"
+    description: "💰 Hosted interesting info sessions and speaker keynotes"
   },
   {
     id: 12,
