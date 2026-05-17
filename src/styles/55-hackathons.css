@@ -10,7 +10,7 @@
 .hackathons-section {
   --stamp-w: 230px;          /* photo (inside frame) width */
   --stamp-h: 170px;          /* photo height */
-  --stamp-pad: 16px 16px 30px; /* white stamp frame padding (slightly more on bottom for caption) */
+  --stamp-pad: 16px 16px 40px; /* white stamp frame padding (extra room at bottom for caption) */
   --stamp-frame-w: 262px;    /* total card width including frame */
   --stamp-frame-h: 220px;    /* total card height including frame */
   /* Perforation tuning for the postage-stamp edge */
@@ -142,7 +142,7 @@
 }
 
 .stamp-card:hover {
-  transform: translateY(-6px) scale(1.04);
+  transform: translateY(-4px);
   z-index: 50;
 }
 
@@ -184,7 +184,7 @@
   z-index: var(--z, 1);
   /* rotate + offset within the stack */
   transform: translate(var(--sx, 0), var(--sy, 0)) rotate(calc(var(--rot, 0deg) + var(--sr, 0deg)));
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 
   /*
    * Postage-stamp perforated edge: 4 radial-gradient mask layers (one per
@@ -224,10 +224,29 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.5s ease;
 }
 
-.stamp-card:hover .stamp-photo img { transform: scale(1.03); }
+/* Caption / award / info button live inside every stamp but are only visible
+ * on the stamp currently occupying the front slot. As the stack rotates,
+ * opacity transitions handle the cross-fade between the leaving and
+ * arriving photos. */
+.stamp .stamp-caption,
+.stamp .stamp-award,
+.stamp .stamp-info {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.stamp--front .stamp-caption,
+.stamp--front .stamp-award {
+  opacity: 1;
+}
+
+.stamp--front .stamp-info {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .stamp-photo-fallback {
   display: flex;
@@ -269,10 +288,10 @@
 
 .stamp-name {
   font-size: 1rem;
-  font-weight: 700;
-  color: var(--text-dark);
+  font-weight: 500;
+  color: var(--text-main);
   font-style: italic;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.1px;
   line-height: 1.15;
   white-space: nowrap;
   overflow: hidden;

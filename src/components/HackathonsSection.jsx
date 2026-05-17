@@ -14,6 +14,111 @@ const STACK_OFFSETS = [
   { x:  82, y: -18, r:   9 },  // [2] back upper-right
 ];
 
+// While the cursor is held over a card, advance the stack one slot every
+// this many ms. Each advance also runs once on hover-enter.
+const ROTATE_INTERVAL_MS = 1500;
+
+function StampCard({ h, i, rot, dy, row, onOpen }) {
+  const allImgs = h.images || (h.image ? [h.image] : []);
+  const stackImgs = allImgs.slice(0, 3);
+  const [rotation, setRotation] = useState(0);
+  const intervalRef = useRef(null);
+
+  useEffect(() => () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  }, []);
+
+  const startSpin = () => {
+    if (stackImgs.length <= 1) return;
+    setRotation((r) => r + 1);
+    intervalRef.current = setInterval(() => {
+      setRotation((r) => r + 1);
+    }, ROTATE_INTERVAL_MS);
+  };
+
+  const stopSpin = () => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  return (
+    <article
+      className={`stamp-card stamp-card--row-${row}`}
+      style={{
+        '--i':   i,
+        '--rot': `${rot}deg`,
+        '--dy':  `${dy}px`,
+      }}
+      onMouseEnter={startSpin}
+      onMouseLeave={stopSpin}
+    >
+      <div className="stamp-stack">
+        {stackImgs.length === 0 ? (
+          <div className="stamp stamp--front">
+            <div className="stamp-photo">
+              <div className="stamp-photo-fallback">{h.name}</div>
+            </div>
+            <div className="stamp-caption">
+              <span className="stamp-num">#{String(i + 1).padStart(2, '0')}</span>
+              <span className="stamp-name">{h.name}</span>
+            </div>
+            <button
+              type="button"
+              className="stamp-info"
+              aria-label={`Read about ${h.name}`}
+              onClick={() => onOpen(h.id)}
+            >
+              <FaInfoCircle />
+            </button>
+          </div>
+        ) : (
+          stackImgs.map((src, si) => {
+            // Each stamp has a "home" slot (reversedIndex) that the rotation
+            // counter rolls forward through STACK_OFFSETS.
+            const reversedIndex = stackImgs.length - 1 - si;
+            const slotIdx = (reversedIndex + rotation) % stackImgs.length;
+            const slot = STACK_OFFSETS[slotIdx] || STACK_OFFSETS[0];
+            const isFront = slotIdx === 0;
+            return (
+              <div
+                key={si}
+                className={`stamp ${isFront ? 'stamp--front' : ''}`}
+                style={{
+                  '--sx': `${slot.x}px`,
+                  '--sy': `${slot.y}px`,
+                  '--sr': `${slot.r}deg`,
+                  '--z':  stackImgs.length - slotIdx,
+                }}
+              >
+                <div className="stamp-photo">
+                  <img src={src} alt={`${h.name} ${si + 1}`} loading="lazy" />
+                </div>
+                <div className="stamp-caption">
+                  <span className="stamp-num">#{String(i + 1).padStart(2, '0')}</span>
+                  <span className="stamp-name">{h.name}</span>
+                </div>
+                {h.award && (
+                  <div className="stamp-award" title={h.award}>🏆</div>
+                )}
+                <button
+                  type="button"
+                  className="stamp-info"
+                  aria-label={`Read about ${h.name}`}
+                  onClick={() => onOpen(h.id)}
+                >
+                  <FaInfoCircle />
+                </button>
+              </div>
+            );
+          })
+        )}
+      </div>
+    </article>
+  );
+}
+
 const HackathonsSection = () => {
   const railRef = useRef(null);
   const [openId, setOpenId] = useState(null);
@@ -88,92 +193,17 @@ const HackathonsSection = () => {
 
         <div className="hackathons-rail" ref={railRef}>
           <div className="hackathons-rail-track">
-            {hackathons.map((h, i) => {
-              const allImgs = h.images || (h.image ? [h.image] : []);
-              // Show up to 3 photos in the stack (top photo last so it sits on top in DOM order via z-index)
-              const stackImgs = allImgs.slice(0, 3);
-              const rot = ROTATIONS[i % ROTATIONS.length];
-              const dy  = Y_NUDGES[i % Y_NUDGES.length];
-              const row = i % 2;
-              return (
-                <article
-                  key={h.id}
-                  className={`stamp-card stamp-card--row-${row}`}
-                  style={{
-                    '--i':   i,
-                    '--rot': `${rot}deg`,
-                    '--dy':  `${dy}px`,
-                  }}
-                >
-                  <div className="stamp-stack">
-                    {stackImgs.length === 0 ? (
-                      <div className="stamp stamp--top">
-                        <div className="stamp-photo">
-                          <div className="stamp-photo-fallback">{h.name}</div>
-                        </div>
-                        <div className="stamp-caption">
-                          <span className="stamp-num">#{String(i + 1).padStart(2, '0')}</span>
-                          <span className="stamp-name">{h.name}</span>
-                        </div>
-                        <button
-                          type="button"
-                          className="stamp-info"
-                          aria-label={`Read about ${h.name}`}
-                          onClick={() => setOpenId(h.id)}
-                        >
-                          <FaInfoCircle />
-                        </button>
-                      </div>
-                    ) : (
-                      stackImgs.map((src, si) => {
-                        // Bottom of stack rendered first; top last so it sits on top
-                        const reversedIndex = stackImgs.length - 1 - si;
-                        const offset = STACK_OFFSETS[reversedIndex] || STACK_OFFSETS[0];
-                        const isTop = si === stackImgs.length - 1;
-                        return (
-                          <div
-                            key={si}
-                            className={`stamp ${isTop ? 'stamp--top' : ''}`}
-                            style={{
-                              '--sx': `${offset.x}px`,
-                              '--sy': `${offset.y}px`,
-                              '--sr': `${offset.r}deg`,
-                              '--z':  stackImgs.length - reversedIndex,
-                            }}
-                          >
-                            <div className="stamp-photo">
-                              <img src={src} alt={`${h.name} ${si + 1}`} loading="lazy" />
-                            </div>
-
-                            {isTop && (
-                              <>
-                                <div className="stamp-caption">
-                                  <span className="stamp-num">#{String(i + 1).padStart(2, '0')}</span>
-                                  <span className="stamp-name">{h.name}</span>
-                                </div>
-
-                                {h.award && (
-                                  <div className="stamp-award" title={h.award}>🏆</div>
-                                )}
-
-                                <button
-                                  type="button"
-                                  className="stamp-info"
-                                  aria-label={`Read about ${h.name}`}
-                                  onClick={() => setOpenId(h.id)}
-                                >
-                                  <FaInfoCircle />
-                                </button>
-                              </>
-                            )}
-                          </div>
-                        );
-                      })
-                    )}
-                  </div>
-                </article>
-              );
-            })}
+            {hackathons.map((h, i) => (
+              <StampCard
+                key={h.id}
+                h={h}
+                i={i}
+                rot={ROTATIONS[i % ROTATIONS.length]}
+                dy={Y_NUDGES[i % Y_NUDGES.length]}
+                row={i % 2}
+                onOpen={setOpenId}
+              />
+            ))}
           </div>
         </div>
 
