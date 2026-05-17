@@ -145,10 +145,10 @@ const HackathonsSection = () => {
     const rail = railRef.current;
     if (!rail) return;
     const onWheel = (e) => {
-      if (e.deltaY === 0) return;
+      if (e.deltaY === 0 && e.deltaX === 0) return;
       if (rail.scrollWidth <= rail.clientWidth) return;
       e.preventDefault();
-      rail.scrollLeft += e.deltaY;
+      rail.scrollLeft += e.deltaY + e.deltaX;
     };
     rail.addEventListener('wheel', onWheel, { passive: false });
     return () => rail.removeEventListener('wheel', onWheel);

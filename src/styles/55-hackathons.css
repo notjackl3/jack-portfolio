@@ -51,10 +51,11 @@
 .hackathons-quote {
   font-size: clamp(0.78rem, 1vw, 0.88rem);
   font-style: italic;
-  color: var(--text-muted);
+  color: var(--text-subtle);
   line-height: 1.5;
   margin: 0;
-  max-width: 760px;
+  max-width: none;
+  white-space: nowrap;
 }
 
 /* ── Stage ── */
@@ -105,8 +106,11 @@
   min-width: 0;
   overflow-x: auto;
   overflow-y: hidden;
-  scroll-behavior: smooth;
+  /* `scroll-behavior: smooth` was fighting per-frame scrollLeft writes — keep
+   * it off here. The arrow buttons opt-in via scrollBy({ behavior: 'smooth' }). */
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  will-change: scroll-position;
   /* generous vertical padding so the strong drop-shadows aren't clipped by overflow-y:hidden */
   padding: 36px 0 48px;
 }
@@ -353,9 +357,9 @@
 .hackathon-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(30, 25, 18, 0.42);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
+  background: rgba(30, 25, 18, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -373,10 +377,14 @@
   position: relative;
   width: min(820px, 100%);
   max-height: calc(100vh - 48px);
-  background: var(--bg-white);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -395,25 +403,28 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  border: 1px solid var(--border-color);
-  background: var(--bg-white);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
   z-index: 2;
 }
 
 .hackathon-modal-close:hover {
   color: var(--primary-accent);
   border-color: var(--hover-border);
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .hackathon-modal-header {
   padding: 22px 56px 14px 24px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -445,9 +456,37 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.18) transparent;
 }
 
-.hackathon-modal-para {
+.hackathon-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.hackathon-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.hackathon-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 8px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.hackathon-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+  background-clip: padding-box;
+  border: 2px solid transparent;
+}
+
+/* `.section p { text-align: center }` in 00-foundation.css beats a single-class
+ * selector — qualify with the modal body so left-alignment wins. */
+.hackathon-modal-body .hackathon-modal-para {
   font-size: 0.96rem;
   color: var(--text-description);
   line-height: 1.65;
@@ -464,9 +503,10 @@
 .hackathon-modal-gallery-item {
   break-inside: avoid;
   margin: 0 0 8px;
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .hackathon-modal-gallery-item img {
@@ -492,6 +532,12 @@
 }
 
 @media (max-width: 768px) {
+  /* Quote may wrap on small screens — single line is only enforced on desktop */
+  .hackathons-quote {
+    white-space: normal;
+    max-width: 90vw;
+  }
+
   .hackathons-section {
     --stamp-w: 200px;
     --stamp-h: 150px;
