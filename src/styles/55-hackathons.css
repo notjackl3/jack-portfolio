@@ -1,707 +1,509 @@
-/* ── Hackathons — clock wheel + card emerge ── */
+/* ── Hackathons — full-bleed stamp / photobooth storyboard (light theme) ── */
 
+/* Let the section break out of the 1000px main-content cap */
 .main-content.main-content--full {
   max-width: none;
   margin-bottom: 0;
   padding: 0;
 }
 
-@media (max-width: 768px) {
-  .main-content.main-content--full {
-    padding: 0;
-    margin: 0;
-  }
-  .App:has(.hackathons-section),
-  body:has(.hackathons-section) {
-    background: #0a0a0c;
-  }
-}
-
 .hackathons-section {
-  height: calc(100vh - 80px);
+  --stamp-w: 230px;          /* photo (inside frame) width */
+  --stamp-h: 170px;          /* photo height */
+  --stamp-pad: 16px 16px 30px; /* white stamp frame padding (slightly more on bottom for caption) */
+  --stamp-frame-w: 262px;    /* total card width including frame */
+  --stamp-frame-h: 220px;    /* total card height including frame */
+  /* Perforation tuning for the postage-stamp edge */
+  --perf-r: 7px;             /* radius of each scallop "hole" */
+  --perf-d: 24px;            /* spacing between hole centers */
+  --stamp-step: 340px;       /* horizontal step between adjacent cards (accommodates fan) */
+  --stamp-row-gap: 70px;     /* vertical gap between top and bottom rows (accommodates fan) */
+  --stage-pad: 100px;
+
+  /* Override global .section max-width: 500px so the rail can use the full viewport */
   max-width: none;
-  min-height: unset;
-  align-items: stretch;
-  overflow: hidden;
-  background: #0a0a0c;
-}
-
-.hackathons-sticky {
-  height: calc(100vh - 80px);
-  display: flex;
-  flex-direction: column;
-  overflow: clip;
-  position: relative;
-}
-
-/* ── Big background number (left, unchanged) ── */
-
-.hackathons-bg-number {
-  position: absolute;
-  top: 50%;
-  left: 3vw;
-  transform: translateY(-50%);
-  font-size: 48vw;
-  font-weight: 900;
-  line-height: 0.82;
-  background: linear-gradient(
-    125deg,
-    rgba(255, 255, 255, 0.38) 0%,
-    rgba(255, 255, 255, 0.16) 30%,
-    rgba(255, 255, 255, 0.46) 50%,
-    rgba(255, 255, 255, 0.14) 68%,
-    rgba(255, 255, 255, 0.32) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: blur(1.5px);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-}
-
-/* ── Viewport ── */
-
-.hackathons-viewport {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  perspective: 1000px;
-  perspective-origin: 50% 50%;
-}
-
-/* ── Intro ── */
-
-.hackathon-intro {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 12vw;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.45s ease;
-  z-index: 1;
-}
-
-.hackathon-intro.active { opacity: 1; pointer-events: auto; }
-
-.hackathon-intro-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32px;
-  text-align: center;
-}
-
-.hackathon-intro-quote {
-  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
-  font-style: italic;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.80);
-  line-height: 1.65;
-  margin: 0;
-}
-
-.hackathon-intro-hint {
-  font-size: 3rem;
-  font-style: italic;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.22);
-  margin: 0;
-}
-
-/* ════════════════════════════════════════
-   CLOCK WHEEL
-   Center pinned to the right screen edge.
-   Left half is visible; right half is clipped.
-   ════════════════════════════════════════ */
-
-.hackathon-wheel-wrap {
-  position: absolute;
-  /* pin wheel center to right edge */
-  left: 100%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(92vh, 82vw);
-  height: min(92vh, 82vw);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.hackathon-wheel-wrap.visible { opacity: 1; }
-
-/* The spinning disc */
-.hackathon-wheel {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 255, 255, 0.030) 0%,
-    rgba(255, 255, 255, 0.008) 50%,
-    transparent 100%
-  );
-  box-shadow:
-    0 0 120px rgba(255, 255, 255, 0.04),
-    inset 0 0 100px rgba(255, 255, 255, 0.02);
-  /* initial: tick-0 at 9-o'clock (270 deg) */
-  transform: rotate(270deg);
-  transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  transform-origin: center center;
-}
-
-/*
- * Each tick wrapper: full-size, rotated to position
- * the ::after mark at the correct clock position.
- * ::after sits at 12-o'clock (top) of the wrapper,
- * so after wrapper rotation it lands at angle --angle
- * from 12-o'clock on the rim.
- */
-.hackathon-wheel-tick {
-  position: absolute;
-  inset: 0;
-  transform: rotate(var(--angle, 0deg));
-  transform-origin: center center;
-}
-
-/* Name label: flows from outer rim toward center along the radius */
-.hackathon-wheel-label {
-  position: absolute;
-  top: calc(6% + 14px); /* starts after the tick mark */
-  left: 50%;
-  transform: translateX(-50%);
-  writing-mode: vertical-lr;
-  font-size: 0.65rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.28);
-  white-space: nowrap;
-  pointer-events: none;
-  user-select: none;
-}
-
-.hackathon-wheel-tick::after {
-  content: '';
-  position: absolute;
-  top: 6px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 6%;
-  background: rgba(255, 255, 255, 0.28);
-  border-radius: 1px;
-}
-
-/*
- * Glowing notch — fixed at 9-o'clock (left edge of wrap).
- * This is where cards emerge from / recede into.
- * The active tick always rotates to meet this notch.
- */
-.hackathon-wheel-notch {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 22px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.90);
-  box-shadow:
-    0 0  6px rgba(255, 255, 255, 0.80),
-    0 0 18px rgba(255, 255, 255, 0.45),
-    0 0 40px rgba(255, 255, 255, 0.20);
-  z-index: 2;
-}
-
-/* ════════════════════════════════════════
-   CARD ANIMATIONS
-   Cards fly out of the wheel (emerge) and
-   back into it (recede) from the right side.
-   ════════════════════════════════════════ */
-
-@keyframes card-emerge {
-  0% {
-    transform: translateY(-50%) translateX(44vw) scale(0.74);
-    opacity: 0;
-    filter: blur(6px);
-  }
-  55% {
-    opacity: 1;
-    filter: blur(0);
-  }
-  100% {
-    transform: translateY(-50%) translateX(0) scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-@keyframes card-recede {
-  0% {
-    transform: translateY(-50%) translateX(0) scale(1);
-    opacity: 1;
-    filter: blur(0);
-  }
-  45% {
-    opacity: 0;
-    filter: blur(4px);
-  }
-  100% {
-    transform: translateY(-50%) translateX(44vw) scale(0.74);
-    opacity: 0;
-    filter: blur(6px);
-  }
-}
-
-/* ── Card slide ── */
-
-.hackathon-slide {
-  position: absolute;
-  right: 4vw;
-  top: 50%;
-  width: 58vw;
-  height: calc(100vh - 284px);
-  transform: translateY(-50%);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.hackathon-slide.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.hackathon-slide.card-emerge {
-  animation: card-emerge 320ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-}
-
-.hackathon-slide.card-recede {
-  animation: card-recede 180ms ease-in forwards;
-  pointer-events: none;
-}
-
-/* ── Headlight when focused ── */
-
-.hackathon-slide::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 10%; right: 10%;
-  height: 220px;
-  background: radial-gradient(ellipse at top, rgba(255, 255, 255, 0.13) 0%, transparent 68%);
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.hackathon-slide:has(.hackathon-slide-content.focused)::before { opacity: 1; }
-
-/* ── Idle pulse (active card only) ── */
-
-@keyframes hackathon-idle-pulse {
-  0%, 100% { opacity: 0.40; }
-  50%       { opacity: 0.90; }
-}
-
-/* ── Glass card ── */
-
-.hackathon-slide-content {
-  position: relative;
-  height: 100%;
-  padding: 28px 36px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  background: rgba(14, 14, 18, 0.88);
-  backdrop-filter: blur(12px) saturate(120%);
-  -webkit-backdrop-filter: blur(12px) saturate(120%);
-  border: 1px dashed rgba(255, 255, 255, 0.55);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.60),
-    0 2px 6px  rgba(0, 0, 0, 0.30);
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.15) transparent;
-  cursor: pointer;
-  animation: none;
-  transition: border 0.25s ease, box-shadow 0.3s ease;
-  z-index: 1;
-}
-
-.hackathon-slide.active .hackathon-slide-content:not(.focused) {
-  animation: hackathon-idle-pulse 1.2s ease-in-out infinite;
-}
-
-.hackathon-slide-content.focused {
-  opacity: 1;
-  border: 1px solid rgba(255, 255, 255, 0.40);
-  cursor: auto;
-  animation: none;
-  box-shadow:
-    inset 0 80px 60px -30px rgba(255, 255, 255, 0.06),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.18),
-    0 8px 32px rgba(0, 0, 0, 0.60),
-    0 2px 6px  rgba(0, 0, 0, 0.30);
-}
-
-.hackathon-slide-content::-webkit-scrollbar       { width: 3px; }
-.hackathon-slide-content::-webkit-scrollbar-track  { background: transparent; }
-.hackathon-slide-content::-webkit-scrollbar-thumb  { background: rgba(255,255,255,0.18); border-radius: 2px; }
-
-.hackathon-slide-content .hackathon-name {
-  font-size: 2.2rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-  margin-bottom: 10px;
-  line-height: 1.2;
-  text-align: left !important;
-}
-
-.hackathon-slide-content .hackathon-award {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: rgba(255, 220, 80, 0.90);
-  background: rgba(255, 200, 40, 0.10);
-  border: 1px solid rgba(255, 200, 40, 0.25);
-  border-radius: 4px;
-  padding: 3px 8px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-.hackathon-slide-content .hackathon-highlight {
-  font-size: 1.05rem;
-  color: rgba(255, 255, 255, 0.48);
-  line-height: 1.65;
-  text-align: left !important;
-  margin: 0;
-}
-
-.hackathon-slide-content .hackathon-highlight + .hackathon-highlight { margin-top: 1em; }
-
-/* ── Scroll-preview label ── */
-
-.hackathon-preview-label {
-  position: absolute;
-  /* sit just inside the notch — left edge of the wheel + small offset */
-  left: calc(100% - min(92vh, 82vw) / 2 + 22px);
-  top: 50%;
-  transform: translateY(-56%);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
-  white-space: nowrap;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.18s ease;
-  z-index: 3;
-  user-select: none;
-}
-
-.hackathon-preview-label.visible { opacity: 1; }
-
-/* ── Cursor tip ── */
-
-.hackathon-cursor-tip {
-  position: absolute;
-  pointer-events: none;
-  transform: translate(-50%, calc(-100% - 10px));
-  background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.20);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 5px 10px;
-  border-radius: 4px;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  z-index: 10;
-}
-
-.hackathon-cursor-tip.visible { opacity: 1; }
-
-/* ── Images ── */
-
-.hackathon-slide-images {
-  columns: 3;
-  column-gap: 6px;
-  margin-top: 2em;
-}
-
-.hackathon-slide-image {
   width: 100%;
-  break-inside: avoid;
-  margin-bottom: 6px;
-  border-radius: 3px;
+  min-width: 0;
+  /* Lock the section to one viewport so the page itself never needs to scroll vertically */
+  height: calc(100vh - 80px);
+  min-height: 0;
+  padding: 16px clamp(20px, 4vw, 56px) 8px;
+  background: transparent;     /* let the global pastel body bg show through */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;        /* override global .section align-items: center */
+  gap: 8px;
   overflow: hidden;
-  filter: brightness(0.45) saturate(0.7);
-  transition: filter 0.3s ease;
-  cursor: default;
 }
 
-.hackathon-slide-content.focused .hackathon-slide-image { filter: brightness(1) saturate(1); }
+/* ── Header ── */
 
-.hackathon-slide-image img { width: 100%; height: auto; display: block; }
+.hackathons-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  text-align: center;
+  flex-shrink: 0;
+}
 
-/* ── Nav row ── */
+.hackathons-quote {
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 760px;
+}
 
-.hackathons-nav-row {
+/* ── Stage ── */
+
+.hackathons-stage {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.stage-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-white);
+  color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
-  padding: 14px 0 12px;
-  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: 0 6px 18px var(--shadow-light);
+  z-index: 12;
+  transition: transform 0.15s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.stage-arrow:hover {
+  color: var(--primary-accent);
+  border-color: var(--hover-border);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.stage-arrow:active { transform: translateY(-50%) scale(0.96); }
+.stage-arrow--left  { left: 4px; }
+.stage-arrow--right { right: 4px; }
+
+/* ── Rail ── */
+
+.hackathons-rail {
+  flex: 1 1 0;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* generous vertical padding so the strong drop-shadows aren't clipped by overflow-y:hidden */
+  padding: 36px 0 48px;
+}
+
+.hackathons-rail-track {
   position: relative;
+  width: calc(15 * var(--stamp-step) + var(--stamp-frame-w) + var(--stage-pad) * 2);
+  height: 100%;
+  min-height: calc(var(--stamp-frame-h) * 2 + var(--stamp-row-gap) + 90px);
+  padding-left: var(--stage-pad);
+  padding-right: var(--stage-pad);
+}
+
+/* ── Card (a single hackathon entry) ── */
+
+.stamp-card {
+  position: absolute;
+  width: var(--stamp-frame-w);
+  /* leave headroom for the fan: back stamps shift up ~25px, front stamp drops ~34px */
+  height: calc(var(--stamp-frame-h) + 80px);
+  left: calc(var(--stage-pad) + var(--i) * var(--stamp-step));
+  animation: stampDrop 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i) * 70ms);
+  transition: transform 0.25s ease, z-index 0s;
+  transform-origin: 50% 60%;
+  overflow: visible;
+}
+
+.stamp-card--row-0 { top: var(--dy, 0px); z-index: 2; }
+.stamp-card--row-1 {
+  top: calc(var(--stamp-frame-h) + var(--stamp-row-gap) + var(--dy, 0px));
+  z-index: 1;
+}
+
+.stamp-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  z-index: 50;
+}
+
+@keyframes stampDrop {
+  0%   { opacity: 0; transform: translateY(-14px) scale(0.94); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Stamp stack: holds 1-3 individual stamp photos overlapping ── */
+
+.stamp-stack {
+  position: relative;
+  width: 100%;
+  height: var(--stamp-frame-h);
+  display: block;
+  /* Shadow lives here (parent has no mask), so drop-shadow can read the
+   * alpha of each masked .stamp child and cast a scallop-shaped shadow. */
+  filter:
+    drop-shadow(0 4px 6px rgba(20, 14, 4, 0.08))
+    drop-shadow(0 1px 2px rgba(20, 14, 4, 0.06));
+  transition: filter 0.25s ease;
+}
+
+.stamp-card:hover .stamp-stack {
+  filter:
+    drop-shadow(0 6px 8px rgba(20, 14, 4, 0.10))
+    drop-shadow(0 2px 3px rgba(20, 14, 4, 0.07));
+}
+
+/* ── Individual stamp (one photo within the stack) ── */
+
+.stamp {
+  position: absolute;
+  inset: 0;
+  width: var(--stamp-frame-w);
+  height: var(--stamp-frame-h);
+  background: #ffffff;
+  padding: var(--stamp-pad);
+  z-index: var(--z, 1);
+  /* rotate + offset within the stack */
+  transform: translate(var(--sx, 0), var(--sy, 0)) rotate(calc(var(--rot, 0deg) + var(--sr, 0deg)));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+  /*
+   * Postage-stamp perforated edge: 4 radial-gradient mask layers (one per
+   * edge) composited with `intersect`. Each layer is opaque everywhere
+   * except for a row of transparent "holes" along ONE edge; intersecting
+   * all 4 layers carves perforations into all 4 sides at any aspect ratio.
+   */
+  -webkit-mask:
+    radial-gradient(circle var(--perf-r) at 50% 0,    #0000 98%, #000 100%) 0 0   / var(--perf-d) 100% repeat-x,
+    radial-gradient(circle var(--perf-r) at 50% 100%, #0000 98%, #000 100%) 0 100%/ var(--perf-d) 100% repeat-x,
+    radial-gradient(circle var(--perf-r) at 0 50%,    #0000 98%, #000 100%) 0 0   / 100% var(--perf-d) repeat-y,
+    radial-gradient(circle var(--perf-r) at 100% 50%, #0000 98%, #000 100%) 100% 0/ 100% var(--perf-d) repeat-y;
+          mask:
+    radial-gradient(circle var(--perf-r) at 50% 0,    #0000 98%, #000 100%) 0 0   / var(--perf-d) 100% repeat-x,
+    radial-gradient(circle var(--perf-r) at 50% 100%, #0000 98%, #000 100%) 0 100%/ var(--perf-d) 100% repeat-x,
+    radial-gradient(circle var(--perf-r) at 0 50%,    #0000 98%, #000 100%) 0 0   / 100% var(--perf-d) repeat-y,
+    radial-gradient(circle var(--perf-r) at 100% 50%, #0000 98%, #000 100%) 100% 0/ 100% var(--perf-d) repeat-y;
+  -webkit-mask-composite: source-in;
+          mask-composite: intersect;
+}
+
+/* ── Photo inside the stamp frame ── */
+
+.stamp-photo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--hover-bg);
+  /* faint stamp inner border to evoke the "ink frame" of a stamp */
+  outline: 1px solid rgba(0, 0, 0, 0.05);
+  outline-offset: -2px;
+}
+
+.stamp-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.stamp-card:hover .stamp-photo img { transform: scale(1.03); }
+
+.stamp-photo-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 0.85rem;
+  color: var(--text-subtle);
+  background: repeating-linear-gradient(
+    45deg,
+    var(--hover-bg),
+    var(--hover-bg) 8px,
+    var(--bg-white) 8px,
+    var(--bg-white) 16px
+  );
+}
+
+/* ── Caption (lives inside the top stamp, rotates with the frame) ── */
+
+.stamp-caption {
+  position: absolute;
+  bottom: 12px;
+  left: 18px;
+  right: 18px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.stamp-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #c98a1f;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.stamp-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  font-style: italic;
+  letter-spacing: -0.2px;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Award + info buttons (also inside the top stamp) ── */
+
+.stamp-award {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
   z-index: 10;
 }
 
-.hackathon-nav-arrow {
+.stamp-info {
   appearance: none;
-  border: none;
-  background: none;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 4px 8px;
-  line-height: 1;
-  transition: color 0.2s ease;
-  flex-shrink: 0;
-}
-
-.hackathon-nav-arrow:hover:not(:disabled) { color: rgba(255, 255, 255, 0.88); }
-.hackathon-nav-arrow:disabled             { color: rgba(255, 255, 255, 0.12); cursor: default; }
-
-.hackathons-nav-dots { display: flex; align-items: center; gap: 8px; }
-
-.hackathon-dot-nav {
-  appearance: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  width: 6px;
-  height: 6px;
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.22);
-  transition: background 0.25s ease, transform 0.25s ease;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  z-index: 10;
+}
+
+.stamp-info:hover {
+  background: var(--primary-accent);
+  color: var(--bg-white);
+  transform: scale(1.1);
+}
+
+.stamp-info:focus-visible {
+  outline: 2px solid var(--primary-accent);
+  outline-offset: 2px;
+}
+
+/* ── Modal ── */
+
+.hackathon-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 25, 18, 0.42);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 24px 16px;
+  animation: hackathonOverlayIn 220ms ease forwards;
+}
+
+@keyframes hackathonOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hackathon-modal {
+  position: relative;
+  width: min(820px, 100%);
+  max-height: calc(100vh - 48px);
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: hackathonModalIn 260ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes hackathonModalIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.hackathon-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-white);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  z-index: 2;
+}
+
+.hackathon-modal-close:hover {
+  color: var(--primary-accent);
+  border-color: var(--hover-border);
+}
+
+.hackathon-modal-header {
+  padding: 22px 56px 14px 24px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   flex-shrink: 0;
 }
 
-.hackathon-dot-nav:hover  { background: rgba(255,255,255,0.55); transform: scale(1.3); }
-.hackathon-dot-nav.active { background: rgba(255,255,255,0.90); transform: scale(1.4); }
+.hackathon-modal-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
 
-/* ── Mobile-only elements: hidden on desktop ── */
+.hackathon-modal-award {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8a6d00;
+  background: #fff7d6;
+  border: 1px solid #f3e09a;
+  border-radius: 4px;
+  padding: 4px 8px;
+  align-self: flex-start;
+}
 
-.hackathon-mobile-name,
-.hackathon-mobile-hint,
-.hackathon-mobile-return,
-.hackathon-mobile-quote { display: none; }
+.hackathon-modal-body {
+  padding: 18px 24px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
-/* ── Mobile redesign (≤ 768px) ── */
+.hackathon-modal-para {
+  font-size: 0.96rem;
+  color: var(--text-description);
+  line-height: 1.65;
+  margin: 0;
+  text-align: left;
+}
+
+.hackathon-modal-gallery {
+  column-count: 3;
+  column-gap: 8px;
+  margin-top: 8px;
+}
+
+.hackathon-modal-gallery-item {
+  break-inside: avoid;
+  margin: 0 0 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+}
+
+.hackathon-modal-gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 1024px) {
+  .hackathons-section {
+    --stamp-w: 220px;
+    --stamp-h: 170px;
+    --stamp-frame-w: 248px;
+    --stamp-frame-h: 222px;
+    --stamp-step: 320px;
+    --stamp-row-gap: 90px;
+    --stage-pad: 90px;
+  }
+
+  .hackathon-modal-gallery { column-count: 2; }
+}
 
 @media (max-width: 768px) {
-
-  /* ── Clock: centered, fully visible ── */
-  .hackathon-wheel-wrap {
-    left: 50%;
-    top: 58%;
-    transform: translate(-50%, -50%);
-    width:  min(76vw, 48vh);
-    height: min(76vw, 48vh);
-    opacity: 1;
-    pointer-events: auto;
-    transition: opacity 0.4s ease;
+  .hackathons-section {
+    --stamp-w: 200px;
+    --stamp-h: 150px;
+    --stamp-frame-w: 224px;
+    --stamp-frame-h: 200px;
+    --stamp-step: 280px;
+    --stamp-row-gap: 80px;
+    --stage-pad: 50px;
+    min-height: calc(100dvh - 80px);
+    padding: 22px 14px 36px;
   }
 
-  /* hide clock when card is open */
-  .hackathons-viewport.mobile-card-view .hackathon-wheel-wrap {
-    opacity: 0;
-    pointer-events: none;
+  /* native swipe is enough — hide chrome */
+  .stage-arrow { display: none; }
+
+  .hackathon-modal-header { padding: 18px 48px 12px 18px; }
+  .hackathon-modal-name   { font-size: 1.2rem; }
+  .hackathon-modal-body   { padding: 14px 18px 20px; }
+  .hackathon-modal-para   { font-size: 0.9rem; }
+}
+
+@media (max-width: 480px) {
+  .hackathons-section {
+    --stamp-w: 180px;
+    --stamp-h: 140px;
+    --stamp-frame-w: 200px;
+    --stamp-frame-h: 184px;
+    --stamp-step: 240px;
+    --stamp-row-gap: 70px;
+    --stage-pad: 40px;
   }
 
-  /* ── Big number: centered over the clock ── */
-  .hackathons-bg-number {
-    left: 50%;
-    top: 58%;
-    transform: translate(-50%, -50%);
-    font-size: 30vw;
-    transition: opacity 0.4s ease;
-    z-index: 1;
-  }
-
-  /* ── Hide desktop-only intro ── */
-  .hackathon-intro { display: none; }
-
-  /* ── Quote above clock ── */
-  .hackathon-mobile-quote {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: calc(58% - min(76vw, 48vh) / 2 - 10px);
-    padding: 50px 8vw 10px;
-    text-align: center;
-    font-size: clamp(0.72rem, 2.2vw, 0.9rem);
-    font-style: italic;
-    font-weight: 400;
-    color: rgba(255, 255, 255, 0.60);
-    line-height: 1.65;
-    pointer-events: none;
-    user-select: none;
-    transition: opacity 0.3s ease;
-    z-index: 2;
-    margin: 0;
-  }
-
-  .hackathons-viewport.mobile-card-view .hackathon-mobile-quote {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* ── Name below clock ── */
-  .hackathon-mobile-name {
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: calc(58% + min(76vw, 48vh) / 2 + 22px);
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 600;
-    letter-spacing: 0.09em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.80);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-    transition: opacity 0.3s ease;
-    z-index: 2;
-  }
-
-  /* ── Drag hint ── */
-  .hackathon-mobile-hint {
-    display: block;
-    position: absolute;
-    left: 50%;
-    top: calc(58% + min(76vw, 48vh) / 2 + 56px);
-    transform: translateX(-50%);
-    text-align: center;
-    font-size: 0.62rem;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.22);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-    transition: opacity 0.4s ease;
-    z-index: 2;
-    margin: 0;
-  }
-
-  .hackathons-viewport.mobile-card-view .hackathon-mobile-name,
-  .hackathons-viewport.mobile-card-view .hackathon-mobile-hint {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  /* ── Return button ── */
-  .hackathon-mobile-return {
-    display: block;
-    position: absolute;
-    top: 14px;
-    left: 14px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.72rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    padding: 8px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    z-index: 10;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .hackathons-viewport.mobile-card-view .hackathon-mobile-return {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* ── Use dynamic viewport height so browser chrome doesn't cut the card ── */
-  .hackathons-section,
-  .hackathons-sticky {
-    height: calc(100dvh - 80px);
-  }
-
-  /* ── Cards: full-width, below return button ── */
-  .hackathon-slide {
-    right: 5vw;
-    left: 5vw;
-    width: auto;
-    top: 54px;
-    bottom: 0;
-    height: auto;
-    transform: none;
-  }
-
-  .hackathon-slide::before { display: none; }
-
-  .hackathon-slide-content {
-    padding: 16px 18px;
-    padding-bottom: 28px;
-    overflow-y: scroll;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .hackathon-slide-content .hackathon-name      { font-size: 1.65rem; }
-  .hackathon-slide-content .hackathon-highlight { font-size: 0.9rem; }
-  .hackathon-slide-image  { filter: brightness(1) saturate(1); }
-  .hackathon-cursor-tip   { display: none; }
-
-  /* ── Mobile card animations ── */
-  @keyframes card-emerge-mobile {
-    from { opacity: 0; transform: scale(0.94); filter: blur(4px); }
-    to   { opacity: 1; transform: scale(1);    filter: blur(0);   }
-  }
-  @keyframes card-recede-mobile {
-    from { opacity: 1; transform: scale(1);    filter: blur(0);   }
-    to   { opacity: 0; transform: scale(0.94); filter: blur(4px); }
-  }
-
-  .hackathon-slide.card-emerge {
-    animation: card-emerge-mobile 320ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
-  }
-  .hackathon-slide.card-recede {
-    animation: card-recede-mobile 200ms ease-in forwards;
-  }
-
-  /* ── Wheel labels: hidden on mobile ── */
-  .hackathon-wheel-label { display: none; }
-
-  /* ── Nav row: hide on mobile (replaced by return button) ── */
-  .hackathons-nav-row { display: none; }
+  .hackathon-modal-gallery { column-count: 1; }
 }

@@ -1,12 +1,28 @@
 export const experiences = [
   // ── Present ──────────────────────────────────────────────
   {
-    id: 21,
-    company: "UTMIST",
-    position: "Infrastructure Engineer",
+    id: 22,
+    company: "Aucctus AI",
+    position: "AI Software Engineer Intern",
     type: "swe",
-    duration: "February 2026 - Present",
-    description: "🚧 Handling VM infrastructures for LLMs"
+    duration: "May 2026 - Present",
+    description: "🤖 Implementing agentic systems for Fortune 500 companies"
+  },
+  {
+    id: 23,
+    company: "The Energy Bridge",
+    position: "Founding Software Engineer",
+    type: "swe",
+    duration: "May 2026 - Present",
+    description: "⚡ Building a platform from scratch to connect millions of energy professionals across Europe"
+  },
+  {
+    id: 24,
+    company: "UTMFA",
+    position: "Vice President of Tech",
+    type: "volunteer",
+    duration: "April 2026 - Present",
+    description: "💼 Leading tech initiatives for the UTM Fintech Association"
   },
   {
     id: 18,
@@ -16,12 +32,21 @@ export const experiences = [
     duration: "December 2025 - Present",
     description: "🌟 Creating Something Out Of Nothing, hosting a hackathon for 40 people at a private house for companies"
   },
+  // ── Ended — most recent first ─────────────────────────────
+  {
+    id: 21,
+    company: "UTMIST",
+    position: "Infrastructure Engineer",
+    type: "swe",
+    duration: "February 2026 - April 2026",
+    description: "🚧 Handling VM infrastructures for LLMs"
+  },
   {
     id: 17,
     company: "University of Toronto",
     position: "Research Assistant",
     type: "swe",
-    duration: "September 2025 - Present",
+    duration: "September 2025 - April 2026",
     description: "🔎 Working on CopilotLens, an AI tool for students"
   },
   {
@@ -40,7 +65,6 @@ export const experiences = [
     duration: "May 2025 - April 2026",
     description: "🧠 Producing exciting events and hands-on workshops"
   },
-  // ── Ended — most recent first ─────────────────────────────
   {
     id: 19,
     company: "University of Toronto",

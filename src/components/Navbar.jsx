@@ -45,7 +45,7 @@ const Navbar = ({ onNavigate, activeTab }) => {
   }, []);
 
   return (
-    <nav className={`navbar ${isMenuOpen ? 'navbar--menu-open' : ''} ${activeTab === 'hackathons' ? 'navbar--dark' : ''}`} ref={navRef}>
+    <nav className={`navbar ${isMenuOpen ? 'navbar--menu-open' : ''}`} ref={navRef}>
       <div className="nav-container">
         <button
           type="button"
