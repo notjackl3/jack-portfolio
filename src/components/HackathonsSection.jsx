@@ -119,9 +119,31 @@ function StampCard({ h, i, rot, dy, row, onOpen }) {
   );
 }
 
+const MODAL_EXIT_MS = 240;
+
 const HackathonsSection = () => {
   const railRef = useRef(null);
   const [openId, setOpenId] = useState(null);
+  // Mirrors openId but lags on close so the exit animation can play before unmount.
+  const [renderedId, setRenderedId] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    if (openId != null) {
+      setRenderedId(openId);
+      setIsClosing(false);
+      return;
+    }
+    if (renderedId == null) return;
+    setIsClosing(true);
+    const t = setTimeout(() => {
+      setRenderedId(null);
+      setIsClosing(false);
+    }, MODAL_EXIT_MS);
+    return () => clearTimeout(t);
+  }, [openId, renderedId]);
+
+  const requestClose = () => setOpenId(null);
 
   // Always start the rail at card #1 when the tab mounts
   useLayoutEffect(() => {
@@ -157,7 +179,7 @@ const HackathonsSection = () => {
   // close modal on Esc
   useEffect(() => {
     if (openId == null) return;
-    const onKey = (e) => { if (e.key === 'Escape') setOpenId(null); };
+    const onKey = (e) => { if (e.key === 'Escape') requestClose(); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [openId]);
@@ -168,8 +190,8 @@ const HackathonsSection = () => {
     rail.scrollBy({ left: dir * rail.clientWidth * 0.75, behavior: 'smooth' });
   };
 
-  const openHackathon = openId != null
-    ? hackathons.find((h) => h.id === openId)
+  const openHackathon = renderedId != null
+    ? hackathons.find((h) => h.id === renderedId)
     : null;
 
   return (
@@ -219,27 +241,27 @@ const HackathonsSection = () => {
 
       {openHackathon && (
         <div
-          className="hackathon-modal-overlay"
-          onClick={() => setOpenId(null)}
+          className={`hackathon-modal-overlay${isClosing ? ' hackathon-modal-overlay--closing' : ''}`}
+          onClick={requestClose}
           role="dialog"
           aria-modal="true"
           aria-label={openHackathon.name}
         >
-          <div className="hackathon-modal" onClick={(e) => e.stopPropagation()}>
+          <div
+            className={`hackathon-modal${isClosing ? ' hackathon-modal--closing' : ''}`}
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               type="button"
               className="hackathon-modal-close"
               aria-label="Close"
-              onClick={() => setOpenId(null)}
+              onClick={requestClose}
             >
               <FaTimes />
             </button>
 
             <div className="hackathon-modal-header">
               <h3 className="hackathon-modal-name">{openHackathon.name}</h3>
-              {openHackathon.award && (
-                <div className="hackathon-modal-award">🏆 {openHackathon.award}</div>
-              )}
             </div>
 
             <div className="hackathon-modal-body">
