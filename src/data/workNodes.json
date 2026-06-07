@@ -14,6 +14,152 @@
       ]
     }
   },
+  "16": {
+    "screens": [
+      {
+        "id": "s_ovlc9te",
+        "label": "auth",
+        "src": "/work-screens/1780875932645_screenshot-2026-06-07-at-7.44.26-pm.png"
+      }
+    ],
+    "nodes": {
+      "s_ovlc9te": [
+        {
+          "id": "n_60ordr2",
+          "x": 50,
+          "y": 50,
+          "cx": 95.0442445303386,
+          "cy": 30.06259336057929,
+          "text": "implement account management page to allow custom admin permissions",
+          "h": 71
+        },
+        {
+          "id": "n_fcopg9a",
+          "x": 11.8571558342481,
+          "y": 45.14366442843507,
+          "cx": 4.772291246941464,
+          "cy": 12.40494308081729,
+          "text": "help improve frontend design of the page",
+          "h": 71
+        },
+        {
+          "id": "n_cyjkd7a",
+          "x": 16.58953473424885,
+          "y": 64.47561149681204,
+          "cx": 4.731542839865867,
+          "cy": 67.53227308995704,
+          "text": "design ci/cd pipelines to make sure frontend/backend are consistent",
+          "h": 71
+        }
+      ],
+      "main": [
+        {
+          "id": "n_qhw2yqe",
+          "x": 14.790971215740186,
+          "y": 49.84390353298826,
+          "cx": 5.208975427471216,
+          "cy": 55.80777959215781,
+          "text": "ensure security for 300+ user information",
+          "h": 71
+        },
+        {
+          "id": "n_jabjbba",
+          "x": 35.00629433816425,
+          "y": 37.382865159560005,
+          "cx": 31.67036723287687,
+          "cy": -3.2244602173570396,
+          "text": "implement complex, custom filtering logics for rows and columns",
+          "h": 71
+        },
+        {
+          "id": "n_jblwhyn",
+          "x": 50,
+          "y": 50,
+          "cx": 94.90980344373725,
+          "cy": 32.43017364414516,
+          "text": "create a smart volunteer management table for toronto rape crisis center",
+          "h": 71
+        },
+        {
+          "id": "n_58xcxcp",
+          "x": 62.58311343278346,
+          "y": 71.37455001408232,
+          "cx": 95.18452117290805,
+          "cy": 65.3651593376807,
+          "text": "lead a team of 8 developers, 2 designs to build project for local charity over 8 months",
+          "h": 71
+        },
+        {
+          "id": "n_3qc9va3",
+          "x": 67.28154446779638,
+          "y": 27.893006713813733,
+          "cx": 72.33400988069786,
+          "cy": -3.684084439908034,
+          "text": "create backend tickets, host weekly standups, organize team events",
+          "h": 71
+        }
+      ]
+    },
+    "mainSrc": "/work-screens/1780875925515_screenshot-2026-06-07-at-7.42.13-pm.png",
+    "mainLabel": "main",
+    "meta": {
+      "title": "software tech lead",
+      "company": "UofT Blueprint",
+      "duration": "august 2025 - april 2026"
+    },
+    "order": 5
+  },
+  "17": {
+    "screens": [],
+    "nodes": {
+      "main": [
+        {
+          "id": "n_yohltkk",
+          "x": 84.57875906440071,
+          "y": 58.79743365490868,
+          "cx": 95.34065206829894,
+          "cy": 43.91409905304765,
+          "text": "create a vs code extension for research purposes on students",
+          "h": 71
+        },
+        {
+          "id": "n_bkw0rjc",
+          "x": 12.184502376588533,
+          "y": 59.26439098272781,
+          "cx": 4.54045815515596,
+          "cy": 46.60440336005945,
+          "text": "collect responses from students and analyze over 1600 data points",
+          "h": 71
+        },
+        {
+          "id": "n_wz8lzbd",
+          "x": 49.867673107589745,
+          "y": 38.1900358629269,
+          "cx": 63.736032719605035,
+          "cy": -3.7114686054036943,
+          "text": "read lots of research papers",
+          "h": 71
+        },
+        {
+          "id": "n_aotjs41",
+          "x": 31.876626831149064,
+          "y": 48.91532655101163,
+          "cx": 33.17941669896444,
+          "cy": -4.426339723453277,
+          "text": "help profs build on top of existing open source model, improve functionalities",
+          "h": 71
+        }
+      ]
+    },
+    "mainSrc": "/work-screens/1780874577115_screenshot-2026-06-07-at-7.22.46-pm.png",
+    "mainLabel": "main",
+    "meta": {
+      "title": "research assistant",
+      "company": "University of Toronto",
+      "duration": "september 2025 - april 2026"
+    },
+    "order": 4
+  },
   "19": {
     "screens": [
       {
@@ -46,9 +192,10 @@
           "id": "n_ufk26a6",
           "x": 74.77273524045356,
           "y": 60.294355621883696,
-          "cx": 94.94314947784056,
-          "cy": 51.53908155331101,
-          "text": "implement websocks for the live chat features"
+          "cx": 94.92885832036771,
+          "cy": 34.69019071343642,
+          "text": "implement websocks for the live chat features",
+          "h": 71
         },
         {
           "id": "n_gy9g2zb",
@@ -56,7 +203,8 @@
           "y": 67.08923295474526,
           "cx": 5.1623989077387336,
           "cy": 69.01580380931792,
-          "text": "set up database schemas, and ensure a good latency"
+          "text": "set up database schemas for the entire project",
+          "h": 71
         },
         {
           "id": "n_kp27kpd",
@@ -64,7 +212,8 @@
           "y": 49.747844168673346,
           "cx": 5.088293301593069,
           "cy": 34.1738419024971,
-          "text": "work closely with profs and tas for make sure the app is working well"
+          "text": "work closely with profs and tas for make sure the app is working well",
+          "h": 71
         },
         {
           "id": "n_d7ol9nl",
@@ -72,7 +221,26 @@
           "y": 50.05869564868344,
           "cx": 63.03894429731086,
           "cy": -3.0767920074130117,
-          "text": "app got launched in an official uoft lecture"
+          "text": "app got launched in an official uoft lecture",
+          "h": 71
+        },
+        {
+          "id": "n_bxsc44p",
+          "x": 46.06679766920467,
+          "y": 50.08004634333,
+          "cx": 30.304251671451354,
+          "cy": -3.8024225411460435,
+          "text": "responsible of creating backend tickets for the team",
+          "h": 71
+        },
+        {
+          "id": "n_p3qck2s",
+          "x": 65.18173496524301,
+          "y": 64.95058002552227,
+          "cx": 95.45341823273314,
+          "cy": 64.79404219575005,
+          "text": "build caching layers to improve latency",
+          "h": 71
         }
       ]
     },
@@ -86,12 +254,61 @@
     "order": null
   },
   "21": {
-    "screens": [],
-    "nodes": {},
-    "mainSrc": null,
-    "mainLabel": null,
+    "screens": [
+      {
+        "id": "s_g7eceyy",
+        "label": "designs",
+        "src": "/work-screens/1780875560637_screenshot-2026-06-07-at-7.36.44-pm.png"
+      }
+    ],
+    "nodes": {
+      "s_g7eceyy": [
+        {
+          "id": "n_8b1mh9k",
+          "x": 50,
+          "y": 50,
+          "cx": 95.39253194724985,
+          "cy": 37.3286696707079,
+          "text": "create figma designs for the page, get feedbacks from stakeholders",
+          "h": 71
+        },
+        {
+          "id": "n_dlzbw4j",
+          "x": 10.841217311391453,
+          "y": 31.03760944111387,
+          "cx": 4.5261744409943105,
+          "cy": 29.407367464764675,
+          "text": "help design 5 different pages for a new platform",
+          "h": 71
+        }
+      ],
+      "main": [
+        {
+          "id": "n_4zq03q2",
+          "x": 76.3658609218324,
+          "y": 39.88975190585503,
+          "cx": 95.44598980817173,
+          "cy": 28.910574351670856,
+          "text": "implement backend to connect live compute gpus with frontend design",
+          "h": 71
+        },
+        {
+          "id": "n_4gr6b27",
+          "x": 13.781974070253945,
+          "y": 52.51088296594328,
+          "cx": 4.506594810925378,
+          "cy": 53.45779531097823,
+          "text": "recreate the design from figma designs",
+          "h": 71
+        }
+      ]
+    },
+    "mainSrc": "/work-screens/1780875650412_screenshot-2026-06-07-at-7.40.35-pm.png",
+    "mainLabel": "main",
     "meta": {
-      "title": "software engineer"
+      "title": "software engineer",
+      "company": "UTMIST",
+      "duration": "february 2026 - april 2026"
     },
     "order": null
   },
@@ -122,9 +339,17 @@
           "id": "n_lovm8ob",
           "x": 37.22362980677724,
           "y": 52.30141914311245,
-          "cx": 4.611917664175825,
-          "cy": 60.30433864197643,
+          "cx": 4.806173199450011,
+          "cy": 23.407725435801893,
           "text": "create connections between different energy "
+        },
+        {
+          "id": "n_zkb22n9",
+          "x": 6.208955843727736,
+          "y": 52.7483672302984,
+          "cx": 4.79823862972809,
+          "cy": 63.20195810019834,
+          "text": "research relationship between different companies within energy sector"
         }
       ],
       "s_q4inwt6": [
@@ -152,7 +377,8 @@
           "y": 66.26338508396127,
           "cx": 95.40311633575318,
           "cy": 68.4427338480525,
-          "text": "recreate the entire design of the platform from scratch, migrated from wordpress"
+          "text": "recreate the entire design of the platform from scratch, migrated from wordpress",
+          "h": 71
         },
         {
           "id": "n_vrh7i4b",
@@ -160,7 +386,8 @@
           "y": 62.404997490379685,
           "cx": 4.268405131388954,
           "cy": 35.613365425581215,
-          "text": "ensure everything is interactive and mobile compatible"
+          "text": "ensure everything is interactive and mobile compatible",
+          "h": 71
         },
         {
           "id": "n_vnpl316",
@@ -168,7 +395,8 @@
           "y": 41.13985571516503,
           "cx": 48.05280485923173,
           "cy": -5.44731011513658,
-          "text": "work as founding developer, set up schemas, and backend agentic structure"
+          "text": "work as founding developer, set up schemas, and backend agentic structure",
+          "h": 74
         }
       ]
     },
@@ -182,10 +410,129 @@
     "order": 1
   },
   "23": {
-    "screens": [],
-    "nodes": {},
-    "mainSrc": null,
-    "mainLabel": null,
+    "screens": [
+      {
+        "id": "s_1813pzw",
+        "label": "feature 1",
+        "src": "/work-screens/1780874912901_screenshot-2026-06-07-at-7.27.59-pm.png"
+      }
+    ],
+    "nodes": {
+      "s_1813pzw": [
+        {
+          "id": "n_nj5o7v4",
+          "x": 62.280153528400405,
+          "y": 96.69419433115664,
+          "cx": 95.3083629843837,
+          "cy": 68.91311576725585,
+          "text": "marketing video generation using seedance, combined with existing models",
+          "h": 71
+        },
+        {
+          "id": "n_wgd8lc1",
+          "x": 84.65101304895111,
+          "y": 39.34141616148981,
+          "cx": 95.12789246142188,
+          "cy": 29.109101815874443,
+          "text": "3d objects generated from 2d sketches",
+          "h": 71
+        },
+        {
+          "id": "n_49wxk4h",
+          "x": 51.4346859883847,
+          "y": 21.813246320449707,
+          "cx": 34.39840032822024,
+          "cy": -4.689408210477618,
+          "text": "sketches generated based on client's prompts and company's documents",
+          "h": 71
+        },
+        {
+          "id": "n_lsi944n",
+          "x": 61.891877118030926,
+          "y": 27.935698722309553,
+          "cx": 66.89013583373011,
+          "cy": -3.9295483293905633,
+          "text": "i own this feature end to end, finally ship to customer",
+          "h": 71
+        },
+        {
+          "id": "n_rjy13ya",
+          "x": 14.205067548068577,
+          "y": 55.442035031561616,
+          "cx": 4.3483239635691575,
+          "cy": 71.0401348380494,
+          "text": "images generated to show how products are being used in practice",
+          "h": 71
+        },
+        {
+          "id": "n_yuku6oi",
+          "x": 50,
+          "y": 50,
+          "cx": 4.7701847898764385,
+          "cy": 36.83969471107763,
+          "text": "everything is done through ai pipeline, can regenerate at any point",
+          "h": 71
+        }
+      ],
+      "main": [
+        {
+          "id": "n_jcj1oza",
+          "x": 73.36504349739819,
+          "y": 88.41173830542726,
+          "cx": 95.21627433841803,
+          "cy": 70.07295980575223,
+          "text": "add pdf uploads and ingestion pipeline to gemini",
+          "h": 71
+        },
+        {
+          "id": "n_07votwn",
+          "x": 50,
+          "y": 50,
+          "cx": 95.27979555606038,
+          "cy": 36.77025960670218,
+          "text": "fix bugs and add features coming from clients, and help improve other features (only mentioning a few here)",
+          "h": 102
+        },
+        {
+          "id": "n_2193k8a",
+          "x": 61.75694261824872,
+          "y": 32.186316212447316,
+          "cx": 36.02440654293849,
+          "cy": -3.970622858602958,
+          "text": "improve image generation pipeline to save cost and add flexibility",
+          "h": 71
+        },
+        {
+          "id": "n_rgrwyp1",
+          "x": 14.73872112999618,
+          "y": 87.68330063376888,
+          "cx": 4.886095753285798,
+          "cy": 50.54060640266199,
+          "text": "enhance overview generation pipeline, using information across all pages",
+          "h": 71
+        },
+        {
+          "id": "n_dl8dhnk",
+          "x": 10.817712118179529,
+          "y": 39.14128623196887,
+          "cx": 4.860688010559969,
+          "cy": 11.883705345416612,
+          "text": "make ui look better",
+          "h": 71
+        },
+        {
+          "id": "n_auy7bpt",
+          "x": 73.77419300903136,
+          "y": 80.12262191361746,
+          "cx": 70.43647167399548,
+          "cy": -4.645401014200848,
+          "text": "create internal linking tools to improve ai fetching across documents",
+          "h": 71
+        }
+      ]
+    },
+    "mainSrc": "/work-screens/1780874905802_screenshot-2026-06-07-at-7.27.02-pm.png",
+    "mainLabel": "main",
     "meta": {
       "title": "ai software engineer intern",
       "company": "Aucctus AI",

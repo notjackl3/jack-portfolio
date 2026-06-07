@@ -101,6 +101,51 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, animKey }) => {
   const stageRef = useRef(null);
   const dragRef = useRef(null);
 
+  // Persist textarea height when the admin drags its resize handle. Otherwise
+  // the new height lives only in the DOM and snaps back the next time the
+  // layer remounts (project switch, screen switch, etc.).
+  const observerRef = useRef(null);
+  const observedRef = useRef(new Map()); // textarea element → node id
+  const nodesRef = useRef(nodes);
+  const onChangeRef = useRef(onChange);
+  useEffect(() => { nodesRef.current = nodes; }, [nodes]);
+  useEffect(() => { onChangeRef.current = onChange; }, [onChange]);
+
+  useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const nodeId = observedRef.current.get(entry.target);
+        if (!nodeId) continue;
+        const h = Math.round(entry.target.offsetHeight);
+        if (!h) continue;
+        const current = nodesRef.current.find((n) => n.id === nodeId);
+        if (!current || current.h === h) continue;
+        onChangeRef.current(
+          nodesRef.current.map((n) => (n.id === nodeId ? { ...n, h } : n))
+        );
+      }
+    });
+    observerRef.current = observer;
+    return () => observer.disconnect();
+  }, []);
+
+  const registerTextarea = (nodeId, el) => {
+    const observer = observerRef.current;
+    if (!observer) return;
+    // Unobserve any previous element associated with this node id.
+    for (const [prevEl, id] of observedRef.current) {
+      if (id === nodeId && prevEl !== el) {
+        observer.unobserve(prevEl);
+        observedRef.current.delete(prevEl);
+      }
+    }
+    if (el) {
+      observedRef.current.set(el, nodeId);
+      observer.observe(el);
+    }
+  };
+
   const beginDrag = (e, mode, nodeId) => {
     if (!isAdmin) return;
     e.preventDefault();
@@ -219,6 +264,8 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, animKey }) => {
               className="work-node-card-text"
               value={n.text}
               onChange={(e) => setText(n.id, e.target.value)}
+              ref={(el) => registerTextarea(n.id, el)}
+              style={n.h ? { height: `${n.h}px` } : undefined}
               rows={3}
               placeholder="Write a note…"
             />
