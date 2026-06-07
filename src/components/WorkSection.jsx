@@ -11,25 +11,6 @@ const SCREEN = {
   heightPct: 73.3,
 };
 
-const TRANSITION_STORAGE_KEY = 'work-transition-mode-v1';
-const TRANSITION_OPTIONS = [
-  { id: 'slide', label: 'slide' },
-  { id: 'flip', label: 'flip' },
-  { id: 'crt', label: 'crt' },
-  { id: 'fade', label: 'fade' },
-];
-const DEFAULT_TRANSITION = 'slide';
-
-const loadTransition = () => {
-  if (typeof window === 'undefined') return DEFAULT_TRANSITION;
-  try {
-    const v = localStorage.getItem(TRANSITION_STORAGE_KEY);
-    return TRANSITION_OPTIONS.some((o) => o.id === v) ? v : DEFAULT_TRANSITION;
-  } catch {
-    return DEFAULT_TRANSITION;
-  }
-};
-
 const isAdminHost = () => {
   if (typeof window === 'undefined') return false;
   const h = window.location.hostname;
@@ -49,9 +30,18 @@ const newNode = () => ({
 const normalizeProjectState = (raw) => ({
   screens: Array.isArray(raw?.screens) ? raw.screens : [],
   nodes: typeof raw?.nodes === 'object' && raw.nodes !== null ? raw.nodes : {},
+  // Optional URL that overrides the main screen image defined in work.js.
+  mainSrc: typeof raw?.mainSrc === 'string' ? raw.mainSrc : null,
+  // Optional label override for the main screen tab.
+  mainLabel: typeof raw?.mainLabel === 'string' ? raw.mainLabel : null,
+  // Optional title / company / duration overrides applied to the work.js defaults.
+  meta: typeof raw?.meta === 'object' && raw.meta !== null ? raw.meta : {},
+  // Optional display-order override (used to reorder projects in admin mode).
+  // null = use the project's natural position in workProjects.
+  order: typeof raw?.order === 'number' ? raw.order : null,
 });
 
-const Laptop = ({ image, alt, transition, direction }) => {
+const Laptop = ({ image, alt }) => {
   const [current, setCurrent] = useState(image);
   const [prev, setPrev] = useState(null);
   const [tk, setTk] = useState(0);
@@ -61,7 +51,7 @@ const Laptop = ({ image, alt, transition, direction }) => {
     setPrev(current);
     setCurrent(image);
     setTk((k) => k + 1);
-    // Long enough to outlast the slowest animation (CRT ~ 800ms).
+    // Outlast the CRT animation (~800ms) before clearing the previous frame.
     const t = setTimeout(() => setPrev(null), 900);
     return () => clearTimeout(t);
   }, [image, current]);
@@ -69,7 +59,7 @@ const Laptop = ({ image, alt, transition, direction }) => {
   return (
     <>
       <div
-        className={`work-laptop-screen transition-${transition} direction-${direction}`}
+        className="work-laptop-screen"
         style={{
           left: `${SCREEN.leftPct}%`,
           top: `${SCREEN.topPct}%`,
@@ -107,7 +97,7 @@ const screenPctToContainerPct = (xPct, yPct) => ({
   y: SCREEN.topPct + (yPct / 100) * SCREEN.heightPct,
 });
 
-const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, transition, direction }) => {
+const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, animKey }) => {
   const stageRef = useRef(null);
   const dragRef = useRef(null);
 
@@ -168,8 +158,11 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, transition, direct
 
   return (
     <div className="work-laptop" ref={stageRef}>
-      <Laptop image={image} alt={alt} transition={transition} direction={direction} />
+      <Laptop image={image} alt={alt} />
 
+      {/* Re-mounts on project/screen change (via animKey) so the line-draw
+          + node-pop + card-pop animations replay every transition. */}
+      <div className="work-nodes-layer" key={animKey}>
       <svg className="work-nodes-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         {nodes.map((n) => {
           const nodePos = screenPctToContainerPct(n.x, n.y);
@@ -181,7 +174,7 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, transition, direct
               x2={n.cx}
               y2={n.cy}
               stroke="var(--primary-accent)"
-              strokeWidth="0.15"
+              strokeWidth="1.5"
               vectorEffect="non-scaling-stroke"
             />
           );
@@ -244,7 +237,7 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, transition, direct
           )}
         </div>
       ))}
-
+      </div>
     </div>
   );
 };
@@ -255,11 +248,20 @@ const ScreenTabs = ({
   onSelect,
   isAdmin,
   onAdd,
+  onChangeImage,
   onRename,
   onDelete,
   onAddNode,
 }) => {
-  const fileInputRef = useRef(null);
+  const addFileInputRef = useRef(null);
+  const changeFileInputRef = useRef(null);
+  const pendingChangeIdRef = useRef(null);
+
+  const triggerChange = (screenId) => {
+    pendingChangeIdRef.current = screenId;
+    changeFileInputRef.current?.click();
+  };
+
   return (
     <div className="work-screen-tabs" role="tablist" aria-label="Project screens">
       {screens.map((s) => (
@@ -273,8 +275,17 @@ const ScreenTabs = ({
           >
             {s.label || 'Screen'}
           </button>
-          {isAdmin && s.id !== 'main' && s.id === activeId && (
+          {isAdmin && s.id === activeId && (
             <>
+              <button
+                type="button"
+                className="work-screen-tab-action"
+                onClick={() => triggerChange(s.id)}
+                title="Change image"
+                aria-label="Change image"
+              >
+                ↻
+              </button>
               <button
                 type="button"
                 className="work-screen-tab-action"
@@ -287,19 +298,21 @@ const ScreenTabs = ({
               >
                 ✎
               </button>
-              <button
-                type="button"
-                className="work-screen-tab-action"
-                onClick={() => {
-                  if (window.confirm(`Delete screen "${s.label}"? Its notes will be lost.`)) {
-                    onDelete(s.id);
-                  }
-                }}
-                title="Delete screen"
-                aria-label="Delete screen"
-              >
-                ×
-              </button>
+              {s.id !== 'main' && (
+                <button
+                  type="button"
+                  className="work-screen-tab-action"
+                  onClick={() => {
+                    if (window.confirm(`Delete screen "${s.label}"? Its notes will be lost.`)) {
+                      onDelete(s.id);
+                    }
+                  }}
+                  title="Delete screen"
+                  aria-label="Delete screen"
+                >
+                  ×
+                </button>
+              )}
             </>
           )}
         </div>
@@ -309,7 +322,7 @@ const ScreenTabs = ({
           <button
             type="button"
             className="work-screen-tab-add"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => addFileInputRef.current?.click()}
           >
             + screen
           </button>
@@ -321,7 +334,7 @@ const ScreenTabs = ({
             + node
           </button>
           <input
-            ref={fileInputRef}
+            ref={addFileInputRef}
             type="file"
             accept="image/*"
             style={{ display: 'none' }}
@@ -329,6 +342,19 @@ const ScreenTabs = ({
               const file = e.target.files?.[0];
               e.target.value = '';
               if (file) onAdd(file);
+            }}
+          />
+          <input
+            ref={changeFileInputRef}
+            type="file"
+            accept="image/*"
+            style={{ display: 'none' }}
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = '';
+              const id = pendingChangeIdRef.current;
+              pendingChangeIdRef.current = null;
+              if (file && id) onChangeImage(id, file);
             }}
           />
         </>
@@ -353,18 +379,6 @@ const WorkSection = () => {
   const stageScrollRef = useRef(null);
   const saveTimerRef = useRef(null);
   const isAdmin = useMemo(isAdminHost, []);
-  const [transition, setTransition] = useState(loadTransition);
-  // Track project-change direction so the slide animation knows which way to swipe.
-  const [direction, setDirection] = useState('forward');
-  const prevActiveRef = useRef(0);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem(TRANSITION_STORAGE_KEY, transition);
-    } catch {
-      /* ignore */
-    }
-  }, [transition]);
 
   // Scroll-driven active project.
   useEffect(() => {
@@ -395,13 +409,6 @@ const WorkSection = () => {
     setManualActive(null);
   }, [scrollActive]);
 
-  // Update slide direction whenever the active project changes.
-  useEffect(() => {
-    if (active === prevActiveRef.current) return;
-    setDirection(active > prevActiveRef.current ? 'forward' : 'backward');
-    prevActiveRef.current = active;
-  }, [active]);
-
   const persist = (next) => {
     if (!isAdmin) return;
     clearTimeout(saveTimerRef.current);
@@ -424,15 +431,86 @@ const WorkSection = () => {
     });
   };
 
-  const activeProject = workProjects[active] ?? workProjects[0];
+  // Stable display order: each project's persisted `order` (when admin has
+  // moved it) overrides its natural index in workProjects. Ties fall back to
+  // the original index, so adding a new project lands at the bottom by
+  // default.
+  const orderedProjects = useMemo(() => {
+    const indexed = workProjects.map((p, i) => ({ project: p, idx: i }));
+    indexed.sort((a, b) => {
+      const oa = data[a.project.id]?.order;
+      const ob = data[b.project.id]?.order;
+      const ka = typeof oa === 'number' ? oa : a.idx;
+      const kb = typeof ob === 'number' ? ob : b.idx;
+      if (ka !== kb) return ka - kb;
+      return a.idx - b.idx;
+    });
+    return indexed.map(({ project }) => project);
+  }, [data]);
+
+  const activeProject = orderedProjects[active] ?? orderedProjects[0];
   const projectState = normalizeProjectState(data[activeProject?.id]);
+  const displayTitle = projectState.meta?.title ?? activeProject?.title ?? '';
+  const displayCompany = projectState.meta?.company ?? activeProject?.company ?? '';
+  const displayDuration = projectState.meta?.duration ?? activeProject?.duration ?? '';
+
+  // Swap the active project with its neighbor in the ordered list by rewriting
+  // both projects' `order` fields. Both writes go through one setData so the
+  // persist debounce captures the final state.
+  const swapProjectOrder = (delta) => {
+    const targetIdx = active + delta;
+    if (targetIdx < 0 || targetIdx >= orderedProjects.length) return;
+    const a = orderedProjects[active];
+    const b = orderedProjects[targetIdx];
+    setData((prev) => {
+      const sa = normalizeProjectState(prev[a.id]);
+      const sb = normalizeProjectState(prev[b.id]);
+      // Resolve current orders to concrete numbers (use natural index if unset).
+      const oa = typeof sa.order === 'number' ? sa.order : workProjects.findIndex((p) => p.id === a.id);
+      const ob = typeof sb.order === 'number' ? sb.order : workProjects.findIndex((p) => p.id === b.id);
+      const next = {
+        ...prev,
+        [a.id]: { ...sa, order: ob },
+        [b.id]: { ...sb, order: oa },
+      };
+      persist(next);
+      return next;
+    });
+    // Keep the same project highlighted as it changes position.
+    setManualActive(targetIdx);
+  };
+
+  const editProjectMeta = (field, label) => {
+    if (!isAdmin || !activeProject) return;
+    const current =
+      field === 'title'
+        ? displayTitle
+        : field === 'company'
+        ? displayCompany
+        : displayDuration;
+    const next = window.prompt(label, current || '');
+    if (next == null) return;
+    updateProject(activeProject.id, (state) => ({
+      ...state,
+      meta: { ...(state.meta || {}), [field]: next.trim() },
+    }));
+  };
 
   // Build the full list of screens: project's main screen + extras from JSON.
+  // Admin overrides (mainSrc / mainLabel) are spliced into the main entry.
   const screens = useMemo(() => {
     const mainScreen = activeProject?.mainScreen;
-    const main = mainScreen ? [mainScreen] : [];
-    return [...main, ...(projectState.screens || [])];
-  }, [activeProject, projectState.screens]);
+    if (!mainScreen) return projectState.screens || [];
+    const main = { ...mainScreen };
+    if (projectState.mainSrc) main.src = projectState.mainSrc;
+    if (projectState.mainLabel) main.label = projectState.mainLabel;
+    return [main, ...(projectState.screens || [])];
+  }, [
+    activeProject,
+    projectState.screens,
+    projectState.mainSrc,
+    projectState.mainLabel,
+  ]);
 
   const activeScreenId =
     activeScreenByProject[activeProject?.id] || screens[0]?.id || 'main';
@@ -451,25 +529,30 @@ const WorkSection = () => {
     setActiveScreenByProject((prev) => ({ ...prev, [activeProject.id]: screenId }));
   };
 
+  const uploadImage = async (file) => {
+    const dataUrl = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+    const base64 = String(dataUrl).split(',')[1];
+    const res = await fetch('/__work-upload', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: file.name, data: base64 }),
+    });
+    const json = await res.json();
+    if (!json?.src) throw new Error('upload failed');
+    return json.src;
+  };
+
   const addScreen = async (file) => {
     try {
-      const dataUrl = await new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-      const base64 = String(dataUrl).split(',')[1];
-      const res = await fetch('/__work-upload', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: file.name, data: base64 }),
-      });
-      const json = await res.json();
-      if (!json?.src) throw new Error('upload failed');
+      const src = await uploadImage(file);
       const id = `s_${Math.random().toString(36).slice(2, 9)}`;
       const label = `Screen ${screens.length + 1}`;
-      const newScreen = { id, label, src: json.src };
+      const newScreen = { id, label, src };
       updateProject(activeProject.id, (state) => ({
         ...state,
         screens: [...(state.screens || []), newScreen],
@@ -481,11 +564,37 @@ const WorkSection = () => {
     }
   };
 
+  const changeScreenImage = async (screenId, file) => {
+    try {
+      const src = await uploadImage(file);
+      updateProject(activeProject.id, (state) => {
+        if (screenId === 'main') {
+          return { ...state, mainSrc: src };
+        }
+        return {
+          ...state,
+          screens: (state.screens || []).map((s) =>
+            s.id === screenId ? { ...s, src } : s
+          ),
+        };
+      });
+    } catch (err) {
+      window.alert(`Upload failed: ${err.message}`);
+    }
+  };
+
   const renameScreen = (screenId, label) => {
-    updateProject(activeProject.id, (state) => ({
-      ...state,
-      screens: (state.screens || []).map((s) => (s.id === screenId ? { ...s, label } : s)),
-    }));
+    updateProject(activeProject.id, (state) => {
+      if (screenId === 'main') {
+        return { ...state, mainLabel: label };
+      }
+      return {
+        ...state,
+        screens: (state.screens || []).map((s) =>
+          s.id === screenId ? { ...s, label } : s
+        ),
+      };
+    });
   };
 
   const deleteScreen = (screenId) => {
@@ -519,8 +628,9 @@ const WorkSection = () => {
     [count]
   );
 
-  // Resolve the actual image URL for the active screen.
-  const activeImage = activeScreen?.image || activeScreen?.src || null;
+  // Resolve the actual image URL for the active screen. `src` (an admin-uploaded
+  // URL) wins over `image` (a Vite-imported asset) so overrides take priority.
+  const activeImage = activeScreen?.src || activeScreen?.image || null;
 
   return (
     <section id="work" className="section tab-content work-section">
@@ -532,8 +642,7 @@ const WorkSection = () => {
             nodes={activeScreenNodes}
             isAdmin={isAdmin}
             onChange={setScreenNodes}
-            transition={transition}
-            direction={direction}
+            animKey={`${activeProject?.id}_${activeScreenId}`}
           />
           <div className="work-info">
             <ScreenTabs
@@ -542,34 +651,49 @@ const WorkSection = () => {
               onSelect={selectScreen}
               isAdmin={isAdmin}
               onAdd={addScreen}
+              onChangeImage={changeScreenImage}
               onRename={renameScreen}
               onDelete={deleteScreen}
               onAddNode={() => setScreenNodes([...activeScreenNodes, newNode()])}
             />
-            {isAdmin && (
-              <div className="work-transition-picker" role="radiogroup" aria-label="Screen transition">
-                <span className="work-transition-picker-label">transition</span>
-                {TRANSITION_OPTIONS.map((t) => (
-                  <button
-                    key={t.id}
-                    type="button"
-                    role="radio"
-                    aria-checked={transition === t.id}
-                    className={`work-transition-picker-btn ${transition === t.id ? 'active' : ''}`}
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => setTransition(t.id)}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
+            {isAdmin ? (
+              <h3
+                className="work-info-title work-info-title--editable"
+                onClick={() => editProjectMeta('title', 'Job title')}
+                title="Click to edit job title"
+              >
+                {displayTitle}
+              </h3>
+            ) : (
+              <h3 className="work-info-title">{displayTitle}</h3>
             )}
-            <h3 className="work-info-title">{activeProject?.title}</h3>
-            {(activeProject?.company || activeProject?.duration) && (
-              <span className="work-info-company">
-                {activeProject?.company}
-                {activeProject?.company && activeProject?.duration ? ' · ' : ''}
-                {activeProject?.duration}
+            {(displayCompany || displayDuration || isAdmin) && (
+              <span
+                className={`work-info-company${isAdmin ? ' work-info-company--editable' : ''}`}
+                onClick={
+                  isAdmin
+                    ? () => {
+                        const company = window.prompt('Company', displayCompany || '');
+                        if (company == null) return;
+                        const duration = window.prompt('Duration', displayDuration || '');
+                        if (duration == null) return;
+                        updateProject(activeProject.id, (state) => ({
+                          ...state,
+                          meta: {
+                            ...(state.meta || {}),
+                            company: company.trim(),
+                            duration: duration.trim(),
+                          },
+                        }));
+                      }
+                    : undefined
+                }
+                title={isAdmin ? 'Click to edit company / duration' : undefined}
+              >
+                {displayCompany}
+                {displayCompany && displayDuration ? ' · ' : ''}
+                {displayDuration}
+                {isAdmin && !displayCompany && !displayDuration ? 'Add company · duration' : ''}
               </span>
             )}
             <div className="work-switcher" role="tablist" aria-label="Work projects">
@@ -584,7 +708,7 @@ const WorkSection = () => {
                 ‹
               </button>
               <div className="work-switcher-dots">
-                {workProjects.map((p, i) => (
+                {orderedProjects.map((p, i) => (
                   <button
                     key={p.id}
                     type="button"
@@ -607,6 +731,30 @@ const WorkSection = () => {
               >
                 ›
               </button>
+              {isAdmin && (
+                <div className="work-switcher-reorder" aria-label="Reorder projects">
+                  <button
+                    type="button"
+                    className="work-switcher-reorder-btn"
+                    onClick={() => swapProjectOrder(-1)}
+                    disabled={active === 0}
+                    title="Move project left"
+                    aria-label="Move project left"
+                  >
+                    ←
+                  </button>
+                  <button
+                    type="button"
+                    className="work-switcher-reorder-btn"
+                    onClick={() => swapProjectOrder(1)}
+                    disabled={active === count - 1}
+                    title="Move project right"
+                    aria-label="Move project right"
+                  >
+                    →
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

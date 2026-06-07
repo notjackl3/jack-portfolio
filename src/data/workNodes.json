@@ -13,5 +13,184 @@
         }
       ]
     }
+  },
+  "19": {
+    "screens": [
+      {
+        "id": "s_gtmgwft",
+        "label": "auth",
+        "src": "/work-screens/1780873755639_screenshot-2026-06-07-at-7.08.33-pm.png"
+      }
+    ],
+    "nodes": {
+      "s_gtmgwft": [
+        {
+          "id": "n_cglodsn",
+          "x": 28.082717254710644,
+          "y": 50.00133207321608,
+          "cx": 95.11199354873332,
+          "cy": 37.37951861078083,
+          "text": "implement auth for up to 80,000 students"
+        },
+        {
+          "id": "n_c7gi0eb",
+          "x": 22.573785533970945,
+          "y": 50.18011130809047,
+          "cx": 33.974957798286425,
+          "cy": -3.248908277726116,
+          "text": "ensure security up to university standard"
+        }
+      ],
+      "main": [
+        {
+          "id": "n_ufk26a6",
+          "x": 74.77273524045356,
+          "y": 60.294355621883696,
+          "cx": 94.94314947784056,
+          "cy": 51.53908155331101,
+          "text": "implement websocks for the live chat features"
+        },
+        {
+          "id": "n_gy9g2zb",
+          "x": 28.739112017441762,
+          "y": 67.08923295474526,
+          "cx": 5.1623989077387336,
+          "cy": 69.01580380931792,
+          "text": "set up database schemas, and ensure a good latency"
+        },
+        {
+          "id": "n_kp27kpd",
+          "x": 29.72721157708803,
+          "y": 49.747844168673346,
+          "cx": 5.088293301593069,
+          "cy": 34.1738419024971,
+          "text": "work closely with profs and tas for make sure the app is working well"
+        },
+        {
+          "id": "n_d7ol9nl",
+          "x": 70.86390730532747,
+          "y": 50.05869564868344,
+          "cx": 63.03894429731086,
+          "cy": -3.0767920074130117,
+          "text": "app got launched in an official uoft lecture"
+        }
+      ]
+    },
+    "mainSrc": "/work-screens/1780873856735_screenshot-2026-06-07-at-7.10.47-pm.png",
+    "mainLabel": "chat",
+    "meta": {
+      "title": "software engineer",
+      "company": "University of Toronto",
+      "duration": "january 2026 - april 2026"
+    },
+    "order": null
+  },
+  "21": {
+    "screens": [],
+    "nodes": {},
+    "mainSrc": null,
+    "mainLabel": null,
+    "meta": {
+      "title": "software engineer"
+    },
+    "order": null
+  },
+  "22": {
+    "screens": [
+      {
+        "id": "s_lggncgl",
+        "label": "feature 1",
+        "src": "/work-screens/1780873452922_screenshot-2026-06-07-at-7.03.10-pm.png"
+      },
+      {
+        "id": "s_q4inwt6",
+        "label": "feature 2",
+        "src": "/work-screens/1780873462914_screenshot-2026-06-07-at-7.03.36-pm.png"
+      }
+    ],
+    "nodes": {
+      "s_lggncgl": [
+        {
+          "id": "n_e35sled",
+          "x": 91.45967177371705,
+          "y": 27.96370978303654,
+          "cx": 95.23001469086329,
+          "cy": 36.51111566768956,
+          "text": "regular gemini jobs to scan and fetch for latest energy companies"
+        },
+        {
+          "id": "n_lovm8ob",
+          "x": 37.22362980677724,
+          "y": 52.30141914311245,
+          "cx": 4.611917664175825,
+          "cy": 60.30433864197643,
+          "text": "create connections between different energy "
+        }
+      ],
+      "s_q4inwt6": [
+        {
+          "id": "n_odjmmob",
+          "x": 86.2067018132247,
+          "y": 76.68582611212972,
+          "cx": 96.55382247152022,
+          "cy": 37.65920840955517,
+          "text": "metrics extracted from youtube videos"
+        },
+        {
+          "id": "n_vueiljj",
+          "x": 36.95722537475397,
+          "y": 46.19364768902143,
+          "cx": 3.8491866805519095,
+          "cy": 30.595565202299706,
+          "text": "ai-generated summary, tailored to user's profiles"
+        }
+      ],
+      "main": [
+        {
+          "id": "n_e0p9hv3",
+          "x": 76.78198853770037,
+          "y": 66.26338508396127,
+          "cx": 95.40311633575318,
+          "cy": 68.4427338480525,
+          "text": "recreate the entire design of the platform from scratch, migrated from wordpress"
+        },
+        {
+          "id": "n_vrh7i4b",
+          "x": 23.724683041186047,
+          "y": 62.404997490379685,
+          "cx": 4.268405131388954,
+          "cy": 35.613365425581215,
+          "text": "ensure everything is interactive and mobile compatible"
+        },
+        {
+          "id": "n_vnpl316",
+          "x": 51.28146151013446,
+          "y": 41.13985571516503,
+          "cx": 48.05280485923173,
+          "cy": -5.44731011513658,
+          "text": "work as founding developer, set up schemas, and backend agentic structure"
+        }
+      ]
+    },
+    "mainSrc": "/work-screens/1780873441914_screenshot-2026-06-07-at-7.03.16-pm.png",
+    "mainLabel": "landing",
+    "meta": {
+      "title": "founding software engineer",
+      "company": "The Energy Bridge",
+      "duration": "may 2026 - present"
+    },
+    "order": 1
+  },
+  "23": {
+    "screens": [],
+    "nodes": {},
+    "mainSrc": null,
+    "mainLabel": null,
+    "meta": {
+      "title": "ai software engineer intern",
+      "company": "Aucctus AI",
+      "duration": "may 2026 - present"
+    },
+    "order": 0
   }
 }

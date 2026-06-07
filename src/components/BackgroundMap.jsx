@@ -316,28 +316,48 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
           }
         });
 
-        // Hover behavior is now just a cursor change — the name is
-        // already painted on the canvas as part of the symbol layer, so
-        // the floating tooltip is redundant. Nearest-pin lookup keeps
-        // the affordance from breaking on overlapping markers.
-        let hovered = false;
-        map.on('mousemove', (e) => {
-          let nearby = false;
-          const limit = 22 * 22;
+        // Hit-test the actual rendered pin + label pixels first (gives
+        // a perfect hover/click target whether the cursor is on the
+        // pin head, the label, or the bottom tip). Fall back to a
+        // nearest-pin lookup whose center is shifted upward — the
+        // lngLat sits at the pin tip (icon-anchor: 'bottom') so the
+        // visual center of the pin is ~24 px above it.
+        const HIT_LAYERS = ['my-locations-points', 'my-locations-labels'];
+        const resolveIdAt = (point) => {
+          const layers = HIT_LAYERS.filter((l) => mapRef.current?.getLayer(l));
+          if (layers.length) {
+            const hits = map.queryRenderedFeatures(point, { layers });
+            const hitName = hits?.[0]?.properties?.name;
+            if (hitName) {
+              const match = (locations?.features || []).find(
+                (f) => f.properties?.name === hitName
+              );
+              if (match) return featureId(match);
+            }
+          }
+          let id = null;
+          let bestDist = 40 * 40;
           for (const feat of locations?.features || []) {
             const coords = feat.geometry?.coordinates;
             if (!Array.isArray(coords) || coords.length !== 2) continue;
             const p = map.project(coords);
-            const dx = p.x - e.point.x;
-            const dy = p.y - e.point.y;
-            if (dx * dx + dy * dy < limit) {
-              nearby = true;
-              break;
+            const dx = p.x - point.x;
+            const dy = p.y - 24 - point.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < bestDist) {
+              bestDist = d2;
+              id = featureId(feat);
             }
           }
-          if (nearby !== hovered) {
-            hovered = nearby;
-            map.getCanvas().style.cursor = nearby ? 'pointer' : '';
+          return id;
+        };
+
+        let hovered = false;
+        map.on('mousemove', (e) => {
+          const overPin = !!resolveIdAt(e.point);
+          if (overPin !== hovered) {
+            hovered = overPin;
+            map.getCanvas().style.cursor = overPin ? 'pointer' : '';
           }
         });
         map.on('mouseout', () => {
@@ -345,28 +365,8 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
           map.getCanvas().style.cursor = '';
         });
 
-        // Resolve clicks against locations.features directly. mapbox does
-        // not always preserve string GeoJSON ids on queryRenderedFeatures
-        // results, which made the modal silently no-op when the resolved
-        // id didn't match featureId() in the React tree. Picking the
-        // nearest pin within 30 px guarantees the id we set is the same
-        // id selectedFeature looks up by.
         map.on('click', (e) => {
-          let id = null;
-          let bestDist = 30 * 30;
-          for (const feat of locations?.features || []) {
-            const coords = feat.geometry?.coordinates;
-            if (!Array.isArray(coords) || coords.length !== 2) continue;
-            const p = map.project(coords);
-            const dx = p.x - e.point.x;
-            const dy = p.y - e.point.y;
-            const d2 = dx * dx + dy * dy;
-            if (d2 < bestDist) {
-              bestDist = d2;
-              id = featureId(feat);
-            }
-          }
-          setSelectedId(id);
+          setSelectedId(resolveIdAt(e.point));
         });
 
         (async () => {
