@@ -47,10 +47,45 @@ body {
     font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-main);
-    background-image: linear-gradient(180deg, transparent 0%, #ffffff 70%);
-    background-attachment: fixed;
+    background-color: transparent;
     min-height: 100vh;
+}
+
+/* Rotating Toronto map used as the page background. */
+.background-map {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.55;
+    filter: blur(6px);
+    pointer-events: none;
+    transition: opacity 600ms ease, filter 600ms ease;
+}
+
+.background-map--focused {
+    opacity: 1;
+    filter: none;
+    z-index: 100;
+    pointer-events: auto;
+}
+
+/* Translucent pastel-cycle tint sitting between the rotating map and the
+   page content. Restores the original colored background "feel" while the
+   map still shows through. Fades out when the map takes focus. */
+.background-tint {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: linear-gradient(180deg, transparent 0%, #ffffff 70%);
+    background-color: #f0f7ff;
+    opacity: 0.55;
     animation: backgroundCycle 20s ease infinite;
+    transition: opacity 600ms ease;
+}
+
+.App--map-focused .background-tint {
+    opacity: 0;
 }
 
 @keyframes backgroundCycle {
@@ -62,10 +97,654 @@ body {
     100% { background-color: #f0f7ff; } /* Back to Blue */
 }
 
+/* Hide page chrome while the background map is the focus. */
+.App--map-focused .navbar,
+.App--map-focused .main-content {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms ease;
+}
+
+.background-map-exit {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 200;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 999px;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+}
+
+.background-map-exit:hover {
+    background: #fff;
+}
+
+/* Map canvas inside the wrapper. The wrapper carries fixed positioning;
+   the canvas just fills it. */
+.background-map__canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* Hover tooltip floating above a marker on the focused background map. */
+.location-hover-popup .mapboxgl-popup-content {
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a1a;
+    white-space: nowrap;
+}
+
+/* No tip arrow — the label sits directly over the pin head and reads
+   as a name sticker rather than a callout. */
+.location-hover-popup .mapboxgl-popup-tip {
+    display: none;
+}
+
+/* Mode-selector toolbar (Move / Rotate / Zoom) — pill-style buttons docked
+   to the top-center of the focused background map. Modeled after the work
+   section's screen tabs. */
+.map-mode-toolbar {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 150;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 999px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.map-mode-toolbar__btn {
+    background: transparent;
+    border: 1px dashed rgba(0, 0, 0, 0.18);
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.map-mode-toolbar__btn:hover {
+    color: var(--text-dark);
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.map-mode-toolbar__btn.is-active {
+    color: var(--text-dark);
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.55);
+    background: #fff;
+}
+
+/* Mode-specific cursors on the map canvas. */
+.background-map--mode-rotate .background-map__canvas .mapboxgl-canvas {
+    cursor: grab;
+}
+.background-map--mode-zoom .background-map__canvas .mapboxgl-canvas {
+    cursor: ns-resize;
+}
+
+/* Sidebar listing every memory on the focused background map. Collapses
+   to a small floating chip so it never obscures the map; expands to a
+   scrollable panel that lets you fly to any location. */
+.map-locations-sidebar {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 160;
+    width: auto;
+    max-height: calc(100vh - 140px);
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 16px;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.14);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: width 200ms ease, max-height 200ms ease;
+}
+
+.map-locations-sidebar.is-open {
+    width: 280px;
+}
+
+.map-locations-sidebar__toggle {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px;
+    padding: 6px 12px 6px 10px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.map-locations-sidebar.is-open .map-locations-sidebar__toggle {
+    align-self: flex-end;
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+    justify-content: center;
+}
+
+.map-locations-sidebar__toggle:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.map-locations-sidebar__toggle-icon {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.map-locations-sidebar__toggle-label {
+    line-height: 1;
+}
+
+.map-locations-sidebar__title {
+    margin: 0 16px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.map-locations-sidebar__search {
+    position: relative;
+    margin: 0 12px 8px;
+}
+
+.map-locations-sidebar__search-input {
+    width: 100%;
+    appearance: none;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-main);
+    font: inherit;
+    font-size: 13px;
+    padding: 7px 28px 7px 12px;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.map-locations-sidebar__search-input::-webkit-search-decoration,
+.map-locations-sidebar__search-input::-webkit-search-cancel-button {
+    display: none;
+}
+
+.map-locations-sidebar__search-input:focus {
+    border-color: var(--text-subtle);
+}
+
+.map-locations-sidebar__search-clear {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 0;
+    background: transparent;
+    color: var(--text-subtle);
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-locations-sidebar__search-clear:hover {
+    background: var(--secondary-accent);
+    color: var(--text-dark);
+}
+
+.map-locations-sidebar__empty {
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.map-locations-sidebar__list {
+    padding: 0 8px 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.map-locations-sidebar__item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    font: inherit;
+    color: var(--text-dark);
+    transition: background-color 120ms ease;
+}
+
+.map-locations-sidebar__item:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.map-locations-sidebar__item.is-active {
+    background: rgba(229, 57, 70, 0.12);
+}
+
+.map-locations-sidebar__item-title {
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.25;
+}
+
+.map-locations-sidebar__item.is-active .map-locations-sidebar__item-title {
+    color: #b8232f;
+}
+
+.map-locations-sidebar__item-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.25;
+}
+
+@media (max-width: 768px) {
+    .map-locations-sidebar {
+        top: 12px;
+        left: 12px;
+        right: auto;
+        max-height: calc(100vh - 200px);
+    }
+
+    .map-locations-sidebar.is-open {
+        width: calc(100vw - 24px);
+        max-width: 320px;
+        max-height: 60vh;
+    }
+
+    .map-locations-sidebar__item-title {
+        font-size: 14px;
+    }
+}
+
+/* Centered modal that opens when a node is clicked. Backdrop is transparent
+   so the map underneath stays vibrant — it only exists to catch outside
+   clicks and close the modal. */
+.location-note-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    animation: locationModalFadeIn 180ms ease-out;
+}
+
+@keyframes locationModalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.location-note-modal {
+    position: relative;
+    width: min(560px, 92vw);
+    max-height: 80vh;
+    background: #fff;
+    border-radius: 14px;
+    padding: 36px 40px 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
+    overflow: auto;
+    color: var(--text-main);
+    animation: locationModalRise 220ms ease-out;
+}
+
+@keyframes locationModalRise {
+    from { transform: translateY(12px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.location-note-modal__close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: transparent;
+    color: var(--text-subtle);
+    font-size: 22px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 6px;
+}
+
+.location-note-modal__close:hover {
+    background: var(--secondary-accent);
+    color: var(--text-dark);
+}
+
+.location-note-modal__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 0 0 14px;
+    line-height: 1.25;
+}
+
+p.location-note-modal__text {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--text-main);
+    white-space: pre-wrap;
+}
+
+.location-note-modal__section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 18px 0 8px;
+}
+
+textarea.location-note-modal__text {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    resize: vertical;
+    font: inherit;
+    color: var(--text-main);
+    background: var(--bg-white);
+    outline: none;
+    padding: 10px 12px;
+    line-height: 1.5;
+    min-height: 100px;
+    border-radius: 6px;
+}
+
+textarea.location-note-modal__text:focus {
+    border-color: var(--text-subtle);
+}
+
+.location-note-modal__delete {
+    margin-top: 14px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.location-note-modal__delete:hover {
+    background: var(--secondary-accent);
+    color: var(--text-dark);
+}
+
+/* Admin edit form shown inside the modal on localhost. */
+.location-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.location-edit__label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.location-edit__label-text {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.location-edit__input,
+.location-edit__textarea {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-main);
+    font: inherit;
+    font-size: 0.95rem;
+    padding: 8px 10px;
+    border-radius: 6px;
+    outline: none;
+}
+
+.location-edit__input:focus,
+.location-edit__textarea:focus {
+    border-color: var(--text-subtle);
+}
+
+.location-edit__textarea {
+    resize: vertical;
+    min-height: 110px;
+    line-height: 1.4;
+}
+
+.location-edit__section-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 6px;
+}
+
+.location-edit__address-row {
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+}
+
+.location-edit__address-row .location-edit__input {
+    flex: 1;
+}
+
+.location-edit__btn {
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-dark);
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.location-edit__btn:hover {
+    background: var(--secondary-accent);
+    border-color: var(--bg-border);
+}
+
+.location-edit__hint {
+    font-size: 0.78rem;
+    line-height: 1.35;
+    color: var(--text-muted);
+}
+
+.location-edit__hint--error {
+    color: #b8232f;
+}
+
+.location-edit__hint--success {
+    color: #1f7a3a;
+}
+
+.location-edit__coords {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.location-edit__image-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px;
+}
+
+.location-edit__image-tile {
+    position: relative;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: var(--secondary-accent);
+}
+
+.location-edit__image-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.location-edit__image-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    font-size: 14px;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.location-edit__image-remove:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+.location-edit__image-tag {
+    position: absolute;
+    bottom: 4px;
+    left: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.location-edit__upload {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+    border: 1px dashed var(--border-color);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.location-edit__upload:hover {
+    border-color: var(--text-subtle);
+    color: var(--text-dark);
+    background: var(--hover-bg);
+}
+
+.location-edit__upload input[type="file"] {
+    display: none;
+}
+
+.location-edit__id {
+    font-size: 0.72rem;
+    color: var(--text-subtle);
+    text-align: right;
+    margin-top: 4px;
+}
+
+/* Admin-only "Preview as visitor" toggle, docked at the top of the modal
+   next to the close button. */
+.location-preview-toggle {
+    position: absolute;
+    top: 12px;
+    right: 50px;
+    padding: 4px 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-white);
+    color: var(--text-dark);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.location-preview-toggle:hover {
+    background: var(--secondary-accent);
+    border-color: var(--bg-border);
+}
+
+.location-preview-toggle[aria-pressed="true"] {
+    background: var(--primary-accent);
+    border-color: var(--primary-accent);
+    color: var(--bg-white);
+}
+
 /* Navigation */
 .navbar {
     background-color: transparent;
     position: relative;
+    z-index: 1;
     display: flex;
     flex-direction: column;
 }
@@ -109,6 +788,9 @@ body {
     margin: 0 auto;
     min-height: calc(100vh - 80px);
     margin-bottom: 100px;
+    position: relative;
+    z-index: 1;
+    transition: opacity 400ms ease;
 }
 
 /* Hero section */
@@ -135,11 +817,48 @@ body {
     margin-bottom: 20px;
     border-radius: 15px 15px 0 0;
     overflow: hidden;
+    position: relative;
 }
 
 #map {
     width: 100%;
     height: 100%;
+}
+
+/* Preview-mode mini map (default): blurred, with a "Click to view" overlay
+   that opens the focused background map. */
+.map-container--preview #map {
+    filter: blur(2.5px);
+    transition: filter 250ms ease;
+}
+
+.map-enter-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.18);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+
+.map-enter-overlay:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.map-enter-label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--text-dark);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 9px 18px;
+    border-radius: 999px;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
 }
 
 /* Map + locations panel */
@@ -323,6 +1042,7 @@ body {
     color: var(--text-description);
     line-height: 1.5;
     margin-bottom: 12px;
+    white-space: pre-wrap;
 }
 
 .location-images {

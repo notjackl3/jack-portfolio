@@ -1,0 +1,104 @@
+{
+  "trg-international": {
+    "title": "First internship",
+    "subtitle": "TRG International",
+    "description": "I joined the HR team to learn soft skills, but I utilized my coding skills to create apps that improve my team's workflow. I represented TRG at career fairs, participated in CSR activities, and helped organise events for the company, even one involving the CEO himself!",
+    "images": []
+  },
+  "utm-career-center": {
+    "title": "On-campus job",
+    "subtitle": "UTM Career Center",
+    "description": "As tech support, I ensured that all materials were accessible to all 16,000+ students. I also helped with industry outreach, organized career fairs, guided students in resume building and job searching.",
+    "images": []
+  },
+  "go-on-hacks": {
+    "title": "Software hackathon win 🏆",
+    "subtitle": "Go On Hacks",
+    "description": "I built my first ever Google extension for this hackathon, since it was a \"stupid hackathon\", we decided to create a tool that turns every face on your screen into LeBron James. I learnt so many new skills and met very ambitious people, from founders to hackers!",
+    "images": []
+  },
+  "ember-hacks": {
+    "title": "Organizing a hackathon",
+    "subtitle": "EmberHacks",
+    "description": "I organized my first hackathon for 100+ amazing hackers. I stayed back overnight to guide them, hosted minigames, and had a blast!",
+    "images": []
+  },
+  "university-of-toronto": {
+    "title": "University of Toronto",
+    "subtitle": "my realization about university",
+    "description": "i study comp sci at the uoft mississauga, but i usually call myself uoft (shhh no one knows), i am trying my very best to hang on to a 3.58 gpa, i realized that the most important thing from university is not the knowledge but the friends and networking you grow along the way! ",
+    "images": []
+  },
+  "techto-hackathon": {
+    "title": "Quickest hackathon ever",
+    "subtitle": "TechTO Hackathon",
+    "description": "We had 6 hours to create a functioning app. Somehow, I ended up creating a tool that is extremely helpful for healthcare, with the help of my amazing teammates.",
+    "images": []
+  },
+  "hack-the-north": {
+    "title": "Canada's biggest hackathon",
+    "subtitle": "Hack The North",
+    "description": "I stayed for 2 nights at this hackathon, competed with over 1200+ hackers, and witnessed a World record being broken! It was super tiring, I felt sick afterwards, but it was worth it.",
+    "images": []
+  },
+  "ignition-hacks": {
+    "title": "Hosting a hackathon workshop",
+    "subtitle": "Ignition Hacks",
+    "description": "I hosted my first ever hackathon workshop for 100+ hackers. I taught them how to use Mapbox, the tool which I am using for the map on this website!",
+    "images": []
+  },
+  "aws-summit": {
+    "title": "AWS's largest event",
+    "subtitle": "AWS Summit",
+    "description": "I arrived here at 7am and stayed until 5pm, with over 10,000 attendees. I learned so much information from industry experts. I got a chance to train my own AI model, with a chance to win a trip to Vegas (I didn't win).",
+    "images": []
+  },
+  "google-devfest": {
+    "title": "Huge Google workshop",
+    "subtitle": "Google DevFest",
+    "description": "I participated in a Gemini workshop with 500+ guests, stood up from the crowd to ask questions. I learnt so much about the power of AI and how to use it in my projects!",
+    "images": []
+  },
+  "murder-mystery-party": {
+    "title": "Party for founders",
+    "subtitle": "Murder Mystery Party",
+    "description": "I was 4,500km from home, but I attended a Halloween party for young entrepreneurs. I wore a mask the entire night (completely anonymous), and I met so many interesting and ambitious people!",
+    "images": []
+  },
+  "shut-up-and-code": {
+    "title": "Meeting strangers to code",
+    "subtitle": "Shut Up & Code",
+    "description": "Strangers just met up to code and learn from each other. I was a bit shy at first, but I ended up meeting some amazing people there.",
+    "images": []
+  },
+  "wallyhacks": {
+    "title": "First hackathon win 🏆",
+    "subtitle": "Wally Hacks",
+    "description": "This was my first ever hackathon, and I won second place. I learnt so much about the hackathon process, and I met so many amazing people.",
+    "images": []
+  },
+  "codequest": {
+    "title": "CodeQuest",
+    "subtitle": "leetcode competition",
+    "description": "i was speedrunning through the questions and got first place!",
+    "images": []
+  },
+  "bell-sap-case-competition": {
+    "title": "",
+    "subtitle": "first ever case competition",
+    "description": "due to traffic, i booked a $50 uber from toronto to mississauga, arrived 40 minutes late, but i still attend, and the company representatives notice my energy, they invited me to a private coffee chat after the event!",
+    "images": []
+  },
+  "deltahacks": {
+    "title": "",
+    "subtitle": "1st hackathon in the streak",
+    "description": "- didn't win but this is one of my favourite projects ever\n- we analyzed flight paths of 3m+ different flights to see how much fuels we can save if planes fly in birds formation\n- so cool to see how nature works",
+    "images": []
+  },
+  "amazon-fulfillment-center": {
+    "title": "",
+    "subtitle": "2 hour trip opened my eyes",
+    "description": "- it was super cool to see the most advanced robotics being used here\n- we weren't albe",
+    "images": []
+  }
+}

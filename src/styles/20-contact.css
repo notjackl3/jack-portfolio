@@ -5,6 +5,13 @@
     margin: 1.5rem 0 0;
 }
 
+/* When contact + skills are stacked under the contact tab, drop the contact
+   section's 100vh min-height so the skills stage sits directly below the
+   contact info instead of after a tall empty gap. */
+.contact-stack > #contact {
+    min-height: auto;
+}
+
 .contact-info p {
     font-size: 1rem;
     color: var(--text-muted);

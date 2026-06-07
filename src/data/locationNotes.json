@@ -1,0 +1,202 @@
+{
+  "wallyhacks": {
+    "cx": 47.282625304985025,
+    "cy": 41.05893302194791,
+    "text": ""
+  },
+  "google-devfest": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Biggest hands-on workshop he'd attended; took the mic in front of 500+ and deployed an ML Gmail add-on with Gemini."
+  },
+  "uofthacks-13": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Theme 'Identity'. Built Big Brother, a Chrome extension helping older adults navigate websites by voice (RAG, multiple AI models)."
+  },
+  "deltahacks": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Built SkySync, analyzing 1.6M+ flights into fuel-saving formation pairs on a 3D globe. 600+ hackers; first time at McMaster."
+  },
+  "hack-canada-2026": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Built ERoute and won the Google Build with AI track at Hack Canada."
+  },
+  "utra-hacks-2026": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Robotics-focused hackathon at UofT; team won the MLH Best Use of ElevenLabs prize."
+  },
+  "qhacks": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Queen's University hackathon in Kingston; led into the Kingston Mayor's Innovation Challenge."
+  },
+  "kingston-mayors-innovation-challenge": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Continuation of QHacks; traveled back to Kingston to pitch a 3D urban-planning tool to the Mayor at City Hall."
+  },
+  "hack-the-globe": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Global Spark social-impact hackathon; built a platform for people with hearing disabilities to practice interviews in sign language."
+  },
+  "deerhacks-v": {
+    "cx": 65,
+    "cy": 35,
+    "text": "36-hour hackathon at UTM; submitted Hand Tiles."
+  },
+  "stupid-ideas-hackathon": {
+    "cx": 65,
+    "cy": 35,
+    "text": "A deliberately absurd hackathon; won a prize with the project 'It's still 2016'."
+  },
+  "smilehacks-2026": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Won 3rd place with Team 1, earning a NEST 2026 (UofT Hatchery) follow-up."
+  },
+  "ai-agents-waterloo-voice-hackathon": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Voice-AI agents hackathon in Kitchener-Waterloo."
+  },
+  "stan-hackai-toronto": {
+    "cx": 65,
+    "cy": 35,
+    "text": "48-hour, $20K hackathon with 60 builders; built an AI video editor on Stan's stack after meeting their CTO."
+  },
+  "hack-the-future": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Won 1st place pitching Omni, a supply-chain disruption/risk agent, on stage at the Google office."
+  },
+  "sandcastle-sandbox": {
+    "cx": 65,
+    "cy": 35,
+    "text": "12-hour Toronto Tech Week hackathon at MottoMotto Cafe (built in 11 days by Akira Takaki & Victoria Chernobay); won Pokemon cards for a cheeky pitch."
+  },
+  "nvidia-spark-hack-toronto": {
+    "cx": 65,
+    "cy": 35,
+    "text": "NVIDIA Spark hackathon during Toronto Tech Week, hosted at OneEleven; great food and arcade games."
+  },
+  "innovation-hackathon-makerslounge": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Berto Mill / Disruptive Edge's well-run Toronto Tech Week innovation hackathon."
+  },
+  "first-hackathon": {
+    "cx": 65,
+    "cy": 35,
+    "text": "His first hackathon — got carried by a 4th-year student and won 2nd place, sparking the whole journey."
+  },
+  "soon-hackathon": {
+    "cx": 65,
+    "cy": 35,
+    "text": "The hackathon Jack founded: ~40-70 builders live, eat, and build in a private mansion for a weekend. Sponsors flown in from SF."
+  },
+  "genai-genesis-2026": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Helped run 'Canada's largest' AI hackathon as Director of Operations — catering, 1000+ name tags, logistics."
+  },
+  "codequest": {
+    "cx": 65,
+    "cy": 35,
+    "text": "UTMSAM orientation event (hedgehog theme), 100+ participants solving Math/CS problems across the UTM campus."
+  },
+  "bearhacks-2025": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Spoke to 70+ hackers about his journey and 'unethical hacks', then returned the next day to judge."
+  },
+  "frasershacks-2026": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Served as a judge at FrasersHacks (location approximate — to confirm)."
+  },
+  "bell-sap-case-competition": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Participated in the Bell SAP Case Competition (details to confirm)."
+  },
+  "cutc-2026": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Canadian Undergraduate Technology Conference — a leading student tech conference."
+  },
+  "devtools-toronto-7": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Developer-tools meetup (organized by Ben Vinegar) during Toronto Tech Week; met highly technical builders."
+  },
+  "schulich-york-party": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Crashed a Schulich School of Business party, meeting engineers, a DJ, and business owners."
+  },
+  "homecoming-ttw": {
+    "cx": 65,
+    "cy": 35,
+    "text": "The largest TTW event (1100+ guests at HISTORY) — CEOs and founders on stage, free swag and ice cream."
+  },
+  "cohere-party": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Met Toronto Mayor Olivia Chow and Cohere founders Ivan Zhang & Nick Frosst; name engraved into swag."
+  },
+  "organizers-meetup": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Pitched SOON to other hackathon organizers during Toronto Tech Week."
+  },
+  "krista-kim-heart-space": {
+    "cx": 65,
+    "cy": 35,
+    "text": "A Toronto Tech Week art-meets-tech experience by digital artist Krista Kim, with an afterparty."
+  },
+  "ai-collective-ontario-hackathons-mixer": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Toronto Tech Week mixer connecting Ontario hackathon organizers and builders."
+  },
+  "google-office-tour": {
+    "cx": 65,
+    "cy": 35,
+    "text": "'Most impressive office' — game room, indoor golf, music studios, 3D printing, floors themed on Canadian culture."
+  },
+  "microsoft-canada-hq": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Invited to a project showcase on the 43rd floor of Microsoft's Canadian HQ at CIBC Square."
+  },
+  "amazon-fulfillment-center": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Toured an 850,000-sq-ft fulfillment center with 10,000+ coordinated robots and miles of conveyor belts."
+  },
+  "shopify-office-tour": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Karaoke room, movie theatre, indoor garden, a car inside the office; spoke with VP Farhan Thawar."
+  },
+  "deloitte-office-tour": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Consulting-world tour with green neon stairs and downtown views; chatted on finance, consulting, strategy."
+  },
+  "vancouver-solo-trip": {
+    "cx": 65,
+    "cy": 35,
+    "text": "First solo trip — flew 4,500km to Vancouver for a Halloween party for future founders."
+  },
+  "aucctus-ai-internship": {
+    "cx": 65,
+    "cy": 35,
+    "text": "Joined Aucctus AI as a Software Engineer Intern building agentic systems for Fortune 500 companies."
+  }
+}

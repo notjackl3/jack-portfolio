@@ -1,6 +1,14 @@
 export const experiences = [
   // ── Present ──────────────────────────────────────────────
   {
+    id: 25,
+    company: "The AI Fellowship",
+    position: "Toronto Chapter Leader",
+    type: "volunteer",
+    duration: "June 2026 - Present",
+    description: "🇨🇦 Bringing people in Toronto closer to AI"
+  },
+  {
     id: 22,
     company: "Aucctus AI",
     position: "AI Software Engineer Intern",
@@ -28,7 +36,7 @@ export const experiences = [
     id: 18,
     company: "SOON",
     position: "Founder",
-    type: "volunteer",
+    type: "work",
     duration: "December 2025 - Present",
     description: "🌟 Creating Something Out Of Nothing, hosting a hackathon for 40 people at a private house for companies"
   },
@@ -72,14 +80,6 @@ export const experiences = [
     type: "swe",
     duration: "January 2026 - April 2026",
     description: "💬 Built a live-chat platform"
-  },
-  {
-    id: 20,
-    company: "Stealth Startup",
-    position: "Software Engineer Intern",
-    type: "swe",
-    duration: "January 2026 - March 2026",
-    description: "🛍️ Developed a platform for small businesses"
   },
   {
     id: 16,

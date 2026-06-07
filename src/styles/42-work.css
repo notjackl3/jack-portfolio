@@ -1,0 +1,365 @@
+/* Work section: sticky laptop + scroll-driven active project */
+
+.section.work-section {
+    max-width: 1100px;
+    width: 95%;
+    padding: 0;
+}
+
+/* Scroll-driven stage: tall container that holds the sticky display. */
+.work-stage {
+    position: relative;
+    width: 100%;
+}
+
+.work-stage-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Push the laptop closer to the top of the viewport (still keeps a margin). */
+    justify-content: flex-start;
+    gap: 1.25rem;
+    padding: 4vh 0 2rem;
+}
+
+/* Laptop frame + screen overlay + node layer */
+.work-laptop {
+    position: relative;
+    width: min(820px, 90%);
+    aspect-ratio: 2400 / 1299;
+    user-select: none;
+    /* Callout cards extend OFF the laptop sides, so don't clip them. */
+    overflow: visible;
+}
+
+.work-laptop-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    pointer-events: none;
+    /* Sits on top of .work-laptop-screen so the bezels mask the project image */
+    z-index: 2;
+}
+
+.work-laptop-screen {
+    position: absolute;
+    overflow: hidden;
+    background: #000;
+    z-index: 1;
+    transition: opacity 0.25s ease;
+}
+
+.work-laptop-screen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    animation: workScreenFade 0.35s ease both;
+}
+
+@keyframes workScreenFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* SVG connector layer — drawn above the laptop frame so lines aren't masked. */
+.work-nodes-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+    overflow: visible;
+}
+
+/* Node dots sit on top of the laptop screen */
+.work-node-dot {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--primary-accent);
+    border: 2px solid var(--bg-white);
+    transform: translate(-50%, -50%);
+    cursor: default;
+    z-index: 4;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.2);
+    padding: 0;
+    appearance: none;
+}
+
+.work-node-dot.is-admin {
+    cursor: move;
+}
+
+/* Callout cards positioned in laptop-container space (can extend off the laptop) */
+.work-node-card {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    background: var(--bg-white);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    z-index: 4;
+    font-size: 0.85rem;
+    color: var(--text-main);
+}
+
+.work-node-card-handle {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    color: var(--text-subtle);
+    font-size: 0.7rem;
+    line-height: 1;
+    cursor: default;
+    user-select: none;
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: none;
+}
+
+.work-node-card.is-admin .work-node-card-handle {
+    display: inline-block;
+    cursor: move;
+}
+
+.work-node-card.is-admin .work-node-card-handle:hover {
+    background: var(--secondary-accent);
+}
+
+p.work-node-card-text {
+    margin: 0;
+    line-height: 1.4;
+    color: var(--text-main);
+    white-space: pre-wrap;
+}
+
+textarea.work-node-card-text {
+    width: 100%;
+    border: none;
+    resize: vertical;
+    font: inherit;
+    color: var(--text-main);
+    background: transparent;
+    outline: none;
+    padding: 14px 0 0;
+    line-height: 1.4;
+    min-height: 60px;
+}
+
+.work-node-card-delete {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    background: transparent;
+    border: none;
+    color: var(--text-subtle);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.work-node-card-delete:hover {
+    background: var(--secondary-accent);
+    color: var(--primary-accent);
+}
+
+/* Info block below the laptop, updates per active project */
+.work-info {
+    width: min(700px, 90%);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    animation: workInfoFade 0.35s ease both;
+}
+
+@keyframes workInfoFade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Screen tabs above the title — per-project, supports admin add/rename/delete */
+.work-screen-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.work-screen-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0;
+    background: transparent;
+    transition: border-color 0.15s ease;
+}
+
+.work-screen-tab.active {
+    border-color: var(--primary-accent);
+    background: var(--secondary-accent);
+}
+
+.work-screen-tab-btn {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border-radius: 999px;
+}
+
+.work-screen-tab.active .work-screen-tab-btn {
+    color: var(--primary-accent);
+    font-weight: 500;
+}
+
+.work-screen-tab-action {
+    appearance: none;
+    background: transparent;
+    border: none;
+    color: var(--text-subtle);
+    font-size: 1rem;
+    line-height: 1;
+    padding: 0.5rem 0.55rem;
+    cursor: pointer;
+    border-left: 1px solid var(--border-color);
+}
+
+.work-screen-tab-action:hover {
+    color: var(--primary-accent);
+}
+
+.work-screen-tab-add {
+    appearance: none;
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-subtle);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.work-screen-tab-add:hover {
+    border-color: var(--primary-accent);
+    color: var(--primary-accent);
+}
+
+.work-info-title {
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--text-dark);
+    margin: 0;
+    letter-spacing: -0.5px;
+    line-height: 1.15;
+}
+
+.work-info-company {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.work-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+}
+
+.work-switcher-arrow:focus,
+.work-switcher-dot:focus {
+    outline: none;
+}
+
+.work-switcher-arrow {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: border-color 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+
+.work-switcher-arrow:hover:not(:disabled) {
+    border-color: var(--primary-accent);
+    color: var(--primary-accent);
+}
+
+.work-switcher-arrow:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.work-switcher-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.work-switcher-dot {
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    padding: 0;
+    background: var(--border-color);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.work-switcher-dot:hover {
+    background: var(--hover-border);
+}
+
+.work-switcher-dot.active {
+    background: var(--primary-accent);
+    transform: scale(1.3);
+}
+
+@media (max-width: 768px) {
+    .work-laptop {
+        width: 95%;
+    }
+    .work-info-title {
+        font-size: 1.1rem;
+    }
+    .work-info-description {
+        font-size: 0.9rem;
+    }
+    .work-node-card {
+        width: 150px;
+        font-size: 0.78rem;
+    }
+}

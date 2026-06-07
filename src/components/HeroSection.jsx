@@ -16,12 +16,10 @@ const zoomBasedReveal = (maxVal) => [
   maxVal
 ];
 
-const HeroSection = () => {
+const HeroSection = ({ onMapEnter, onMemorySelect }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [selectedLocationId, setSelectedLocationId] = useState(null);
-  const [panelMode, setPanelMode] = useState('list'); // 'list' | 'details'
-  const prevSelectedIdRef = useRef(null);
   const [isResumeMenuOpen, setIsResumeMenuOpen] = useState(false);
   const resumeMenuRef = useRef(null);
   const [locations, setLocations] = useState(null);
@@ -42,13 +40,15 @@ const HeroSection = () => {
     };
   }, []);
 
-  const locationList = (locations?.features || [])
-    .map((f) => ({
-      id: f.id ?? f.properties?.id ?? f.properties?.name,
-      name: f.properties?.name ?? 'Untitled',
-      coordinates: f.geometry?.coordinates
-    }))
-    .filter((x) => x.id && Array.isArray(x.coordinates) && x.coordinates.length === 2);
+  const locationList = useMemo(() => {
+    return (locations?.features || [])
+      .map((f) => ({
+        id: f.id ?? f.properties?.id ?? f.properties?.name,
+        name: f.properties?.name ?? 'Untitled',
+        coordinates: f.geometry?.coordinates
+      }))
+      .filter((x) => x.id && Array.isArray(x.coordinates) && x.coordinates.length === 2);
+  }, [locations]);
 
   const randomizedLocationList = useMemo(() => {
     // Randomize once per component mount (so it changes on refresh, but stays stable while browsing)
@@ -59,16 +59,6 @@ const HeroSection = () => {
     }
     return arr;
   }, [locationList]);
-
-  const selectedLocation = useMemo(() => {
-    if (!selectedLocationId) return null;
-    return locationList.find((l) => l.id === selectedLocationId) || null;
-  }, [locationList, selectedLocationId]);
-
-  const selectedDetails = useMemo(() => {
-    if (!selectedLocationId) return null;
-    return locationDetails?.[selectedLocationId] || null;
-  }, [selectedLocationId]);
 
   useEffect(() => {
     if (mapRef.current) return;
@@ -138,24 +128,8 @@ const HeroSection = () => {
           type: 'fill-extrusion',
           paint: {
             'fill-extrusion-color': '#fff',
-            'fill-extrusion-height': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              15,
-              0,
-              15.05,
-              ['get', 'height']
-            ],
-            'fill-extrusion-base': [
-              'interpolate',
-              ['linear'],
-              ['zoom'],
-              15,
-              0,
-              15.05,
-              ['get', 'min_height']
-            ],
+            'fill-extrusion-height': ['get', 'height'],
+            'fill-extrusion-base': ['get', 'min_height'],
             'fill-extrusion-opacity': 1
           }
         },
@@ -262,6 +236,94 @@ const HeroSection = () => {
           ]
         }
       });
+
+      // Always-on 3D extrusions for the buildings at each pin (no zoom floor).
+      // One Overpass call covers every pin; result is a small GeoJSON layer
+      // that renders at any zoom, independent of Mapbox's vector tiles.
+      (async () => {
+        const pinCoords = (locations?.features || [])
+          .map((f) => f.geometry?.coordinates)
+          .filter((c) => Array.isArray(c) && c.length === 2);
+        if (pinCoords.length === 0) return;
+
+        const query = `[out:json][timeout:25];(${pinCoords
+          .map(([lng, lat]) => `way(around:25,${lat},${lng})["building"];`)
+          .join('')});out body;>;out skel qt;`;
+
+        let data;
+        try {
+          const resp = await fetch(
+            'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(query)
+          );
+          if (!resp.ok) throw new Error(`Overpass ${resp.status}`);
+          data = await resp.json();
+        } catch (e) {
+          console.warn('Pinned-building footprints unavailable:', e);
+          return;
+        }
+
+        const nodeCoords = new Map();
+        for (const el of data.elements) {
+          if (el.type === 'node') nodeCoords.set(el.id, [el.lon, el.lat]);
+        }
+
+        const features = [];
+        for (const el of data.elements) {
+          if (el.type !== 'way' || !el.tags?.building) continue;
+          const ring = el.nodes
+            .map((id) => nodeCoords.get(id))
+            .filter((c) => Array.isArray(c));
+          if (ring.length < 3) continue;
+          const [fx, fy] = ring[0];
+          const [lx, ly] = ring[ring.length - 1];
+          if (fx !== lx || fy !== ly) ring.push(ring[0]);
+
+          let height = parseFloat(el.tags.height);
+          if (!Number.isFinite(height) && el.tags['building:levels']) {
+            const levels = parseFloat(el.tags['building:levels']);
+            if (Number.isFinite(levels) && levels > 0) height = levels * 3.5;
+          }
+          if (!Number.isFinite(height) || height <= 0) height = 12;
+          const minHeight = parseFloat(el.tags.min_height) || 0;
+
+          features.push({
+            type: 'Feature',
+            geometry: { type: 'Polygon', coordinates: [ring] },
+            properties: { height, min_height: minHeight }
+          });
+        }
+
+        if (!mapRef.current || features.length === 0) return;
+
+        mapRef.current.addSource('pinned-buildings', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features }
+        });
+        mapRef.current.addLayer(
+          {
+            id: 'pinned-buildings-3d',
+            type: 'fill-extrusion',
+            source: 'pinned-buildings',
+            paint: {
+              'fill-extrusion-color': '#fff',
+              // Real height at z14+, then ramp the height up as you zoom out
+              // so the building stays visibly tall when the camera pulls back.
+              // Geometrically inaccurate by design — readability over realism.
+              'fill-extrusion-height': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                14, ['get', 'height'],
+                10, ['*', ['get', 'height'], 6],
+                6, ['*', ['get', 'height'], 20]
+              ],
+              'fill-extrusion-base': ['get', 'min_height'],
+              'fill-extrusion-opacity': 1
+            }
+          },
+          labelLayerId
+        );
+      })();
     });
 
     return () => {
@@ -273,37 +335,6 @@ const HeroSection = () => {
       }
     };
   }, [locations]);
-
-  const flyToLocation = (loc) => {
-    const map = mapRef.current;
-    if (!map) return;
-
-    const prevId = prevSelectedIdRef.current;
-    if (prevId != null) {
-      try {
-        map.setFeatureState({ source: 'my-locations', id: prevId }, { selected: false });
-      } catch {
-        // ignore
-      }
-    }
-
-    try {
-      map.setFeatureState({ source: 'my-locations', id: loc.id }, { selected: true });
-      prevSelectedIdRef.current = loc.id;
-      setSelectedLocationId(loc.id);
-    } catch {
-      // ignore
-      setSelectedLocationId(loc.id);
-    }
-
-    map.flyTo({
-      center: loc.coordinates,
-      zoom: Math.max(map.getZoom(), 15.5),
-      pitch: 45,
-      duration: 1200,
-      essential: true
-    });
-  };
 
   useEffect(() => {
     if (!isResumeMenuOpen) return;
@@ -382,92 +413,46 @@ const HeroSection = () => {
       ) : null}
 
       <div className="map-row">
-        <div className="map-container">
+        <div className="map-container map-container--preview">
           <div ref={mapContainerRef} id="map" />
+          <button
+            type="button"
+            className="map-enter-overlay"
+            onClick={() => onMapEnter?.()}
+            aria-label="Open the fullscreen map view"
+          >
+            <span className="map-enter-label">Click to view</span>
+          </button>
         </div>
-        <aside className={`location-details-panel ${panelMode === 'details' ? 'expanded' : ''}`} aria-label="Location details">
-          <div key={panelMode} className="panel-content-fade">
-            {panelMode === 'list' ? (
-              <div className="panel-view list-view">
-                <div className="location-details-header">
-                  <div />
-                </div>
-                <div className="locations-list">
-                  {randomizedLocationList.map((loc) => (
-                    <button
-                      key={loc.id}
-                      type="button"
-                      className={`location-item ${selectedLocationId === loc.id ? 'active' : ''}`}
-                      onClick={() => {
-                        flyToLocation(loc);
-                        setPanelMode('details');
-                      }}
-                    >
-                      {locationDetails?.[loc.id]?.title ?? loc.name}
-                    </button>
-                  ))}
-                </div>
+        <aside className="location-details-panel" aria-label="Memory list">
+          <div className="panel-content-fade">
+            <div className="panel-view list-view">
+              <div className="location-details-header">
+                <div />
               </div>
-            ) : (
-              <div className="panel-view details-view">
-                <div className="location-details-header">
-                  <div>
-                    <button
-                      type="button"
-                      className="location-back"
-                      onClick={() => setPanelMode('list')}
-                    >
-                      Back
-                    </button>
-                  </div>
-                </div>
-
-                <div className="location-details-body">
-                  {selectedLocation ? (
-                    <>
-                      {selectedDetails?.subtitle ? (
-                        <div className="location-selected-subtitle">{selectedDetails.subtitle}</div>
-                      ) : null}
-
-                      {selectedDetails?.description ? (
-                        <p className="location-selected-description">{selectedDetails.description}</p>
-                      ) : (
-                        <p className="location-selected-description location-muted">
-                          Add details for this location in <code>src/data/locationDetails.js</code>.
-                        </p>
-                      )}
-
-                      {Array.isArray(selectedDetails?.images) && selectedDetails.images.length > 0 ? (
-                        <div className="location-images">
-                          {selectedDetails.images.map((src, idx) => (
-                            <img
-                              key={idx}
-                              src={src}
-                              alt={`${selectedDetails?.title || selectedLocation.name} ${idx + 1}`}
-                            />
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="location-muted" style={{ fontSize: 12 }}>
-                          Images to be added soon.
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="location-muted">Select a location to see details.</div>
-                  )}
-                </div>
+              <div className="locations-list">
+                {randomizedLocationList.map((loc) => (
+                  <button
+                    key={loc.id}
+                    type="button"
+                    className={`location-item ${selectedLocationId === loc.id ? 'active' : ''}`}
+                    onClick={() => {
+                      setSelectedLocationId(loc.id);
+                      onMemorySelect?.(loc.id);
+                    }}
+                  >
+                    {locationDetails?.[loc.id]?.title ?? loc.name}
+                  </button>
+                ))}
               </div>
-            )}
+            </div>
           </div>
         </aside>
       </div>
 
-      {panelMode === 'list' ? (
-        <p style={{ color: 'var(--text-muted)', fontSize: '12px', marginTop: '5px' }}>
-          Feel free to select one of my memories
-        </p>
-      ) : null}
+      <p style={{ color: 'var(--text-muted)', fontSize: '12px', marginTop: '5px' }}>
+        Feel free to select one of my memories
+      </p>
     </section>
   );
 };

@@ -1,3 +1,5 @@
+import initialDetails from './locationDetails.json';
+
 const trgImages = Object.entries(
   import.meta.glob('../assets/trg/*.{png,jpg,jpeg,JPG,JPEG}', { eager: true, import: 'default' })
 )
@@ -10,85 +12,25 @@ const ccImages = Object.entries(
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([, src]) => src);
 
-export const locationDetails = {
-  "trg-international": {
-    title: "First internship",
-    subtitle: "TRG International",
-    description: "I joined the HR team to learn soft skills, but I utilized my coding skills to create apps that improve my team's workflow. I represented TRG at career fairs, participated in CSR activities, and helped organise events for the company, even one involving the CEO himself!",
-    images: trgImages
-  },
-  "utm-career-center": {
-    title: "On-campus job",
-    subtitle: "UTM Career Center",
-    description: "As tech support, I ensured that all materials were accessible to all 16,000+ students. I also helped with industry outreach, organized career fairs, guided students in resume building and job searching.",
-    images: ccImages
-  },
-  "go-on-hacks": {
-    title: "Software hackathon win 🏆",
-    subtitle: "Go On Hacks",
-    description: "I built my first ever Google extension for this hackathon, since it was a \"stupid hackathon\", we decided to create a tool that turns every face on your screen into LeBron James. I learnt so many new skills and met very ambitious people, from founders to hackers!",
-    images: []
-  },
-  "ember-hacks": {
-    title: "Organizing a hackathon",
-    subtitle: "EmberHacks",
-    description: "I organized my first hackathon for 100+ amazing hackers. I stayed back overnight to guide them, hosted minigames, and had a blast!",
-    images: []
-  },
-  "university-of-toronto": {
-    title: "Going to University",
-    subtitle: "University of Toronto",
-    description: "I study Computer Science at the University of Toronto, and I am trying my very best to hang on to a 3.7 GPA. But most importantly, I am involved in a lot of activities here.",
-    images: []
-  },
-  "techto-hackathon": {
-    title: "Quickest hackathon ever",
-    subtitle: "TechTO Hackathon",
-    description: "We had 6 hours to create a functioning app. Somehow, I ended up creating a tool that is extremely helpful for healthcare, with the help of my amazing teammates.",
-    images: []
-  },
-  "hack-the-north": {
-    title: "Canada's biggest hackathon",
-    subtitle: "Hack The North",
-    description: "I stayed for 2 nights at this hackathon, competed with over 1200+ hackers, and witnessed a World record being broken! It was super tiring, I felt sick afterwards, but it was worth it.",
-    images: []
-  },
-  "ignition-hacks": {
-    title: "Hosting a hackathon workshop",
-    subtitle: "Ignition Hacks",
-    description: "I hosted my first ever hackathon workshop for 100+ hackers. I taught them how to use Mapbox, the tool which I am using for the map on this website!",
-    images: []
-  },
-  "aws-summit": {
-    title: "AWS's largest event",
-    subtitle: "AWS Summit",
-    description: "I arrived here at 7am and stayed until 5pm, with over 10,000 attendees. I learned so much information from industry experts. I got a chance to train my own AI model, with a chance to win a trip to Vegas (I didn't win).",
-    images: []
-  },
-  "google-devfest": {
-    title: "Huge Google workshop",
-    subtitle: "Google DevFest",
-    description: "I participated in a Gemini workshop with 500+ guests, stood up from the crowd to ask questions. I learnt so much about the power of AI and how to use it in my projects!",
-    images: []
-  },
-  "murder-mystery-party": {
-    title: "Party for founders",
-    subtitle: "Murder Mystery Party",
-    description: "I was 4,500km from home, but I attended a Halloween party for young entrepreneurs. I wore a mask the entire night (completely anonymous), and I met so many interesting and ambitious people!",
-    images: []
-  },
-  "shut-up-and-code": {
-    title: "Meeting strangers to code",
-    subtitle: "Shut Up & Code",
-    description: "Strangers just met up to code and learn from each other. I was a bit shy at first, but I ended up meeting some amazing people there.",
-    images: []
-  },
-  "wallyhacks": {
-    title: "First hackathon win 🏆",
-    subtitle: "Wally Hacks",
-    description: "This was my first ever hackathon, and I won second place. I learnt so much about the hackathon process, and I met so many amazing people.",
-    images: []
-  }
+// Locations whose images live in src/assets/ and ship via Vite's bundler get
+// merged in alongside any admin-uploaded images stored under /location-images/.
+const STATIC_IMAGES = {
+  'trg-international': trgImages,
+  'utm-career-center': ccImages
 };
 
+const mergeDetails = (data) => {
+  const out = {};
+  for (const [id, entry] of Object.entries(data || {})) {
+    const uploaded = Array.isArray(entry?.images) ? entry.images : [];
+    const staticImgs = STATIC_IMAGES[id] || [];
+    out[id] = {
+      ...entry,
+      images: [...staticImgs, ...uploaded]
+    };
+  }
+  return out;
+};
 
+export const buildLocationDetails = (data) => mergeDetails(data);
+export const locationDetails = mergeDetails(initialDetails);
