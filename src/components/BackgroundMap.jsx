@@ -54,6 +54,41 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
   const isAdmin = useMemo(isAdminHost, []);
   const mergedDetails = useMemo(() => buildLocationDetails(detailsRaw), [detailsRaw]);
 
+  // Stable random rank per feature id, computed once per mount. Used to
+  // shuffle the sidebar list while still keeping a consistent order as
+  // the user types in the search box or edits titles. Re-shuffles only
+  // when the underlying feature set actually changes (pin add/remove).
+  const randomRank = useMemo(() => {
+    const ids = (locations?.features || [])
+      .map((f) => featureId(f))
+      .filter(Boolean);
+    const ranks = new Map();
+    const shuffled = [...ids];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    shuffled.forEach((id, idx) => ranks.set(id, idx));
+    return ranks;
+  }, [locations]);
+
+  // Bake the edited title into each feature's properties so the on-map
+  // label expression (`get title`) reflects sidebar edits in real time
+  // instead of staying pinned to the GeoJSON's `name`.
+  const labeledLocations = useMemo(() => {
+    if (!locations) return locations;
+    const features = (locations.features || []).map((f) => {
+      const id = featureId(f);
+      const title = id ? mergedDetails?.[id]?.title : null;
+      if (!title) return f;
+      return {
+        ...f,
+        properties: { ...(f.properties || {}), title }
+      };
+    });
+    return { ...locations, features };
+  }, [locations, mergedDetails]);
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -147,7 +182,49 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
         );
 
         if (!map.getSource('my-locations')) {
-          map.addSource('my-locations', { type: 'geojson', data: locations });
+          map.addSource('my-locations', { type: 'geojson', data: labeledLocations });
+        }
+
+        // Pill-shaped light-red background, rendered to canvas with hard
+        // edges then registered as a stretchable image so icon-text-fit
+        // can scale the middle of the pill around each label without
+        // distorting the rounded ends.
+        if (!map.hasImage?.('label-bg')) {
+          try {
+            const radius = 16;
+            const w = radius * 2 + 4;
+            const h = radius * 2;
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#fddce0';
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(w - radius, 0);
+            ctx.arcTo(w, 0, w, radius, radius);
+            ctx.lineTo(w, h - radius);
+            ctx.arcTo(w, h, w - radius, h, radius);
+            ctx.lineTo(radius, h);
+            ctx.arcTo(0, h, 0, h - radius, radius);
+            ctx.lineTo(0, radius);
+            ctx.arcTo(0, 0, radius, 0, radius);
+            ctx.closePath();
+            ctx.fill();
+            const pixels = ctx.getImageData(0, 0, w, h);
+            map.addImage(
+              'label-bg',
+              { width: w, height: h, data: new Uint8Array(pixels.data.buffer) },
+              {
+                stretchX: [[radius, w - radius]],
+                stretchY: [[radius - 1, h - radius + 1]],
+                content: [radius / 2, 2, w - radius / 2, h - 2],
+                pixelRatio: 2
+              }
+            );
+          } catch {
+            // ignore
+          }
         }
 
         const ensureMarkerImage = () =>
@@ -165,22 +242,58 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
             });
           });
 
+        if (!mapRef.current.getLayer('my-locations-highlight')) {
+          mapRef.current.addLayer({
+            id: 'my-locations-highlight',
+            type: 'circle',
+            source: 'my-locations',
+            filter: ['==', ['id'], '__none__'],
+            paint: {
+              'circle-radius': 18,
+              'circle-color': 'rgba(229, 57, 70, 0.12)',
+              'circle-stroke-color': '#e53946',
+              'circle-stroke-width': 2
+            }
+          });
+        }
+
+        // Labels go in their own layer so they render even if the marker
+        // PNG hasn't loaded yet (the icon layer is added inside the
+        // loadImage callback below; coupling text to it meant a slow or
+        // failed image load left the map label-less).
+        if (!mapRef.current.getLayer('my-locations-labels')) {
+          mapRef.current.addLayer({
+            id: 'my-locations-labels',
+            type: 'symbol',
+            source: 'my-locations',
+            layout: {
+              'text-field': ['coalesce', ['get', 'title'], ['get', 'name'], ''],
+              'text-size': 13,
+              'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+              'text-anchor': 'bottom',
+              'text-offset': [
+                'interpolate', ['linear'], ['zoom'],
+                6, ['literal', [0, -1.6]],
+                10, ['literal', [0, -2.2]],
+                14, ['literal', [0, -3.6]],
+                18, ['literal', [0, -5]]
+              ],
+              'text-allow-overlap': true,
+              'text-ignore-placement': true,
+              'icon-image': 'label-bg',
+              'icon-text-fit': 'both',
+              'icon-text-fit-padding': [1, 5, 1, 5],
+              'icon-allow-overlap': true,
+              'icon-ignore-placement': true
+            },
+            paint: {
+              'text-color': '#7a0d18'
+            }
+          });
+        }
+
         ensureMarkerImage().then(() => {
           if (!mapRef.current) return;
-          if (!mapRef.current.getLayer('my-locations-highlight')) {
-            mapRef.current.addLayer({
-              id: 'my-locations-highlight',
-              type: 'circle',
-              source: 'my-locations',
-              filter: ['==', ['id'], '__none__'],
-              paint: {
-                'circle-radius': 18,
-                'circle-color': 'rgba(229, 57, 70, 0.12)',
-                'circle-stroke-color': '#e53946',
-                'circle-stroke-width': 2
-              }
-            });
-          }
           if (!mapRef.current.getLayer('my-locations-points')) {
             mapRef.current.addLayer({
               id: 'my-locations-points',
@@ -203,66 +316,32 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
           }
         });
 
-        // Anchor 'bottom' keeps the label sitting above the lngLat
-        // (which is the marker's tip, since icon-anchor is 'bottom').
-        // A small offset lets the label overlap the upper half of the pin
-        // head by ~50% — feels like a sticker on the marker rather than a
-        // separate floating callout.
-        const hoverPopup = new window.mapboxgl.Popup({
-          closeButton: false,
-          closeOnClick: false,
-          anchor: 'bottom',
-          offset: 22,
-          className: 'location-hover-popup'
-        });
-
-        // Hover tooltip driven by nearest-pin lookup instead of mapbox's
-        // mouseenter on the layer — the layer event reports the topmost
-        // feature and never re-fires when the cursor slides onto another
-        // pin that's overlapping or sitting a few pixels away. Re-resolving
-        // every mousemove keeps the popup label in sync with whichever pin
-        // is actually closest to the cursor.
-        let hoveredId = null;
+        // Hover behavior is now just a cursor change — the name is
+        // already painted on the canvas as part of the symbol layer, so
+        // the floating tooltip is redundant. Nearest-pin lookup keeps
+        // the affordance from breaking on overlapping markers.
+        let hovered = false;
         map.on('mousemove', (e) => {
-          let nearestId = null;
-          let nearestCoords = null;
-          let bestDist = 22 * 22;
+          let nearby = false;
+          const limit = 22 * 22;
           for (const feat of locations?.features || []) {
             const coords = feat.geometry?.coordinates;
             if (!Array.isArray(coords) || coords.length !== 2) continue;
             const p = map.project(coords);
             const dx = p.x - e.point.x;
             const dy = p.y - e.point.y;
-            const d2 = dx * dx + dy * dy;
-            if (d2 < bestDist) {
-              bestDist = d2;
-              nearestId = featureId(feat);
-              nearestCoords = coords;
+            if (dx * dx + dy * dy < limit) {
+              nearby = true;
+              break;
             }
           }
-
-          if (nearestId !== hoveredId) {
-            hoveredId = nearestId;
-            if (nearestId) {
-              const feat = (locations?.features || []).find(
-                (f) => featureId(f) === nearestId
-              );
-              const name = feat?.properties?.name || 'Memory';
-              map.getCanvas().style.cursor = 'pointer';
-              hoverPopup.setLngLat(nearestCoords).setText(name).addTo(map);
-            } else {
-              map.getCanvas().style.cursor = '';
-              hoverPopup.remove();
-            }
-          } else if (nearestCoords) {
-            // Same pin still nearest — keep popup anchored to its lngLat
-            // (cheap; setLngLat just updates a transform).
-            hoverPopup.setLngLat(nearestCoords);
+          if (nearby !== hovered) {
+            hovered = nearby;
+            map.getCanvas().style.cursor = nearby ? 'pointer' : '';
           }
         });
         map.on('mouseout', () => {
-          hoveredId = null;
-          hoverPopup.remove();
+          hovered = false;
           map.getCanvas().style.cursor = '';
         });
 
@@ -287,7 +366,6 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
               id = featureId(feat);
             }
           }
-          hoverPopup.remove();
           setSelectedId(id);
         });
 
@@ -397,7 +475,16 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
       rafRef.current = requestAnimationFrame(tick);
     });
 
-    return () => {
+    // No cleanup tied to [locations]: editing a pin's coordinates calls
+    // setLocations, which would otherwise trigger this effect's cleanup,
+    // remove the map, then re-create it at TORONTO_CENTER — that's the
+    // "everything resets and freezes" the user was hitting. Live
+    // geojson updates flow through the source-sync effect below instead.
+    // True unmount cleanup lives in the empty-deps effect underneath.
+  }, [locations]);
+
+  useEffect(
+    () => () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (customHandlerCleanupRef.current) {
         customHandlerCleanupRef.current();
@@ -407,23 +494,25 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
         mapRef.current.remove();
         mapRef.current = null;
       }
-    };
-  }, [locations]);
+    },
+    []
+  );
 
   // Keep the live mapbox source in sync with the React-side geojson so
-  // moving a pin (admin edit) shows up immediately.
+  // moving a pin or renaming a memory (admin edit) shows up immediately.
+  // Uses labeledLocations so the on-map text-field picks up edited titles.
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !mapReady || !locations) return;
+    if (!map || !mapReady || !labeledLocations) return;
     try {
       const src = map.getSource('my-locations');
       if (src && typeof src.setData === 'function') {
-        src.setData(locations);
+        src.setData(labeledLocations);
       }
     } catch {
       // ignore
     }
-  }, [locations, mapReady]);
+  }, [labeledLocations, mapReady]);
 
   // Focus on/off toggles which handlers are live. Mode (move/rotate/zoom)
   // then layers on top — see the next effect.
@@ -673,6 +762,35 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
     }
   };
 
+  const deleteLocation = (id) => {
+    if (!isAdmin || !id) return;
+    const name =
+      detailsRaw[id]?.title ||
+      locations?.features?.find((f) => featureId(f) === id)?.properties?.name ||
+      id;
+    if (typeof window !== 'undefined') {
+      const ok = window.confirm(
+        `Delete “${name}”? This removes the marker from the map and clears its content. This change is saved to disk.`
+      );
+      if (!ok) return;
+    }
+    setLocations((prev) => {
+      if (!prev) return prev;
+      const features = (prev.features || []).filter((f) => featureId(f) !== id);
+      const next = { ...prev, features };
+      persistGeojson(next);
+      return next;
+    });
+    setDetailsRaw((prev) => {
+      if (!(id in (prev || {}))) return prev;
+      const next = { ...prev };
+      delete next[id];
+      persistDetails(next);
+      return next;
+    });
+    setSelectedId(null);
+  };
+
   const updateCoordinates = (id, lng, lat) => {
     if (!Number.isFinite(lng) || !Number.isFinite(lat)) return;
     setLocations((prev) => {
@@ -843,13 +961,22 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
                         mergedDetails?.[id]?.title || feat.properties?.name || id;
                       const subtitle =
                         mergedDetails?.[id]?.subtitle || feat.properties?.name;
-                      return { id, title, subtitle, feat };
+                      const pinned = `${title || ''} ${subtitle || ''}`.includes(
+                        '👍'
+                      );
+                      return { id, title, subtitle, feat, pinned };
                     })
                     .filter(Boolean)
                     .filter(({ title, subtitle }) => {
                       if (!needle) return true;
                       const hay = `${title || ''} ${subtitle || ''}`.toLowerCase();
                       return hay.includes(needle);
+                    })
+                    .sort((a, b) => {
+                      if (a.pinned !== b.pinned) return a.pinned ? -1 : 1;
+                      return (
+                        (randomRank.get(a.id) ?? 0) - (randomRank.get(b.id) ?? 0)
+                      );
                     });
 
                   if (items.length === 0) {
@@ -1080,6 +1207,16 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
                   />
                   <span>+ Add images</span>
                 </label>
+
+                <div className="location-edit__danger">
+                  <button
+                    type="button"
+                    className="location-edit__delete"
+                    onClick={() => deleteLocation(selectedId)}
+                  >
+                    Delete this location
+                  </button>
+                </div>
                 <div className="location-edit__id">id: {selectedId}</div>
               </div>
             ) : (

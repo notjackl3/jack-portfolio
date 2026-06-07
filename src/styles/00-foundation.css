@@ -133,23 +133,6 @@ body {
     height: 100%;
 }
 
-/* Hover tooltip floating above a marker on the focused background map. */
-.location-hover-popup .mapboxgl-popup-content {
-    padding: 6px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.96);
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
-    font-size: 13px;
-    font-weight: 600;
-    color: #1a1a1a;
-    white-space: nowrap;
-}
-
-/* No tip arrow — the label sits directly over the pin head and reads
-   as a name sticker rather than a callout. */
-.location-hover-popup .mapboxgl-popup-tip {
-    display: none;
-}
 
 /* Mode-selector toolbar (Move / Rotate / Zoom) — pill-style buttons docked
    to the top-center of the focused background map. Modeled after the work
@@ -709,6 +692,34 @@ textarea.location-note-modal__text:focus {
     color: var(--text-subtle);
     text-align: right;
     margin-top: 4px;
+}
+
+.location-edit__danger {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+}
+
+.location-edit__delete {
+    appearance: none;
+    border: 1px solid #e0a3a8;
+    background: #fff5f6;
+    color: #b8232f;
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.location-edit__delete:hover {
+    background: #b8232f;
+    border-color: #b8232f;
+    color: #fff;
 }
 
 /* Admin-only "Preview as visitor" toggle, docked at the top of the modal

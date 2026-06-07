@@ -1,26 +1,26 @@
 {
   "trg-international": {
-    "title": "First internship",
-    "subtitle": "TRG International",
-    "description": "I joined the HR team to learn soft skills, but I utilized my coding skills to create apps that improve my team's workflow. I represented TRG at career fairs, participated in CSR activities, and helped organise events for the company, even one involving the CEO himself!",
+    "title": "TRG International 👍",
+    "subtitle": "first ever internship",
+    "description": "- i joined the HR team to learn soft skills, but i utilized my coding skills to create apps\n- this was back when i didn't know about coding agents...\n- i represented the company at career fairs, pulled in 150 applicants!\n- i participated in csr activities: tree planting, blood donation, food donation, so funnn\n- i direct messaged the ceo and inspired him to start a talk series!",
     "images": []
   },
   "utm-career-center": {
-    "title": "On-campus job",
-    "subtitle": "UTM Career Center",
-    "description": "As tech support, I ensured that all materials were accessible to all 16,000+ students. I also helped with industry outreach, organized career fairs, guided students in resume building and job searching.",
+    "title": "UTM Career Center",
+    "subtitle": "first ever paid job",
+    "description": "- i ensured all the technologies are accessible\n- not really a tech job but i took initiatives to create coding projects\n- first time learning about accessibility, they are actually so important!\n- felt good to finally get paid...",
     "images": []
   },
   "go-on-hacks": {
-    "title": "Software hackathon win 🏆",
-    "subtitle": "Go On Hacks",
-    "description": "I built my first ever Google extension for this hackathon, since it was a \"stupid hackathon\", we decided to create a tool that turns every face on your screen into LeBron James. I learnt so many new skills and met very ambitious people, from founders to hackers!",
+    "title": "Go On Hacks",
+    "subtitle": "the most weird hackathon",
+    "description": "- we created a tool that turns every face on your screen into lebron james\n- this was so stupid lol, but i learnt a lot from making a browser extension\n- i realized smart people to do crazy things with their imagination\n- first time in a hackathon i contributed something meaningful!",
     "images": []
   },
   "ember-hacks": {
-    "title": "Organizing a hackathon",
-    "subtitle": "EmberHacks",
-    "description": "I organized my first hackathon for 100+ amazing hackers. I stayed back overnight to guide them, hosted minigames, and had a blast!",
+    "title": "EmberHacks",
+    "subtitle": "organized my first hackathon",
+    "description": "- it was super eye-opening to be on the organizing side\n- 100 hackers came, i was in charged of the merch\n- as an organizer, i fell asleep before the hackers\n- mlh partnered with us and they brought amazing prizes",
     "images": []
   },
   "university-of-toronto": {
@@ -30,57 +30,57 @@
     "images": []
   },
   "techto-hackathon": {
-    "title": "Quickest hackathon ever",
-    "subtitle": "TechTO Hackathon",
-    "description": "We had 6 hours to create a functioning app. Somehow, I ended up creating a tool that is extremely helpful for healthcare, with the help of my amazing teammates.",
+    "title": "TechTO Hackathon",
+    "subtitle": "the quickest hackathon ever",
+    "description": "- we had 6 hours to create a functioning app\n- i didn't know how to code back then so i helped my team edit videos, and set up some environments\n- there was a 16yo in my team, super cracked!",
     "images": []
   },
   "hack-the-north": {
-    "title": "Canada's biggest hackathon",
-    "subtitle": "Hack The North",
-    "description": "I stayed for 2 nights at this hackathon, competed with over 1200+ hackers, and witnessed a World record being broken! It was super tiring, I felt sick afterwards, but it was worth it.",
+    "title": "Hack The North",
+    "subtitle": "canada's biggest hackathon",
+    "description": "- i stayed for 2 nights at this hackathon (first time overnight)\n- competed with over 1200+ hackers, and witnessed a world record being broken!\n- i literally got sick after this\n- i learnt from my teammate how to use cursor for the first time ever",
     "images": []
   },
   "ignition-hacks": {
-    "title": "Hosting a hackathon workshop",
-    "subtitle": "Ignition Hacks",
-    "description": "I hosted my first ever hackathon workshop for 100+ hackers. I taught them how to use Mapbox, the tool which I am using for the map on this website!",
+    "title": "Ignition Hacks",
+    "subtitle": "first ever workshop",
+    "description": "- i hosted my first ever workshop for 100 people\n- well only 5 came, i was super shy\n- for the first time i was really inexperienced and i felt left out\n- i left the event early, haiz, not looking back it was a learning experience!",
     "images": []
   },
   "aws-summit": {
-    "title": "AWS's largest event",
-    "subtitle": "AWS Summit",
-    "description": "I arrived here at 7am and stayed until 5pm, with over 10,000 attendees. I learned so much information from industry experts. I got a chance to train my own AI model, with a chance to win a trip to Vegas (I didn't win).",
+    "title": "AWS Summit",
+    "subtitle": "aws largest tech event",
+    "description": "- i arrived here at 7am and stayed until 5pm\n- with over 10,000 attendees, i learned so much information from industry experts\n- i got a chance to train my own ai model, with a chance to win a trip to vegas (i didn't win)",
     "images": []
   },
   "google-devfest": {
-    "title": "Huge Google workshop",
-    "subtitle": "Google DevFest",
-    "description": "I participated in a Gemini workshop with 500+ guests, stood up from the crowd to ask questions. I learnt so much about the power of AI and how to use it in my projects!",
+    "title": "Google DevFest",
+    "subtitle": "huge google workshop",
+    "description": "- i participated in a Gemini workshop with 500+ guests\n- stood up from the crowd to ask questions (literally just stood up to overcome my fear, i did it!)",
     "images": []
   },
   "murder-mystery-party": {
-    "title": "Party for founders",
-    "subtitle": "Murder Mystery Party",
-    "description": "I was 4,500km from home, but I attended a Halloween party for young entrepreneurs. I wore a mask the entire night (completely anonymous), and I met so many interesting and ambitious people!",
+    "title": "Murder Mystery Party 👍",
+    "subtitle": "party for founders and tech people",
+    "description": "- i was 4,500km from home, but i attended a Halloween party for young entrepreneurs\n- i wore a mask the entire night (completely anonymous)\n- met really interesting people, some i ended up working on projects with now back in toronto!",
     "images": []
   },
   "shut-up-and-code": {
-    "title": "Meeting strangers to code",
-    "subtitle": "Shut Up & Code",
-    "description": "Strangers just met up to code and learn from each other. I was a bit shy at first, but I ended up meeting some amazing people there.",
+    "title": "Shut Up & Code",
+    "subtitle": "meeting strangers to code",
+    "description": "- strangers just met up to code and learn from each other\n- i was a bit shy at first, but i ended up meeting some amazing people there",
     "images": []
   },
   "wallyhacks": {
-    "title": "First hackathon win 🏆",
-    "subtitle": "Wally Hacks",
-    "description": "This was my first ever hackathon, and I won second place. I learnt so much about the hackathon process, and I met so many amazing people.",
+    "title": "WallyHacks",
+    "subtitle": "first ever hackathon first ever win",
+    "description": "- first ever hackathon i've been to\n- it was hardware and i know nothing\n- a 4th year student carried us to second place\n- i learnt so much, i helped with logics and cleaned up the cables!",
     "images": []
   },
   "codequest": {
     "title": "CodeQuest",
     "subtitle": "leetcode competition",
-    "description": "i was speedrunning through the questions and got first place!",
+    "description": "- i was speedrunning through the questions and got first place!\n- first ever coding competition, it was all fun tho",
     "images": []
   },
   "bell-sap-case-competition": {
@@ -98,7 +98,169 @@
   "amazon-fulfillment-center": {
     "title": "",
     "subtitle": "2 hour trip opened my eyes",
-    "description": "- it was super cool to see the most advanced robotics being used here\n- we weren't albe",
+    "description": "- it was super cool to see the most advanced robotics being used here\n- we weren't allowed to film or record anything but it was super cool\n- ",
+    "images": []
+  },
+  "frasershacks-2026": {
+    "title": "FrasersHacks",
+    "subtitle": "first time judging",
+    "description": "- a high school student reached out to me to be a judge\n- super surprised because it was my first time judging\n- funny because my friend was invited as well, so we judged together",
+    "images": []
+  },
+  "deerhacks-v": {
+    "title": "DeerHacks",
+    "subtitle": "first solo hackathon",
+    "description": "- i solo'ed the hackathon because i had a comedy show that night\n- i went to tech roast (the famous guys on tiktok, it was super fun)\n- never felt more alone, happy with my project but will never solo again...",
+    "images": []
+  },
+  "ai-agents-waterloo-voice-hackathon": {
+    "title": "AI Agents Voice Hackathon",
+    "subtitle": "6th hackathon in the streak",
+    "description": "- met up with a vc (yes, a vc doing a hackathon) in downtown to work on this hackathon online\n- i contributed a lot at first but it was valentines\n- yes i dipped the hackathon to go out for valentines and came back after (we did not win)",
+    "images": []
+  },
+  "hack-canada-2026": {
+    "title": "",
+    "subtitle": "9th hackathon in the streak",
+    "description": "- we didn't have table and chair for this hackathon, rooms were banned\n- i sneaked into rooms, avoided organizers, was super fun\n- during the hackathon, i commuted 2 hours to another hackathon for the opening ceremony and came back\n- we won though!",
+    "images": []
+  },
+  "uofthacks-13": {
+    "title": "UoftHacks",
+    "subtitle": "2nd hackathon in the streak",
+    "description": "- i heard half the people got poisoned omg (it was pasta, it was super good tho, i had two portions and i was fine)\n- super fun hackathon, managed to make friends with a lot of people\n- i learnt that hackathons are the best way for connections\n- we won a follow-up award",
+    "images": []
+  },
+  "utra-hacks-2026": {
+    "title": "UTRA Hacks",
+    "subtitle": "4th hackathon in the streak",
+    "description": "- i hated hardware, and this was a hardware hackathon\n- i touched hardware a bit, helped assemble the car\n- i solo'ed the software part for the team, and we ended up winning the software prize!",
+    "images": []
+  },
+  "qhacks": {
+    "title": "QHacks 👍",
+    "subtitle": "5th hackathon in the streak, favourite hackathon",
+    "description": "- we spent $200 going back and forth to kingston\n- during the hackathon, we recruited organizers to be our agents, we asked them to go scout other projects, and give us extra food\n- i landed a bottle flip trick shot on camera\n- a hackathon where i had a bed to sleep on!\n- our project was impressive and had a lot of features, judges gave us extra time to demo",
+    "images": []
+  },
+  "kingston-mayors-innovation-challenge": {
+    "title": "",
+    "subtitle": "i met the mayor of kingston",
+    "description": "- following up qhacks, we got selected to pitch the mayor at city hall\n- spend another $200 for the trip, we didn't win anything\n- but our project was the most technically complex one!",
+    "images": []
+  },
+  "hack-the-globe": {
+    "title": "",
+    "subtitle": "12th hackathon in the streak",
+    "description": "- it was a combined case comp and hackathon\n- we realized too late that ours are too complex and most of them focused on the pitching\n- but we stayed up on the streets until 4am because the venue was closed",
+    "images": []
+  },
+  "stupid-ideas-hackathon": {
+    "title": "Stupid Ideas Hackathon",
+    "subtitle": "14th hackathon in the streak",
+    "description": "- we remade google chrome but 2016 version in 2015 version\n- included so many easter eggs and games\n- we had clash royale, vines, youtube, spotify, chess, bottle flip, etc. etc. all from 2016",
+    "images": []
+  },
+  "smilehacks-2026": {
+    "title": "",
+    "subtitle": "7th hackathon in the streak",
+    "description": "- i thought my streak would end here, there were no more hackathons to go to until this pops up\n- i pretty much carried the entire project, for the first time, since my teammates are non technical\n- we got third place, my first ever podium win\n- we also won the best video, so two prizes at the same time\n- i also made friends with couple of investors who are interested in our project",
+    "images": []
+  },
+  "stan-hackai-toronto": {
+    "title": "Stan x HackAI Hackathon 👍",
+    "subtitle": "3rd hackathon the streak",
+    "description": "- craziest hackathon we been to so far\n- there were salmon, steak, sushi for food\n- when we were hungry, they bought us extra food\n- the prize was $20,000 for the first place\n- me and my friend sneaked out and bought soju in the middle of the night",
+    "images": []
+  },
+  "hack-the-future": {
+    "title": "Hack The Future 👍",
+    "subtitle": "10th hackathon in the streak",
+    "description": "- first time i ever win first place\n- and it was at google office\n- we had to go to 3 different rounds to get here\n- this was so crazy, i messed up my demo a bit but we still won\n- the most proud moment ever, my team had bbq afterwards",
+    "images": []
+  },
+  "sandcastle-sandbox": {
+    "title": "sandcastle",
+    "subtitle": "hackathon at a cafe",
+    "description": "- the organizers got inspired from my hackathon to create their own\n- love the prizes, they were giving out pokemon cards\n- it was at a cafe shop, there was place to lie down and sleep too",
+    "images": []
+  },
+  "nvidia-spark-hack-toronto": {
+    "title": "NVIDIA Spark Hack",
+    "subtitle": "official hackathon by nvidia",
+    "description": "- there were too much fun things to do we slacked off\n- i pulled off a sick project the night before submission, it was great!\n- we got distracted by the indoor basketball, ping pong, pool, arcade machine, etc. (it was super fun tho)\n- played board games, catan, while working on the project\n- the prize was a $6,000 computer",
+    "images": []
+  },
+  "soon-hackathon": {
+    "title": "SOON Hackathon 👍",
+    "subtitle": "my very own hackathon",
+    "description": "- creating SOON, i wanted this to the most memorable hackathon ever\n- i promised companies branding, solutions, connections, new hires\n- i promised hackers food, networking, memories\n- we created Something Out Of Nothing\n- i gave my team 2 months to plan this entire hackathon from scratch\n- we truly created something special, and will continue to do so",
+    "images": []
+  },
+  "genai-genesis-2026": {
+    "title": "GenAI Genesis",
+    "subtitle": "11th hackathon in the streak",
+    "description": "- i organized the hackathon for 1000+ people\n- a lot of running arounds, a lot of work\n- in the middle, i ran back to mississauga to help with a case competition and came back\n- to host a hackathon at this scale was so fun, i bought korean fried chicken for all the hackers",
+    "images": []
+  },
+  "bearhacks-2025": {
+    "title": "BearHacks",
+    "subtitle": "judging and leading a workshop",
+    "description": "- so many cool projects in this hackathon, impressive hardware projects\n- i led the workshop again, last time i had 5 people ca me, this time 70 people came to listen, half of the people there!\n- was super fun to be on the other side, managed to connect with other judges\n- among all the judges, i was the youngest and dumbest one haha",
+    "images": []
+  },
+  "cutc-2026": {
+    "title": "CUTC Tech Conference",
+    "subtitle": "got recognized in public",
+    "description": "- after soon hackathon, coming to a major event like this, i am so surprised i got recognized, and some asked to take pictures with me\n- it was so fun to meet other people here, people loved what i do\n- talked to many founders, recruiters, and ceos, made them remember who i am!",
+    "images": []
+  },
+  "homecoming-ttw": {
+    "title": "Homecoming",
+    "subtitle": "biggest tech talk ever",
+    "description": "- thousands of people gather here to listen to top ceos share their stories\n- i made very meaningful connections here, talked to a lot of people\n- i skipped work to come here, but my eyes always looked over the slack messages\n- let my claude code run while i listened to the talk",
+    "images": []
+  },
+  "cohere-party": {
+    "title": "Cohere Party 👍",
+    "subtitle": "craziest party with craziest people",
+    "description": "- met the mayor of toronto at this party\n- and also cohere founders\n- needed to crack a riddle and beat an ai system to get the invitation ticket\n- met so many new and cool people, they are all super cracked and ambitious\n- for the first time i felt like i was in sf!",
+    "images": []
+  },
+  "ai-collective-ontario-hackathons-mixer": {
+    "title": "Ontario Hackathons Mixer",
+    "subtitle": "meetups for hackathon organizers",
+    "description": "- super niche meetup for hackathon enthusiasts",
+    "images": []
+  },
+  "google-office-tour": {
+    "title": "",
+    "subtitle": "my favourite office yet",
+    "description": "- skipped my midterm to go to this office tour\n- absolutely loved the interior, it was very well designed\n- met very cool people here\n- this fueled my google dream!",
+    "images": []
+  },
+  "microsoft-canada-hq": {
+    "title": "",
+    "subtitle": "the first office tour",
+    "description": "- first time i visit a big company's office\n- the view was amazing, right next to cn tower\n- this made me wanting to work for these companies, so inspiring",
+    "images": []
+  },
+  "shopify-office-tour": {
+    "title": "",
+    "subtitle": "super creative office tour",
+    "description": "- they had indoor karaoke, ping pong, and golf\n- i love this office so much, the food were free, the snacks were unlimited\n- listened to the head of engineer share his stories, love to hear how someone started their tech journey\n- met friends here who worked at shopify!",
+    "images": []
+  },
+  "deloitte-office-tour": {
+    "title": "",
+    "subtitle": "a very interesting office tour",
+    "description": "- just the vibes, i don't know, the food was good, but the vibes make me feel like i don't like consulting that much\n- office was very beautiful but empty at the same time\n- it was a very interesting office tour",
+    "images": []
+  },
+  "aucctus-ai-internship": {
+    "title": "Aucctus AI 👍",
+    "subtitle": "first every tech internship",
+    "description": "- where everything begun, it was during my finals when i did their take home project\n- sacrificed my grades for this internship, it was super worth it\n- super fun to work at a startup, everything moved very fast, and we were working with f500 companies\n- i owned features, made a new pipeline from scratch and impressed the ceo, and managed to get it out to clients\n- for the first time i loved my job!",
     "images": []
   }
 }

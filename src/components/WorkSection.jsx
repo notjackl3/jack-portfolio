@@ -11,6 +11,25 @@ const SCREEN = {
   heightPct: 73.3,
 };
 
+const TRANSITION_STORAGE_KEY = 'work-transition-mode-v1';
+const TRANSITION_OPTIONS = [
+  { id: 'slide', label: 'slide' },
+  { id: 'flip', label: 'flip' },
+  { id: 'crt', label: 'crt' },
+  { id: 'fade', label: 'fade' },
+];
+const DEFAULT_TRANSITION = 'slide';
+
+const loadTransition = () => {
+  if (typeof window === 'undefined') return DEFAULT_TRANSITION;
+  try {
+    const v = localStorage.getItem(TRANSITION_STORAGE_KEY);
+    return TRANSITION_OPTIONS.some((o) => o.id === v) ? v : DEFAULT_TRANSITION;
+  } catch {
+    return DEFAULT_TRANSITION;
+  }
+};
+
 const isAdminHost = () => {
   if (typeof window === 'undefined') return false;
   const h = window.location.hostname;
@@ -32,29 +51,63 @@ const normalizeProjectState = (raw) => ({
   nodes: typeof raw?.nodes === 'object' && raw.nodes !== null ? raw.nodes : {},
 });
 
-const Laptop = ({ image, alt }) => (
-  <>
-    <div
-      className="work-laptop-screen"
-      style={{
-        left: `${SCREEN.leftPct}%`,
-        top: `${SCREEN.topPct}%`,
-        width: `${SCREEN.widthPct}%`,
-        height: `${SCREEN.heightPct}%`,
-      }}
-    >
-      {image ? <img src={image} alt={alt} draggable={false} /> : null}
-    </div>
-    <img src={laptopImg} alt="Laptop frame" className="work-laptop-img" draggable={false} />
-  </>
-);
+const Laptop = ({ image, alt, transition, direction }) => {
+  const [current, setCurrent] = useState(image);
+  const [prev, setPrev] = useState(null);
+  const [tk, setTk] = useState(0);
+
+  useEffect(() => {
+    if (image === current) return;
+    setPrev(current);
+    setCurrent(image);
+    setTk((k) => k + 1);
+    // Long enough to outlast the slowest animation (CRT ~ 800ms).
+    const t = setTimeout(() => setPrev(null), 900);
+    return () => clearTimeout(t);
+  }, [image, current]);
+
+  return (
+    <>
+      <div
+        className={`work-laptop-screen transition-${transition} direction-${direction}`}
+        style={{
+          left: `${SCREEN.leftPct}%`,
+          top: `${SCREEN.topPct}%`,
+          width: `${SCREEN.widthPct}%`,
+          height: `${SCREEN.heightPct}%`,
+        }}
+      >
+        {prev ? (
+          <img
+            key={`prev-${tk}`}
+            src={prev}
+            alt=""
+            aria-hidden="true"
+            className="work-screen-img is-leaving"
+            draggable={false}
+          />
+        ) : null}
+        {current ? (
+          <img
+            key={`curr-${tk}`}
+            src={current}
+            alt={alt}
+            className="work-screen-img is-entering"
+            draggable={false}
+          />
+        ) : null}
+      </div>
+      <img src={laptopImg} alt="Laptop frame" className="work-laptop-img" draggable={false} />
+    </>
+  );
+};
 
 const screenPctToContainerPct = (xPct, yPct) => ({
   x: SCREEN.leftPct + (xPct / 100) * SCREEN.widthPct,
   y: SCREEN.topPct + (yPct / 100) * SCREEN.heightPct,
 });
 
-const ProjectStage = ({ image, alt, nodes, isAdmin, onChange }) => {
+const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, transition, direction }) => {
   const stageRef = useRef(null);
   const dragRef = useRef(null);
 
@@ -115,7 +168,7 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange }) => {
 
   return (
     <div className="work-laptop" ref={stageRef}>
-      <Laptop image={image} alt={alt} />
+      <Laptop image={image} alt={alt} transition={transition} direction={direction} />
 
       <svg className="work-nodes-svg" viewBox="0 0 100 100" preserveAspectRatio="none">
         {nodes.map((n) => {
@@ -300,6 +353,18 @@ const WorkSection = () => {
   const stageScrollRef = useRef(null);
   const saveTimerRef = useRef(null);
   const isAdmin = useMemo(isAdminHost, []);
+  const [transition, setTransition] = useState(loadTransition);
+  // Track project-change direction so the slide animation knows which way to swipe.
+  const [direction, setDirection] = useState('forward');
+  const prevActiveRef = useRef(0);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(TRANSITION_STORAGE_KEY, transition);
+    } catch {
+      /* ignore */
+    }
+  }, [transition]);
 
   // Scroll-driven active project.
   useEffect(() => {
@@ -329,6 +394,13 @@ const WorkSection = () => {
   useEffect(() => {
     setManualActive(null);
   }, [scrollActive]);
+
+  // Update slide direction whenever the active project changes.
+  useEffect(() => {
+    if (active === prevActiveRef.current) return;
+    setDirection(active > prevActiveRef.current ? 'forward' : 'backward');
+    prevActiveRef.current = active;
+  }, [active]);
 
   const persist = (next) => {
     if (!isAdmin) return;
@@ -460,6 +532,8 @@ const WorkSection = () => {
             nodes={activeScreenNodes}
             isAdmin={isAdmin}
             onChange={setScreenNodes}
+            transition={transition}
+            direction={direction}
           />
           <div className="work-info">
             <ScreenTabs
@@ -472,6 +546,24 @@ const WorkSection = () => {
               onDelete={deleteScreen}
               onAddNode={() => setScreenNodes([...activeScreenNodes, newNode()])}
             />
+            {isAdmin && (
+              <div className="work-transition-picker" role="radiogroup" aria-label="Screen transition">
+                <span className="work-transition-picker-label">transition</span>
+                {TRANSITION_OPTIONS.map((t) => (
+                  <button
+                    key={t.id}
+                    type="button"
+                    role="radio"
+                    aria-checked={transition === t.id}
+                    className={`work-transition-picker-btn ${transition === t.id ? 'active' : ''}`}
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => setTransition(t.id)}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            )}
             <h3 className="work-info-title">{activeProject?.title}</h3>
             {(activeProject?.company || activeProject?.duration) && (
               <span className="work-info-company">

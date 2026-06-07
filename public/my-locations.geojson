@@ -303,8 +303,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.3848,
-          43.654
+          -79.407349,
+          43.641859
         ]
       },
       "id": "stupid-ideas-hackathon"
@@ -396,41 +396,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Innovation Hackathon (MakersLounge TTW #11)"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.401,
-          43.6437
-        ]
-      },
-      "id": "innovation-hackathon-makerslounge"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "First-ever hackathon"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.6631,
-          43.5485
-        ]
-      },
-      "id": "first-hackathon"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "SOON Hackathon"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.95,
-          43.75
+          -79.184615,
+          44.038879
         ]
       },
       "id": "soon-hackathon"
@@ -522,34 +494,6 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "DevTools Toronto #7"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.383,
-          43.648
-        ]
-      },
-      "id": "devtools-toronto-7"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Schulich / York University Party"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.5019,
-          43.7735
-        ]
-      },
-      "id": "schulich-york-party"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Homecoming (Toronto Tech Week)"
       },
       "geometry": {
@@ -569,39 +513,11 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.3886,
-          43.6453
+          -79.43492,
+          43.670512
         ]
       },
       "id": "cohere-party"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Hackathon Organizers' Meetup"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.3816,
-          43.6524
-        ]
-      },
-      "id": "organizers-meetup"
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Krista Kim's Heart Space"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -79.3856,
-          43.6532
-        ]
-      },
-      "id": "krista-kim-heart-space"
     },
     {
       "type": "Feature",
@@ -625,8 +541,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.3764,
-          43.6485
+          -79.375482,
+          43.649487
         ]
       },
       "id": "google-office-tour"
@@ -690,27 +606,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Vancouver Solo Trip + Founders' Halloween Party"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -123.1207,
-          49.2827
-        ]
-      },
-      "id": "vancouver-solo-trip"
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Joining Aucctus AI — Software Engineer Intern"
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -79.3808,
-          43.6532
+          -79.398373,
+          43.642352
         ]
       },
       "id": "aucctus-ai-internship"
