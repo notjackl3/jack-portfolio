@@ -416,7 +416,7 @@ textarea.work-node-card-text {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 }
 
 .work-switcher-arrow:focus,
