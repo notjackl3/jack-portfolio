@@ -441,7 +441,7 @@ const HeroSection = ({ onMapEnter, onMemorySelect }) => {
                       onMemorySelect?.(loc.id);
                     }}
                   >
-                    {locationDetails?.[loc.id]?.title ?? loc.name}
+                    {locationDetails?.[loc.id]?.title || loc.name || 'Untitled'}
                   </button>
                 ))}
               </div>

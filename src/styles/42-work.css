@@ -13,16 +13,17 @@
 }
 
 .work-stage-sticky {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    position: relative;
+
+
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     /* Push the laptop closer to the top of the viewport (still keeps a margin). */
     justify-content: flex-start;
-    gap: 1.25rem;
+    /* Tight gap so the screen-pills row hugs the laptop base. */
+    gap: 0.25rem;
     padding: 11vh 0 2rem;
 }
 
@@ -159,6 +160,7 @@
 
 .work-node-dot.is-admin {
     cursor: move;
+    touch-action: none;
 }
 
 /* Callout cards positioned in laptop-container space (can extend off the laptop) */
@@ -200,10 +202,21 @@
 .work-node-card.is-admin .work-node-card-handle {
     display: inline-block;
     cursor: move;
+    touch-action: none;
 }
 
 .work-node-card.is-admin .work-node-card-handle:hover {
     background: var(--secondary-accent);
+}
+
+/* Visitors drag the card body directly to declutter overlapping notes. */
+.work-node-card:not(.is-admin) {
+    cursor: grab;
+    touch-action: none;
+}
+
+.work-node-card:not(.is-admin):active {
+    cursor: grabbing;
 }
 
 p.work-node-card-text {
@@ -477,7 +490,42 @@ textarea.work-node-card-text {
         font-size: 0.9rem;
     }
     .work-node-card {
-        width: 150px;
-        font-size: 0.78rem;
+        width: 130px;
+        padding: 7px 9px;
+        font-size: 0.7rem;
+        border-radius: 6px;
+    }
+    p.work-node-card-text,
+    textarea.work-node-card-text {
+        line-height: 1.3;
+    }
+    .work-node-dot {
+        width: 11px;
+        height: 11px;
+        border-width: 1.5px;
+    }
+    .work-node-card-handle {
+        font-size: 0.6rem;
+    }
+    .work-node-card-delete {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .work-node-card {
+        width: 105px;
+        padding: 5px 7px;
+        font-size: 0.62rem;
+        border-radius: 5px;
+    }
+    .work-node-dot {
+        width: 9px;
+        height: 9px;
+        border-width: 1.5px;
+    }
+    textarea.work-node-card-text {
+        padding-top: 11px;
+        min-height: 46px;
     }
 }

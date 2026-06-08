@@ -18,6 +18,15 @@ function App() {
     setActiveTab(tabId);
   };
 
+  // Annotate the document body so global, non-React elements (e.g. the
+  // webring widget embedded in index.html) can be shown / hidden per tab.
+  useEffect(() => {
+    document.body.dataset.activeTab = activeTab;
+    return () => {
+      delete document.body.dataset.activeTab;
+    };
+  }, [activeTab]);
+
   const focusOnLocation = (id) => {
     setIsMapFocused(true);
     setFocusRequest((prev) => ({ id, key: (prev?.key || 0) + 1 }));

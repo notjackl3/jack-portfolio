@@ -147,7 +147,10 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, animKey }) => {
   };
 
   const beginDrag = (e, mode, nodeId) => {
-    if (!isAdmin) return;
+    // Visitors can reposition cards (in-memory only — persist is admin-gated)
+    // so crowded layouts can be untangled. The on-screen node anchor is
+    // admin-only because moving it would change the intent of the note.
+    if (!isAdmin && mode === 'node') return;
     e.preventDefault();
     e.stopPropagation();
     const rect = stageRef.current.getBoundingClientRect();
@@ -243,11 +246,23 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, animKey }) => {
         );
       })}
 
-      {nodes.map((n) => (
+      {nodes.map((n) => {
+        // Visitors drag by the whole card body; admins drag by the ⋮⋮ handle
+        // so the textarea inside the card stays interactive.
+        const cardDragHandlers = !isAdmin
+          ? {
+              onPointerDown: (e) => beginDrag(e, 'card', n.id),
+              onPointerMove,
+              onPointerUp: endDrag,
+              onPointerCancel: endDrag,
+            }
+          : {};
+        return (
         <div
           key={`card-${n.id}`}
           className={`work-node-card ${isAdmin ? 'is-admin' : ''}`}
           style={{ left: `${n.cx}%`, top: `${n.cy}%` }}
+          {...cardDragHandlers}
         >
           <div
             className="work-node-card-handle"
@@ -283,7 +298,8 @@ const ProjectStage = ({ image, alt, nodes, isAdmin, onChange, animKey }) => {
             </button>
           )}
         </div>
-      ))}
+        );
+      })}
       </div>
     </div>
   );
@@ -412,49 +428,14 @@ const ScreenTabs = ({
 
 const WorkSection = () => {
   const count = workProjects.length;
-  // Active project comes from one of two sources:
-  //   scrollActive  — derived from window scroll within the stage
-  //   manualActive  — set by clicking the prev/next/dot switcher (no scroll)
-  // Display uses manualActive when set; it auto-clears the moment scroll
-  // crosses into a new project's range, so the two modes never fight.
-  const [scrollActive, setScrollActive] = useState(0);
-  const [manualActive, setManualActive] = useState(null);
-  const active = manualActive ?? scrollActive;
+  // Single-viewport stage: the only way to change the active project is the
+  // prev / next arrows and the switcher dots. No scroll-driven progression.
+  const [active, setActive] = useState(0);
   const [data, setData] = useState(() => initialData || {});
   // Which screen is active per project (by screen id).
   const [activeScreenByProject, setActiveScreenByProject] = useState({});
-  const stageScrollRef = useRef(null);
   const saveTimerRef = useRef(null);
   const isAdmin = useMemo(isAdminHost, []);
-
-  // Scroll-driven active project.
-  useEffect(() => {
-    const stage = stageScrollRef.current;
-    if (!stage) return;
-    const update = () => {
-      const rect = stage.getBoundingClientRect();
-      const stageHeight = stage.clientHeight;
-      const viewport = window.innerHeight;
-      const scrolled = -rect.top;
-      const scrollable = Math.max(1, stageHeight - viewport);
-      const progress = Math.max(0, Math.min(0.999, scrolled / scrollable));
-      const idx = Math.min(count - 1, Math.floor(progress * count));
-      setScrollActive((prev) => (prev === idx ? prev : idx));
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    window.addEventListener('resize', update);
-    return () => {
-      window.removeEventListener('scroll', update);
-      window.removeEventListener('resize', update);
-    };
-  }, [count]);
-
-  // Whenever real scroll moves us into a new project range, drop the manual
-  // override so the scroll position becomes the source of truth again.
-  useEffect(() => {
-    setManualActive(null);
-  }, [scrollActive]);
 
   const persist = (next) => {
     if (!isAdmin) return;
@@ -524,7 +505,7 @@ const WorkSection = () => {
       return next;
     });
     // Keep the same project highlighted as it changes position.
-    setManualActive(targetIdx);
+    setActive(targetIdx);
   };
 
   const editProjectMeta = (field, label) => {
@@ -664,16 +645,12 @@ const WorkSection = () => {
 
   const goToProject = (idx) => {
     if (idx < 0 || idx >= count) return;
-    // Just swap the active project — don't scroll the page. The page can
-    // still drive switching when the user actually scrolls; this button
-    // path is independent so the navbar stays where it is.
-    setManualActive(idx);
+    setActive(idx);
   };
 
-  const stageStyle = useMemo(
-    () => ({ height: `calc(${count} * 100vh)` }),
-    [count]
-  );
+  // Single-viewport stage. Outer container hugs content so no extra page
+  // scroll is introduced beyond what the laptop + info naturally need.
+  const stageStyle = useMemo(() => ({}), []);
 
   // Resolve the actual image URL for the active screen. `src` (an admin-uploaded
   // URL) wins over `image` (a Vite-imported asset) so overrides take priority.
@@ -681,7 +658,7 @@ const WorkSection = () => {
 
   return (
     <section id="work" className="section tab-content work-section">
-      <div className="work-stage" ref={stageScrollRef} style={stageStyle}>
+      <div className="work-stage" style={stageStyle}>
         <div className="work-stage-sticky">
           <ProjectStage
             image={activeImage}

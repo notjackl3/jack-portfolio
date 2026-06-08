@@ -51,6 +51,19 @@ body {
     min-height: 100vh;
 }
 
+/* Webring widget (embedded directly in index.html) is only relevant on
+   the home tab. App tags the body with `data-active-tab`; hide elsewhere. */
+body[data-active-tab]:not([data-active-tab="home"]) [data-webring] {
+    display: none;
+}
+
+/* Work tab is single-viewport by design — drop main-content's min-height
+   and bottom margin so the body doesn't add empty scrollable space below. */
+body[data-active-tab="work"] .main-content {
+    min-height: 0;
+    margin-bottom: 0;
+}
+
 /* Rotating Toronto map used as the page background. */
 .background-map {
     position: fixed;
