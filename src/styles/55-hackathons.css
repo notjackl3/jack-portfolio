@@ -356,18 +356,20 @@
 
 /* ── Modal ── */
 
+/* Mostly-transparent backdrop with a soft blur so the stamps behind recede
+ * while the popup is open; outside clicks still close the modal. */
 .hackathon-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(15, 12, 8, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
   padding: 24px 16px;
-  animation: hackathonOverlayIn 260ms ease forwards;
+  animation: hackathonOverlayIn 180ms ease-out forwards;
 }
 
 .hackathon-modal-overlay--closing {
@@ -384,29 +386,19 @@
   to   { opacity: 0; }
 }
 
+/* Solid white card matching .location-note-modal in 00-foundation.css */
 .hackathon-modal {
   position: relative;
-  width: min(680px, 100%);
-  max-height: calc(100vh - 80px);
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.65) 0%,
-      rgba(255, 255, 255, 0.5) 100%
-    );
-  backdrop-filter: blur(48px) saturate(180%) brightness(1.25);
-  -webkit-backdrop-filter: blur(48px) saturate(180%) brightness(1.25);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 20px;
-  box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.25);
+  width: min(480px, 92vw);
+  max-height: 72vh;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.32);
   display: flex;
   flex-direction: column;
   overflow: hidden;
   transform-origin: center;
-  animation: hackathonModalIn 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: hackathonModalIn 220ms ease-out forwards;
 }
 
 .hackathon-modal--closing {
@@ -414,51 +406,41 @@
 }
 
 @keyframes hackathonModalIn {
-  from { opacity: 0; transform: translateY(16px) scale(0.94); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes hackathonModalOut {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateY(10px) scale(0.96); }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(10px); }
 }
 
 .hackathon-modal-close {
   position: absolute;
-  top: 14px;
+  top: 12px;
   right: 14px;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
-  color: #4a4a4a;
-  font-size: 0.95rem;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--text-subtle);
+  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
-  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
   z-index: 2;
 }
 
 .hackathon-modal-close:hover {
-  background: rgba(255, 255, 255, 0.55);
-  color: #1f1f1f;
-  transform: scale(1.06);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
-}
-
-.hackathon-modal-close:active {
-  transform: scale(0.96);
+  background: var(--secondary-accent);
+  color: var(--text-dark);
 }
 
 .hackathon-modal-header {
-  padding: 18px 52px 12px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 22px 52px 10px 24px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -466,28 +448,27 @@
 }
 
 .hackathon-modal-name {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-dark);
   margin: 0;
   letter-spacing: -0.3px;
+  line-height: 1.25;
 }
 
 .hackathon-modal-award {
   font-size: 0.78rem;
   font-weight: 600;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  color: var(--text-main);
+  background: var(--secondary-accent);
+  border: 1px solid var(--border-color);
   border-radius: 999px;
   padding: 4px 10px;
   align-self: flex-start;
 }
 
 .hackathon-modal-body {
-  padding: 16px 20px 20px;
+  padding: 6px 24px 22px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -496,7 +477,7 @@
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
+  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
 }
 
 .hackathon-modal-body::-webkit-scrollbar {
@@ -508,14 +489,14 @@
 }
 
 .hackathon-modal-body::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 8px;
   border: 2px solid transparent;
   background-clip: padding-box;
 }
 
 .hackathon-modal-body::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.32);
   background-clip: padding-box;
   border: 2px solid transparent;
 }
@@ -523,15 +504,15 @@
 /* `.section p { text-align: center }` in 00-foundation.css beats a single-class
  * selector — qualify with the modal body so left-alignment wins. */
 .hackathon-modal-body .hackathon-modal-para {
-  font-size: 0.92rem;
-  color: #ffffff;
-  line-height: 1.6;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  line-height: 1.55;
   margin: 0;
   text-align: left;
 }
 
 .hackathon-modal-gallery {
-  column-count: 3;
+  column-count: 2;
   column-gap: 8px;
   margin-top: 8px;
 }
@@ -541,8 +522,8 @@
   margin: 0 0 8px;
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .hackathon-modal-gallery-item img {
@@ -589,10 +570,10 @@
   /* native swipe is enough — hide chrome */
   .stage-arrow { display: none; }
 
-  .hackathon-modal-header { padding: 18px 48px 12px 18px; }
-  .hackathon-modal-name   { font-size: 1.2rem; }
-  .hackathon-modal-body   { padding: 14px 18px 20px; }
-  .hackathon-modal-para   { font-size: 0.9rem; }
+  .hackathon-modal-header { padding: 20px 48px 8px 20px; }
+  .hackathon-modal-name   { font-size: 1.15rem; }
+  .hackathon-modal-body   { padding: 6px 20px 20px; }
+  .hackathon-modal-para   { font-size: 0.88rem; }
 }
 
 @media (max-width: 480px) {

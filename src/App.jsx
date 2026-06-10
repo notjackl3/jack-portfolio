@@ -8,14 +8,31 @@ import ContactSection from './components/ContactSection';
 import SkillsSection from './components/SkillsSection';
 import HackathonsSection from './components/HackathonsSection';
 import BackgroundMap from './components/BackgroundMap';
+import { workProjects } from './data/work';
+
+const TAB_IDS = ['home', 'projects', 'work', 'experiences', 'hackathons', 'contact'];
+
+// Resolve the initial tab (and optional work-project deep link) from the URL,
+// so paths like /work, /aucctus, or /teb open the right view directly.
+const parseInitialRoute = () => {
+  if (typeof window === 'undefined') return { tab: 'home', workSlug: null };
+  const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+  if (!path) return { tab: 'home', workSlug: null };
+  if (TAB_IDS.includes(path)) return { tab: path, workSlug: null };
+  if (workProjects.some((p) => p.slug === path)) return { tab: 'work', workSlug: path };
+  return { tab: 'home', workSlug: null };
+};
+
+const initialRoute = parseInitialRoute();
 
 function App() {
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(initialRoute.tab);
   const [isMapFocused, setIsMapFocused] = useState(false);
   const [focusRequest, setFocusRequest] = useState(null);
 
   const switchTab = (tabId) => {
     setActiveTab(tabId);
+    window.history.replaceState(null, '', tabId === 'home' ? '/' : `/${tabId}`);
   };
 
   // Annotate the document body so global, non-React elements (e.g. the
@@ -53,7 +70,7 @@ function App() {
       case 'projects':
         return <ProjectsSection />;
       case 'work':
-        return <WorkSection />;
+        return <WorkSection initialSlug={initialRoute.workSlug} />;
       case 'experiences':
         return <ExperiencesSection />;
       case 'hackathons':

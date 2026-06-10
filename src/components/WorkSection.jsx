@@ -426,7 +426,7 @@ const ScreenTabs = ({
   );
 };
 
-const WorkSection = () => {
+const WorkSection = ({ initialSlug = null }) => {
   const count = workProjects.length;
   // Single-viewport stage: the only way to change the active project is the
   // prev / next arrows and the switcher dots. No scroll-driven progression.
@@ -475,6 +475,15 @@ const WorkSection = () => {
     });
     return indexed.map(({ project }) => project);
   }, [data]);
+
+  // Deep link (e.g. /aucctus): jump to the matching project once on mount.
+  // Uses the ordered list so admin reordering doesn't break the link.
+  useEffect(() => {
+    if (!initialSlug) return;
+    const idx = orderedProjects.findIndex((p) => p.slug === initialSlug);
+    if (idx >= 0) setActive(idx);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const activeProject = orderedProjects[active] ?? orderedProjects[0];
   const projectState = normalizeProjectState(data[activeProject?.id]);
@@ -646,6 +655,9 @@ const WorkSection = () => {
   const goToProject = (idx) => {
     if (idx < 0 || idx >= count) return;
     setActive(idx);
+    // Keep the URL shareable: /aucctus, /teb, etc. follow the active project.
+    const slug = orderedProjects[idx]?.slug;
+    if (slug) window.history.replaceState(null, '', `/${slug}`);
   };
 
   // Single-viewport stage. Outer container hugs content so no extra page
