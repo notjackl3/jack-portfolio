@@ -8,6 +8,7 @@ import ContactSection from './components/ContactSection';
 import SkillsSection from './components/SkillsSection';
 import HackathonsSection from './components/HackathonsSection';
 import BackgroundMap from './components/BackgroundMap';
+import CustomCursor from './components/CustomCursor';
 import { workProjects } from './data/work';
 
 const TAB_IDS = ['home', 'projects', 'work', 'experiences', 'hackathons', 'contact'];
@@ -27,12 +28,18 @@ const initialRoute = parseInitialRoute();
 
 function App() {
   const [activeTab, setActiveTab] = useState(initialRoute.tab);
+  const [workSlug, setWorkSlug] = useState(initialRoute.workSlug);
   const [isMapFocused, setIsMapFocused] = useState(false);
   const [focusRequest, setFocusRequest] = useState(null);
 
-  const switchTab = (tabId) => {
+  const switchTab = (tabId, slug = null) => {
     setActiveTab(tabId);
-    window.history.replaceState(null, '', tabId === 'home' ? '/' : `/${tabId}`);
+    setWorkSlug(slug);
+    window.history.replaceState(
+      null,
+      '',
+      slug ? `/${slug}` : tabId === 'home' ? '/' : `/${tabId}`
+    );
   };
 
   // Annotate the document body so global, non-React elements (e.g. the
@@ -65,12 +72,13 @@ function App() {
           <HeroSection
             onMapEnter={() => setIsMapFocused(true)}
             onMemorySelect={focusOnLocation}
+            onNavigate={switchTab}
           />
         );
       case 'projects':
         return <ProjectsSection />;
       case 'work':
-        return <WorkSection initialSlug={initialRoute.workSlug} />;
+        return <WorkSection initialSlug={workSlug} />;
       case 'experiences':
         return <ExperiencesSection />;
       case 'hackathons':
@@ -87,6 +95,7 @@ function App() {
           <HeroSection
             onMapEnter={() => setIsMapFocused(true)}
             onMemorySelect={focusOnLocation}
+            onNavigate={switchTab}
           />
         );
     }
@@ -94,6 +103,7 @@ function App() {
 
   return (
     <div className={`App${isMapFocused ? ' App--map-focused' : ''}`}>
+      <CustomCursor />
       <BackgroundMap isFocused={isMapFocused} focusRequest={focusRequest} />
       <div className="background-tint" aria-hidden="true" />
       <Navbar onNavigate={switchTab} activeTab={activeTab} />

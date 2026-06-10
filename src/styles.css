@@ -1,5 +1,6 @@
 /* CSS entrypoint (split by section for maintainability) */
 @import "./styles/00-foundation.css";
+@import "./styles/05-cursor.css";
 @import "./styles/10-experiences.css";
 @import "./styles/20-contact.css";
 @import "./styles/30-navbar.css";

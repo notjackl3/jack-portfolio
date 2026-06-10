@@ -37,7 +37,7 @@ export const experiences = [
     company: "SOON",
     position: "Founder",
     type: "work",
-    duration: "December 2025 - Present",
+    duration: "February 2026 - Present",
     description: "🌟 Creating Something Out Of Nothing, hosting a hackathon for 40 people at a private house for companies"
   },
   // ── Ended — most recent first ─────────────────────────────

@@ -874,6 +874,10 @@ textarea.location-note-modal__text:focus {
     background: rgba(255, 255, 255, 0.08);
 }
 
+.map-container--preview:hover #map {
+    filter: blur(1px);
+}
+
 .map-enter-label {
     font-size: 14px;
     font-weight: 600;
@@ -883,6 +887,21 @@ textarea.location-note-modal__text:focus {
     padding: 9px 18px;
     border-radius: 999px;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+    transition:
+        transform 200ms ease,
+        box-shadow 200ms ease,
+        background-color 200ms ease;
+}
+
+.map-enter-overlay:hover .map-enter-label {
+    transform: translateY(-2px) scale(1.06);
+    background: #fff;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.26);
+}
+
+.map-enter-overlay:active .map-enter-label {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Map + locations panel */
@@ -1139,6 +1158,16 @@ textarea.location-note-modal__text:focus {
     color: var(--text-muted);
     line-height: 1.6;
     margin-bottom: 1rem;
+}
+
+.profile-desc a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.profile-desc a:hover {
+    opacity: 0.75;
 }
 
 .profile-contact {

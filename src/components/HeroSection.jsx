@@ -16,13 +16,21 @@ const zoomBasedReveal = (maxVal) => [
   maxVal
 ];
 
-const HeroSection = ({ onMapEnter, onMemorySelect }) => {
+const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
   const mapContainerRef = useRef(null);
   const mapRef = useRef(null);
   const [selectedLocationId, setSelectedLocationId] = useState(null);
   const [isResumeMenuOpen, setIsResumeMenuOpen] = useState(false);
   const resumeMenuRef = useRef(null);
   const [locations, setLocations] = useState(null);
+
+  // Internal links navigate client-side via the tab switcher, but keep a real
+  // href so open-in-new-tab / copy-link still resolve through the URL router.
+  const goToTab = (e, tabId, slug = null) => {
+    if (!onNavigate) return;
+    e.preventDefault();
+    onNavigate(tabId, slug);
+  };
 
   useEffect(() => {
     let cancelled = false;
@@ -366,7 +374,27 @@ const HeroSection = ({ onMapEnter, onMemorySelect }) => {
           </h1>
           <h2 className="profile-role">I am a fullstack engineer ☺️</h2>
           <p className="profile-desc">
-            - I am currently on a hackathon streak, competed in 12 hackathons in a row in 2026, won 7 of them. I also founded, organized, and judged at hackathons.
+            - This year 2026, I attended{' '}
+            <a href="/hackathons" onClick={(e) => goToTab(e, 'hackathons')}>
+              15 hackathons in 12 weeks
+            </a>
+            , founded 2 hackathon (
+            <a href="https://luma.com/9o6jes1o" target="_blank" rel="noopener noreferrer">
+              1 for charity
+            </a>
+            ,{' '}
+            <a href="https://soonhackathon.ca/" target="_blank" rel="noopener noreferrer">
+              1 bringing 70+ people to a mansion
+            </a>
+            ). I work 2 swe positions (
+            <a href="/aucctus" onClick={(e) => goToTab(e, 'work', 'aucctus')}>
+              9-5
+            </a>{' '}
+            and{' '}
+            <a href="/teb" onClick={(e) => goToTab(e, 'work', 'teb')}>
+              5-9
+            </a>
+            ). Always seeking new opportunities!
           </p>
           <div className="profile-contact">
             <button
