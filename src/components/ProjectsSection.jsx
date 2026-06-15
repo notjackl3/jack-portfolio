@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { projects } from '../data/projects';
-import { FaGithub, FaGlobe } from 'react-icons/fa';
+import { FaGithub, FaGlobe, FaThumbsUp } from 'react-icons/fa';
 
 const ProjectCard = ({ project, onImageLoaded, registerImageEl }) => {
   const isHackathonProject = project.title.includes('|') || project.title.includes('~');
@@ -16,6 +16,11 @@ const ProjectCard = ({ project, onImageLoaded, registerImageEl }) => {
 
   return (
     <div className="project-card">
+      {project.favourite && (
+        <span className="project-fav-badge" title="Favourite" aria-label="Favourite">
+          <FaThumbsUp size={13} />
+        </span>
+      )}
       {project.image && (
         <div className="project-image">
           <img
@@ -67,6 +72,7 @@ const ProjectCard = ({ project, onImageLoaded, registerImageEl }) => {
 
 const ProjectsSection = () => {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [showFavouritesOnly, setShowFavouritesOnly] = useState(false);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef(null);
   const filterTriggerRef = useRef(null);
@@ -97,13 +103,15 @@ const ProjectsSection = () => {
   }, [isFilterMenuOpen]);
 
   const filteredProjects = useMemo(() => {
-    const filtered =
-      activeFilter === 'all'
-        ? projects
-        : projects.filter((p) => (p.category || 'personal') === activeFilter);
+    const filtered = projects.filter((p) => {
+      const matchesCategory =
+        activeFilter === 'all' || (p.category || 'personal') === activeFilter;
+      const matchesFavourite = !showFavouritesOnly || Boolean(p.favourite);
+      return matchesCategory && matchesFavourite;
+    });
 
     return [...filtered].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
-  }, [activeFilter]);
+  }, [activeFilter, showFavouritesOnly]);
 
   const projectsWithImages = useMemo(
     () => filteredProjects.filter((p) => Boolean(p.image)),
@@ -120,6 +128,11 @@ const ProjectsSection = () => {
     // after render (which can happen with cached images and missing onLoad events).
     setLoadedImageIds(new Set());
     setActiveFilter(nextFilter);
+  };
+
+  const toggleFavourites = () => {
+    setLoadedImageIds(new Set());
+    setShowFavouritesOnly((v) => !v);
   };
 
   const handleImageLoaded = (projectId) => {
@@ -257,6 +270,18 @@ const ProjectsSection = () => {
             </div>
           )}
         </div>
+
+        <button
+          type="button"
+          className={`projects-fav-toggle ${showFavouritesOnly ? 'active' : ''}`}
+          aria-pressed={showFavouritesOnly}
+          onClick={toggleFavourites}
+        >
+          <span className="projects-fav-toggle-icon" aria-hidden="true">
+            <FaThumbsUp size={11} />
+          </span>
+          jack's choices
+        </button>
       </div>
 
       {!areAllProjectImagesLoaded ? (

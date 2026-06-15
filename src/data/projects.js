@@ -27,16 +27,37 @@ import omni from '../assets/omni.png';
 import soon from '../assets/soon.png';
 import vibe from '../assets/vibe.png';
 import its2016 from '../assets/2016.png';
+import mottoMotto from '../assets/motto-motto.png';
+import soonBot from '../assets/soon-bot.png';
 
 export const projects = [
   {
+    id: 32,
+    title: "SOON Bot",
+    description: "An AI for my SOON team internal, a local LLM connected to Discord and iMessage that knows everything about our operations and plans",
+    technologies: ["Python", "FastAPI", "discord.py", "Ollama", "ChromaDB", "RAG"],
+    image: soonBot,
+    category: "internal"
+  },
+  {
+    id: 31,
+    title: "Motto Motto",
+    description: "A beach-themed competitive Wordle in a 3D wave simulation (from real data) with power buffs cards and memes",
+    technologies: ["TypeScript/React.js", "Vite", "Tailwind", "Three.js", "Node.js/Express", "Socket.IO"],
+    githubUrl: "https://github.com/notjackl3/motto-motto",
+    liveUrl: "https://motto-motto-peach.vercel.app/",
+    image: mottoMotto,
+    category: "hackathon"
+  },
+  {
     id: 30,
     title: "SOON",
-    description: "A landing page and portal I built for SOON hackathon (which I founded). We bring 40 hackers to a private house to build projects for companies in a weekend.",
+    description: "A landing page and portal I built for SOON hackathon (which I founded). We bring 40 hackers to a private house to build projects for companies in a weekend",
     technologies: ["TypeScript/React.js", "Vite"],
     liveUrl: "https://soonhackathon.ca/",
     image: soon,
-    category: "personal"
+    category: "personal",
+    favourite: true
   },
   {
     id: 29,
@@ -46,7 +67,8 @@ export const projects = [
     githubUrl: "https://devpost.com/software/2016-browser",
     liveUrl: "https://stupid-hackathon-gamma.vercel.app/",
     image: its2016,
-    category: "hackathon"
+    category: "hackathon",
+    favourite: true
   },
   {
     id: 28,
@@ -74,7 +96,8 @@ export const projects = [
     technologies: ["TypeScript/React.js", "Vite", "Cloudflare"],
     githubUrl: "https://github.com/notjackl3/chuc-tet",
     image: chucTet,
-    category: "personal"
+    category: "personal",
+    favourite: true
   },
   {
     id: 23,
@@ -112,7 +135,8 @@ export const projects = [
     githubUrl: "https://github.com/Lemirq/qhacks",
     liveUrl: "https://qhacks-seven.vercel.app/",
     image: kingsview,
-    category: "hackathon"
+    category: "hackathon",
+    favourite: true
   },
   {
     id: 20,
@@ -150,7 +174,8 @@ export const projects = [
     technologies: ["Python", "JavaScript", "OpenCV", "Numpy", "Google Cloud Platform", "AWS"],
     githubUrl: "https://github.com/notjackl3/youtube-as-a-service",
     image: yaas,
-    category: "personal"
+    category: "personal",
+    favourite: true
   },
   {
     id: 4,
@@ -298,6 +323,7 @@ export const projects = [
     liveUrl: "https://devpost.com/software/skysync-wapxj0",
     githubUrl: "https://github.com/shubhmgrg/DeltaHacks12",
     image: skysync,
-    category: "hackathon"
+    category: "hackathon",
+    favourite: true
   }
 ];
