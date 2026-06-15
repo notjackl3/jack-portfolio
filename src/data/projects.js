@@ -130,7 +130,7 @@ export const projects = [
   {
     id: 21,
     title: "KingsView | QHacks, Winner 🏆",
-    description: "A 3D map built on a 1:1 replica of Kingston. Users can design and place custom buildings, simulate constructions, social, and environmental impacts",
+    description: "We pitched to the Mayor a 3D map, 1:1 replica of Kingston. Users can design custom buildings, simulate constructions, social, and environmental impacts",
     technologies: ["TypeScript/React.js", "Next.js", "Three.js", "Node.js", "ElevenLabs", "Gemini"],
     githubUrl: "https://github.com/Lemirq/qhacks",
     liveUrl: "https://qhacks-seven.vercel.app/",
