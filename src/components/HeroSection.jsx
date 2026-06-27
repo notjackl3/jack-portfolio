@@ -3,6 +3,7 @@ import { locationDetails } from '../data/locationDetails';
 import me from '../assets/me.jpeg';
 import markerPngUrl from '../assets/marker.png';
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
+import ClaudeUsageChart from './ClaudeUsageChart';
 
 // markerPngUrl comes from Vite import above
 
@@ -439,6 +440,8 @@ const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
           </div>
         </div>
       ) : null}
+
+      <ClaudeUsageChart />
 
       <div className="map-row">
         <div className="map-container map-container--preview">

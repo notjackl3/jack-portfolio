@@ -1,0 +1,297 @@
+/* Claude Code usage chart — liquid-glass card with a GitHub-style heatmap.
+   Sits between the resume and the map in the hero section. */
+
+.claude-usage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0 0;
+}
+
+.claude-usage-card {
+    position: relative;
+    width: 500px;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px 12px;
+}
+
+/* Two heatmaps side by side, divided down the middle. */
+.claude-usage-split {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+}
+
+.claude-usage-side {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.claude-usage-panel {
+    position: relative;
+    width: 100%;
+}
+
+.claude-usage-divider {
+    flex: 0 0 1px;
+    align-self: stretch;
+    background: rgba(31, 30, 28, 0.1);
+}
+
+.claude-usage-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 9px;
+}
+
+.claude-usage-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    color: var(--text-dark);
+}
+
+.claude-usage-updated {
+    font-size: 0.72rem;
+    color: rgba(31, 30, 28, 0.45);
+    white-space: nowrap;
+}
+
+/* Heatmap: an optional fixed weekday-label column + a (maybe scrollable) track
+   holding the month row above the week columns. */
+.claude-usage-graph {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.claude-usage-scroll {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-x: hidden;
+}
+
+/* Horizontal-scroll variant (GitHub side shows its full history). */
+.claude-usage-scroll.is-scroll {
+    overflow-x: auto;
+    padding-bottom: 3px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(31, 30, 28, 0.22) transparent;
+}
+.claude-usage-scroll.is-scroll::-webkit-scrollbar {
+    height: 5px;
+}
+.claude-usage-scroll.is-scroll::-webkit-scrollbar-thumb {
+    background: rgba(31, 30, 28, 0.18);
+    border-radius: 3px;
+}
+.claude-usage-scroll.is-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.claude-usage-track {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: max-content;
+}
+
+.claude-usage-months {
+    display: flex;
+    gap: 2px;
+    height: 12px;
+}
+
+.claude-usage-month {
+    width: 11px;
+    font-size: 0.58rem;
+    line-height: 1;
+    color: rgba(31, 30, 28, 0.45);
+    white-space: nowrap;
+}
+
+.claude-usage-monthspacer {
+    height: 12px;
+}
+
+.claude-usage-cell {
+    cursor: default;
+}
+
+.claude-usage-tip {
+    position: absolute;
+    transform: translate(-50%, calc(-100% - 7px));
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--text-dark);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    font-size: 0.7rem;
+    font-weight: 400;
+    padding: 5px 10px;
+    border-radius: 9px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow:
+        0 6px 22px rgba(31, 30, 28, 0.16),
+        inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.claude-usage-days {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 28px;
+}
+
+.claude-usage-daylabel {
+    height: 11px;
+    line-height: 11px;
+    font-size: 0.58rem;
+    color: rgba(31, 30, 28, 0.45);
+    text-align: right;
+    padding-right: 2px;
+}
+
+.claude-usage-weeks {
+    display: flex;
+    gap: 2px;
+}
+
+.claude-usage-week {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.claude-usage-cell {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    background: rgba(31, 30, 28, 0.06);
+    transition: transform 120ms ease;
+}
+
+.claude-usage-cell.empty {
+    background: rgba(31, 30, 28, 0.07);
+}
+
+.claude-usage-cell.lvl-0 {
+    background: rgba(31, 30, 28, 0.07);
+}
+.claude-usage-cell.lvl-1 {
+    background: rgba(217, 119, 87, 0.32);
+}
+.claude-usage-cell.lvl-2 {
+    background: rgba(217, 119, 87, 0.55);
+}
+.claude-usage-cell.lvl-3 {
+    background: rgba(217, 119, 87, 0.78);
+}
+.claude-usage-cell.lvl-4 {
+    background: #d97757;
+}
+
+/* GitHub panel uses the classic green contribution palette. */
+.claude-usage-panel--gh .claude-usage-cell.lvl-1 {
+    background: #9be9a8;
+}
+.claude-usage-panel--gh .claude-usage-cell.lvl-2 {
+    background: #40c463;
+}
+.claude-usage-panel--gh .claude-usage-cell.lvl-3 {
+    background: #30a14e;
+}
+.claude-usage-panel--gh .claude-usage-cell.lvl-4 {
+    background: #216e39;
+}
+
+.claude-usage-weeks .claude-usage-cell:hover {
+    transform: scale(1.18);
+}
+
+.claude-usage-legend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    margin-bottom: 9px;
+    font-size: 0.64rem;
+    color: rgba(31, 30, 28, 0.45);
+}
+
+.claude-usage-legend .claude-usage-cell {
+    width: 10px;
+    height: 10px;
+}
+
+.claude-usage-stats {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 9px;
+    border-top: 1px solid rgba(31, 30, 28, 0.08);
+    font-size: 0.8rem;
+    color: rgba(31, 30, 28, 0.7);
+}
+
+.claude-usage-stats strong {
+    color: var(--text-dark);
+    font-weight: 600;
+}
+
+.claude-usage-streak strong {
+    color: #d97757;
+}
+
+.claude-usage-dot {
+    color: rgba(31, 30, 28, 0.3);
+}
+
+.claude-usage-tag {
+    font-style: italic;
+    color: rgba(31, 30, 28, 0.5);
+}
+
+.claude-usage-link {
+    text-decoration: none;
+    transition: color 150ms ease;
+}
+
+.claude-usage-link:hover {
+    color: #2ea043;
+}
+
+@media (max-width: 640px) {
+    .claude-usage-card {
+        padding: 11px 14px 10px;
+    }
+    /* Stack the two heatmaps vertically on narrow screens. */
+    .claude-usage-split {
+        flex-direction: column;
+        gap: 14px;
+    }
+    .claude-usage-divider {
+        flex-basis: 1px;
+        width: 100%;
+        height: 1px;
+    }
+    .claude-usage-cell {
+        width: 11px;
+        height: 11px;
+    }
+    .claude-usage-daylabel {
+        height: 11px;
+        line-height: 11px;
+    }
+}

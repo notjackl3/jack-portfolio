@@ -8,7 +8,6 @@ import ContactSection from './components/ContactSection';
 import SkillsSection from './components/SkillsSection';
 import HackathonsSection from './components/HackathonsSection';
 import BackgroundMap from './components/BackgroundMap';
-import CustomCursor from './components/CustomCursor';
 import { workProjects } from './data/work';
 
 const TAB_IDS = ['home', 'projects', 'work', 'experiences', 'hackathons', 'contact'];
@@ -103,7 +102,6 @@ function App() {
 
   return (
     <div className={`App${isMapFocused ? ' App--map-focused' : ''}`}>
-      <CustomCursor />
       <BackgroundMap isFocused={isMapFocused} focusRequest={focusRequest} />
       <div className="background-tint" aria-hidden="true" />
       <Navbar onNavigate={switchTab} activeTab={activeTab} />
