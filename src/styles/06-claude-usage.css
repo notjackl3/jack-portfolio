@@ -121,6 +121,12 @@
     height: 12px;
 }
 
+/* GitHub side hides its weekday labels on desktop (the AI side already shows
+   them); they reappear on mobile where the panels stack. */
+.claude-usage-panel--gh .claude-usage-days {
+    display: none;
+}
+
 .claude-usage-cell {
     cursor: default;
 }
@@ -285,6 +291,10 @@
         flex-basis: 1px;
         width: 100%;
         height: 1px;
+    }
+    /* Restore the GitHub weekday labels when stacked. */
+    .claude-usage-panel--gh .claude-usage-days {
+        display: flex;
     }
     .claude-usage-cell {
         width: 11px;

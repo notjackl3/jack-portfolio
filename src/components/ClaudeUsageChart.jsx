@@ -251,6 +251,7 @@ const ClaudeUsageChart = () => {
                 heatmap={gh.heatmap}
                 variant="gh"
                 scroll
+                showDays
                 formatTip={(c) => `${c.date} · ${c.count} commits`}
               />
             ) : null}
