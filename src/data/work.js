@@ -1,13 +1,13 @@
 import omni from '../assets/omni.png';
-import vibe from '../assets/vibe.png';
 import bigBrother from '../assets/big-brother.png';
+import vibe from '../assets/vibe.png';
 import vibeLearn from '../assets/vibe-learn.png';
 import kingsview from '../assets/kingsview.png';
 import eroute from '../assets/eroute.png';
 
 // Mirrors the `type: "swe"` entries from src/data/experiences.js, ordered most-recent first.
 // `title` = job title (role). `company` + `duration` shown below it.
-// `slug` = URL path that deep-links to this project (e.g. jack-le.com/aucctus).
+// `slug` = URL path that deep-links to this project (e.g. jack-le.com/teb).
 // Each work entry has at least one screen (the "main" one defined here).
 // More screens can be added at runtime via the admin UI on localhost —
 // they're stored in src/data/workNodes.json alongside their per-screen notes.
@@ -25,7 +25,6 @@ export const workProjects = [
   },
   {
     id: 23,
-    slug: 'aucctus',
     title: 'Founding Software Engineer',
     company: 'The Energy Bridge',
     duration: 'May 2026 - Present',

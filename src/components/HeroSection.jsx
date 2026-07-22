@@ -387,11 +387,7 @@ const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
             <a href="https://soonhackathon.ca/" target="_blank" rel="noopener noreferrer">
               1 bringing 70+ people to a mansion
             </a>
-            ). I work 2 swe positions (
-            <a href="/aucctus" onClick={(e) => goToTab(e, 'work', 'aucctus')}>
-              9-5
-            </a>{' '}
-            and{' '}
+            ). I work 2 swe positions (9-5 and{' '}
             <a href="/teb" onClick={(e) => goToTab(e, 'work', 'teb')}>
               5-9
             </a>

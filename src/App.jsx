@@ -13,7 +13,7 @@ import { workProjects } from './data/work';
 const TAB_IDS = ['home', 'projects', 'work', 'experiences', 'hackathons', 'contact'];
 
 // Resolve the initial tab (and optional work-project deep link) from the URL,
-// so paths like /work, /aucctus, or /teb open the right view directly.
+// so paths like /work or /teb open the right view directly.
 const parseInitialRoute = () => {
   if (typeof window === 'undefined') return { tab: 'home', workSlug: null };
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();

@@ -476,7 +476,7 @@ const WorkSection = ({ initialSlug = null }) => {
     return indexed.map(({ project }) => project);
   }, [data]);
 
-  // Deep link (e.g. /aucctus): jump to the matching project once on mount.
+  // Deep link (e.g. /teb): jump to the matching project once on mount.
   // Uses the ordered list so admin reordering doesn't break the link.
   useEffect(() => {
     if (!initialSlug) return;
@@ -655,7 +655,7 @@ const WorkSection = ({ initialSlug = null }) => {
   const goToProject = (idx) => {
     if (idx < 0 || idx >= count) return;
     setActive(idx);
-    // Keep the URL shareable: /aucctus, /teb, etc. follow the active project.
+    // Keep the URL shareable: /teb, etc. follow the active project.
     const slug = orderedProjects[idx]?.slug;
     if (slug) window.history.replaceState(null, '', `/${slug}`);
   };
