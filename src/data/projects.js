@@ -13,22 +13,22 @@ import resumeForMe from '../assets/resume-for-me.jpg';
 import paint from '../assets/paint.jpg';
 import lightUpTheShadow from '../assets/light-up-the-shadow.jpg';
 import catchIt from '../assets/catch-it.jpg';
-import vibeLearn from '../assets/vibe-learn.png';
-import skysync from '../assets/skysync.png';
-import bigBrother from '../assets/big-brother.png';
-import videoEditor from '../assets/video-editor.png';
-import bananaBrownies from '../assets/banana-brownies.png';
-import kingsview from '../assets/kingsview.png';
-import eroute from '../assets/eroute.png';
-import handTiles from '../assets/hand-tiles.png';
-import startooth from '../assets/startooth.png';
-import chucTet from '../assets/chuc-tet.png';
-import omni from '../assets/omni.png';
-import soon from '../assets/soon.png';
-import vibe from '../assets/vibe.png';
-import its2016 from '../assets/2016.png';
-import mottoMotto from '../assets/motto-motto.png';
-import soonBot from '../assets/soon-bot.png';
+import vibeLearn from '../assets/vibe-learn.webp';
+import skysync from '../assets/skysync.webp';
+import bigBrother from '../assets/big-brother.webp';
+import videoEditor from '../assets/video-editor.webp';
+import bananaBrownies from '../assets/banana-brownies.webp';
+import kingsview from '../assets/kingsview.webp';
+import eroute from '../assets/eroute.webp';
+import handTiles from '../assets/hand-tiles.webp';
+import startooth from '../assets/startooth.webp';
+import chucTet from '../assets/chuc-tet.webp';
+import omni from '../assets/omni.webp';
+import soon from '../assets/soon.webp';
+import vibe from '../assets/vibe.webp';
+import its2016 from '../assets/2016.webp';
+import mottoMotto from '../assets/motto-motto.webp';
+import soonBot from '../assets/soon-bot.webp';
 
 export const projects = [
   {

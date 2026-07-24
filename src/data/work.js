@@ -1,9 +1,9 @@
-import omni from '../assets/omni.png';
-import bigBrother from '../assets/big-brother.png';
-import vibe from '../assets/vibe.png';
-import vibeLearn from '../assets/vibe-learn.png';
-import kingsview from '../assets/kingsview.png';
-import eroute from '../assets/eroute.png';
+import omni from '../assets/omni.webp';
+import bigBrother from '../assets/big-brother.webp';
+import vibe from '../assets/vibe.webp';
+import vibeLearn from '../assets/vibe-learn.webp';
+import kingsview from '../assets/kingsview.webp';
+import eroute from '../assets/eroute.webp';
 
 // Mirrors the `type: "swe"` entries from src/data/experiences.js, ordered most-recent first.
 // `title` = job title (role). `company` + `duration` shown below it.
