@@ -29,8 +29,29 @@ import vibe from '../assets/vibe.webp';
 import its2016 from '../assets/2016.webp';
 import mottoMotto from '../assets/motto-motto.webp';
 import soonBot from '../assets/soon-bot.webp';
+import agamotto from '../assets/agamotto.webp';
+import feetball from '../assets/feetball.webp';
 
 export const projects = [
+  {
+    id: 33,
+    title: "Agamotto | Agentic AI Build Week, Winner 🏆",
+    description: "An ideation pipeline for VNG that turns skinlines into 3D models, then simulates thousands of AI personas debating them for public feedback",
+    technologies: ["Next.js", "Python/Flask", "Neo4j", "statsmodels", "Nano Banana", "Claude"],
+    githubUrl: "https://github.com/Syanhlu/Agamotto",
+    image: agamotto,
+    category: "hackathon"
+  },
+  {
+    id: 34,
+    title: "Feetball | Hack The 6ix, Winner 🏆",
+    description: "AI agents trained on 50+ real matches play football in a live 3D stadium, with a betting AI crowd, a 4-language commentator, and drop-in player/ball/VR POVs",
+    technologies: ["Next.js", "Three.js", "Zustand", "Python/NumPy", "WebXR", "ElevenLabs"],
+    githubUrl: "https://github.com/notjackl3/feetball",
+    image: feetball,
+    category: "hackathon",
+    favourite: true
+  },
   {
     id: 32,
     title: "SOON Bot",

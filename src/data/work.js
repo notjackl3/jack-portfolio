@@ -1,6 +1,5 @@
 import omni from '../assets/omni.webp';
 import bigBrother from '../assets/big-brother.webp';
-import vibe from '../assets/vibe.webp';
 import vibeLearn from '../assets/vibe-learn.webp';
 import kingsview from '../assets/kingsview.webp';
 import eroute from '../assets/eroute.webp';
@@ -12,8 +11,8 @@ import eroute from '../assets/eroute.webp';
 // More screens can be added at runtime via the admin UI on localhost —
 // they're stored in src/data/workNodes.json alongside their per-screen notes.
 export const workProjects = [
-  // NOTE: the admin meta overrides in workNodes.json swap the displayed
-  // company for ids 22 / 23 (22 shows The Energy Bridge, 23 shows Aucctus AI).
+  // NOTE: the admin meta override in workNodes.json swaps the displayed
+  // company for id 22 (it shows The Energy Bridge).
   // Slugs follow what visitors actually see, not the base data below.
   {
     id: 22,
@@ -22,13 +21,6 @@ export const workProjects = [
     company: 'Aucctus AI',
     duration: 'May 2026 - Present',
     mainScreen: { id: 'main', label: 'Main', image: omni },
-  },
-  {
-    id: 23,
-    title: 'Founding Software Engineer',
-    company: 'The Energy Bridge',
-    duration: 'May 2026 - Present',
-    mainScreen: { id: 'main', label: 'Main', image: vibe },
   },
   {
     id: 21,

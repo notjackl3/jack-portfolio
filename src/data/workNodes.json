@@ -408,16 +408,5 @@
       "duration": "may 2026 - present"
     },
     "order": 1
-  },
-  "23": {
-    "screens": [],
-    "nodes": {},
-    "mainLabel": "main",
-    "meta": {
-      "title": "ai software engineer intern",
-      "company": "Aucctus AI",
-      "duration": "may 2026 - present"
-    },
-    "order": 0
   }
 }

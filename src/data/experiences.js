@@ -6,7 +6,7 @@ export const experiences = [
     position: "Toronto Chapter Leader",
     type: "volunteer",
     duration: "June 2026 - Present",
-    description: "🇨🇦 Bringing people in Toronto closer to AI"
+    description: "🇨🇦 Bringing AI to people"
   },
   {
     id: 22,
@@ -14,7 +14,7 @@ export const experiences = [
     position: "AI Software Engineer Intern",
     type: "swe",
     duration: "May 2026 - Present",
-    description: "🤖 Implementing agentic systems for Fortune 500 companies"
+    description: "🤖 Build ai features for fortune 500 clients"
   },
   {
     id: 23,
@@ -22,7 +22,7 @@ export const experiences = [
     position: "Founding Software Engineer",
     type: "swe",
     duration: "May 2026 - Present",
-    description: "⚡ Building a platform from scratch to connect millions of energy professionals across Europe"
+    description: "⚡ Connect energy professionals across Europe"
   },
   {
     id: 24,
@@ -38,16 +38,24 @@ export const experiences = [
     position: "Founder",
     type: "work",
     duration: "February 2026 - Present",
-    description: "🌟 Creating Something Out Of Nothing, hosting a hackathon for 40 people at a private house for companies"
+    description: "🌟 Bring 50+ most passionate builders to a private mansion"
   },
   // ── Ended — most recent first ─────────────────────────────
+  {
+    id: 26,
+    company: "KNOWIDEA",
+    position: "AI/ML Engineer Intern",
+    type: "swe",
+    duration: "June 2026 - August 2026",
+    description: "🛠️ Optimizing AI pipelines and agent harness"
+  },
   {
     id: 21,
     company: "UTMIST",
     position: "Infrastructure Engineer",
     type: "swe",
     duration: "February 2026 - April 2026",
-    description: "🚧 Handling VM infrastructures for LLMs"
+    description: "🚧 Manage VMs for LLM models"
   },
   {
     id: 17,
@@ -55,7 +63,7 @@ export const experiences = [
     position: "Research Assistant",
     type: "swe",
     duration: "September 2025 - April 2026",
-    description: "🔎 Working on CopilotLens, an AI tool for students"
+    description: "🔎 Work on an educational AI tool, read a bunch of papers"
   },
   {
     id: 13,
@@ -63,7 +71,7 @@ export const experiences = [
     position: "Tech Support Assistant",
     type: "work",
     duration: "August 2025 - March 2026",
-    description: "⚙️ Made sure technologies were accessible to all students"
+    description: "⚙️ Make sure technologies are accessible, meet AODA accessibility standards"
   },
   {
     id: 9,
@@ -71,7 +79,7 @@ export const experiences = [
     position: "Vice President of Tech",
     type: "volunteer",
     duration: "May 2025 - April 2026",
-    description: "🧠 Producing exciting events and hands-on workshops"
+    description: "🧠 Producing events and hands-on workshops"
   },
   {
     id: 19,
@@ -79,7 +87,7 @@ export const experiences = [
     position: "Software Engineer",
     type: "swe",
     duration: "January 2026 - April 2026",
-    description: "💬 Built a live-chat platform"
+    description: "💬 Create a live-chat app for potentially 80,000 students"
   },
   {
     id: 16,
@@ -87,7 +95,7 @@ export const experiences = [
     position: "Software Tech Lead",
     type: "swe",
     duration: "August 2025 - April 2026",
-    description: "🛠️ Led a software team to create a management system for Toronto Rape Crisis Center"
+    description: "🛠️ Lead a software team to build a project for Toronto Rape Crisis Center"
   },
   {
     id: 15,
@@ -95,7 +103,7 @@ export const experiences = [
     position: "Director of Operations",
     type: "volunteer",
     duration: "August 2025 - March 2026",
-    description: "🤖 Organized Canada's largest AI hackathon"
+    description: "🤖 Organizing Canada's largest AI hackathon"
   },
   {
     id: 14,
@@ -103,7 +111,7 @@ export const experiences = [
     position: "Tech Associate",
     type: "volunteer",
     duration: "August 2025 - April 2026",
-    description: "💰 Hosted interesting info sessions and speaker keynotes"
+    description: "💰 Hosting info sessions and speaker keynotes"
   },
   {
     id: 12,
@@ -127,7 +135,7 @@ export const experiences = [
     position: "Organizer",
     type: "volunteer",
     duration: "May 2025 - October 2025",
-    description: "🎇 Hosted a hackathon for 120+ students"
+    description: "🎇 Founded a hackathon for 120+ students"
   },
   {
     id: 8,
@@ -135,7 +143,7 @@ export const experiences = [
     position: "Notetaker",
     type: "volunteer",
     duration: "January 2025 - April 2025",
-    description: "✍️ Volunteered to take beautiful notes for 2 courses: CSC148, PHL245"
+    description: "✍️ Volunteered to take beautiful notes for 2 courses"
   },
   {
     id: 7,

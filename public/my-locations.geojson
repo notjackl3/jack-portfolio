@@ -616,6 +616,20 @@
         ]
       },
       "id": "aucctus-ai-internship"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Agentic AI Build Week"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.7861,
+          10.8558
+        ]
+      },
+      "id": "agentic-ai-build-week"
     }
   ]
 }

@@ -270,6 +270,37 @@ body[data-active-tab="work"] .main-content {
     letter-spacing: 0.08em;
 }
 
+.map-locations-sidebar__add {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0 12px 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.map-locations-sidebar__add-btn {
+    appearance: none;
+    border: 0;
+    background: var(--text-main);
+    color: var(--bg-white);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+}
+
+.map-locations-sidebar__add-btn:hover {
+    opacity: 0.85;
+}
+
+.map-locations-sidebar__add .location-edit__hint {
+    margin: 0;
+}
+
 .map-locations-sidebar__search {
     position: relative;
     margin: 0 12px 8px;

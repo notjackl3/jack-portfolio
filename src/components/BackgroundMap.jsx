@@ -7,6 +7,15 @@ const TORONTO_CENTER = [-79.3832, 43.6532];
 const SPIN_DEG_PER_SEC = 4;
 const DEFAULT_DETAIL = { title: '', subtitle: '', description: '', images: [] };
 
+// Tie camera pitch to zoom: a tilted (60°) 3D view up close for the city,
+// flattening to a straight-on 0° as you zoom out so the globe sits centered
+// in the viewport instead of being pushed down by the tilt.
+const pitchForZoom = (z) => {
+  if (z >= 13) return 60;
+  if (z <= 5) return 0;
+  return ((z - 5) / 8) * 60;
+};
+
 const isAdminHost = () => {
   if (typeof window === 'undefined') return false;
   const h = window.location.hostname;
@@ -50,6 +59,10 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
   const [addressStatus, setAddressStatus] = useState(null);
   const [previewAsVisitor, setPreviewAsVisitor] = useState(false);
   const [sidebarQuery, setSidebarQuery] = useState('');
+  // Admin-only "add a new memory" form (localhost).
+  const [newTitle, setNewTitle] = useState('');
+  const [newAddress, setNewAddress] = useState('');
+  const [addStatus, setAddStatus] = useState(null);
 
   const isAdmin = useMemo(isAdminHost, []);
   const mergedDetails = useMemo(() => buildLocationDetails(detailsRaw), [detailsRaw]);
@@ -369,6 +382,14 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
           setSelectedId(resolveIdAt(e.point));
         });
 
+        // Keep the globe centered on user-driven zoom (scroll / pinch):
+        // flatten the tilt as it shrinks to a globe. Skip programmatic
+        // zooms (flyTo) — those set their own pitch.
+        map.on('zoom', (e) => {
+          if (!e.originalEvent) return;
+          map.setPitch(pitchForZoom(map.getZoom()));
+        });
+
         (async () => {
           const pinCoords = (locations?.features || [])
             .map((f) => f.geometry?.coordinates)
@@ -598,10 +619,12 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
       if (!dragging) return;
       if (mode === 'rotate') {
         const dx = e.clientX - startX;
-        map.setBearing(startBearing + dx * 0.45);
+        map.setBearing(startBearing - dx * 0.45);
       } else if (mode === 'zoom') {
         const dy = e.clientY - startY;
-        map.setZoom(Math.max(0, Math.min(22, startZoom - dy * 0.01)));
+        const nextZoom = Math.max(0, Math.min(22, startZoom - dy * 0.01));
+        map.setZoom(nextZoom);
+        map.setPitch(pitchForZoom(nextZoom));
       }
     };
     const onUp = () => {
@@ -850,6 +873,93 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
     }
   };
 
+  // Create a brand-new memory pin (admin/localhost). Types a title and an
+  // optional address; the address is geocoded to place the marker, otherwise
+  // it drops at the current map center. The new pin is persisted to disk and
+  // its edit modal opens so the story/images can be filled in.
+  const addMemory = async () => {
+    if (!isAdmin) return;
+    const title = newTitle.trim();
+    if (!title) {
+      setAddStatus({ kind: 'error', message: 'Enter a title first.' });
+      return;
+    }
+
+    // Unique, readable id derived from the title.
+    const slug =
+      title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .slice(0, 60) || 'memory';
+    const existing = new Set(
+      (locations?.features || []).map((f) => featureId(f)).filter(Boolean)
+    );
+    let id = slug;
+    let n = 2;
+    while (existing.has(id)) id = `${slug}-${n++}`;
+
+    // Resolve coordinates: geocode the address if given, else map center.
+    let coords = null;
+    const q = newAddress.trim();
+    const token = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+    if (q && token) {
+      setAddStatus({ kind: 'loading', message: 'Finding address…' });
+      try {
+        const url =
+          'https://api.mapbox.com/geocoding/v5/mapbox.places/' +
+          encodeURIComponent(q) +
+          '.json?limit=1&access_token=' +
+          encodeURIComponent(token);
+        const res = await fetch(url);
+        if (res.ok) {
+          const json = await res.json();
+          const c = json?.features?.[0]?.center;
+          if (Array.isArray(c) && c.length >= 2) coords = c;
+        }
+      } catch {
+        // fall through to map center
+      }
+    }
+    if (!coords) {
+      const c = mapRef.current?.getCenter?.();
+      coords = c ? [c.lng, c.lat] : TORONTO_CENTER;
+    }
+
+    const feature = {
+      type: 'Feature',
+      properties: { name: title },
+      geometry: { type: 'Point', coordinates: coords },
+      id
+    };
+
+    setLocations((prev) => {
+      const features = [...(prev?.features || []), feature];
+      const next = { ...(prev || { type: 'FeatureCollection' }), features };
+      persistGeojson(next);
+      return next;
+    });
+    setDetailsRaw((prev) => {
+      const next = { ...prev, [id]: { ...DEFAULT_DETAIL, title } };
+      persistDetails(next);
+      return next;
+    });
+
+    setNewTitle('');
+    setNewAddress('');
+    setAddStatus(null);
+
+    const map = mapRef.current;
+    if (map) {
+      try {
+        map.flyTo({ center: coords, zoom: 17, pitch: 60, duration: 1400, essential: true });
+      } catch {
+        // ignore
+      }
+    }
+    setSelectedId(id);
+  };
+
   const selectedFeature = locations?.features?.find(
     (f) => featureId(f) === selectedId
   );
@@ -930,6 +1040,52 @@ const BackgroundMap = ({ isFocused, focusRequest }) => {
           {isSidebarOpen ? (
             <>
               <div className="map-locations-sidebar__title">Memories</div>
+              {isAdmin ? (
+                <div className="map-locations-sidebar__add">
+                  <input
+                    type="text"
+                    className="map-locations-sidebar__search-input"
+                    value={newTitle}
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addMemory();
+                      }
+                    }}
+                    placeholder="New memory title…"
+                    aria-label="New memory title"
+                  />
+                  <input
+                    type="text"
+                    className="map-locations-sidebar__search-input"
+                    value={newAddress}
+                    onChange={(e) => setNewAddress(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addMemory();
+                      }
+                    }}
+                    placeholder="Address (optional)…"
+                    aria-label="New memory address"
+                  />
+                  <button
+                    type="button"
+                    className="map-locations-sidebar__add-btn"
+                    onClick={addMemory}
+                  >
+                    + Add memory
+                  </button>
+                  {addStatus ? (
+                    <div
+                      className={`location-edit__hint location-edit__hint--${addStatus.kind}`}
+                    >
+                      {addStatus.message}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
               <div className="map-locations-sidebar__search">
                 <input
                   type="search"

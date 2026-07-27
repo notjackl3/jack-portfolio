@@ -379,17 +379,13 @@ const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
             <a href="/hackathons" onClick={(e) => goToTab(e, 'hackathons')}>
               15 hackathons in 12 weeks
             </a>
-            , founded 2 hackathon (
-            <a href="https://luma.com/9o6jes1o" target="_blank" rel="noopener noreferrer">
-              1 for charity
+            . I've been to 19 hackathons in 2026,{' '}
+            <a href="/hackathons" onClick={(e) => goToTab(e, 'hackathons')}>
+              15 in a row
             </a>
-            ,{' '}
-            <a href="https://soonhackathon.ca/" target="_blank" rel="noopener noreferrer">
-              1 bringing 70+ people to a mansion
-            </a>
-            ). I work 2 swe positions (9-5 and{' '}
-            <a href="/teb" onClick={(e) => goToTab(e, 'work', 'teb')}>
-              5-9
+            . This summer I work 3 swe positions (9-5, 5-9, and{' '}
+            <a href="/experiences" onClick={(e) => goToTab(e, 'experiences')}>
+              the weekend
             </a>
             ). Always seeking new opportunities!
           </p>
