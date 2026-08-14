@@ -375,19 +375,12 @@ const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
           </h1>
           <h2 className="profile-role">I am a fullstack engineer ☺️</h2>
           <p className="profile-desc">
-            - This year 2026, I attended{' '}
-            <a href="/hackathons" onClick={(e) => goToTab(e, 'hackathons')}>
-              15 hackathons in 12 weeks
-            </a>
-            . I've been to 19 hackathons in 2026,{' '}
+            - This year 2026, I attended{' '} 15 hackathons in 12 weeks
+            . I've been to 21 hackathons in 2026,{' '}
             <a href="/hackathons" onClick={(e) => goToTab(e, 'hackathons')}>
               15 in a row
             </a>
-            . This summer I work 3 swe positions (9-5, 5-9, and{' '}
-            <a href="/experiences" onClick={(e) => goToTab(e, 'experiences')}>
-              the weekend
-            </a>
-            ). Always seeking new opportunities!
+            . This summer, I work 3 swe jobs (9-5, 5-9, and{' '} the weekend). Always seeking new opportunities!
           </p>
           <div className="profile-contact">
             <button

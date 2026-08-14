@@ -10,7 +10,8 @@ import HackathonsSection from './components/HackathonsSection';
 import BackgroundMap from './components/BackgroundMap';
 import { workProjects } from './data/work';
 
-const TAB_IDS = ['home', 'projects', 'work', 'experiences', 'hackathons', 'contact'];
+// 'work' temporarily hidden — omitted so /work and work deep links fall back to home.
+const TAB_IDS = ['home', 'projects', 'experiences', 'hackathons', 'contact'];
 
 // Resolve the initial tab (and optional work-project deep link) from the URL,
 // so paths like /work or /teb open the right view directly.
@@ -19,7 +20,8 @@ const parseInitialRoute = () => {
   const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
   if (!path) return { tab: 'home', workSlug: null };
   if (TAB_IDS.includes(path)) return { tab: path, workSlug: null };
-  if (workProjects.some((p) => p.slug === path)) return { tab: 'work', workSlug: path };
+  // Work section temporarily hidden — deep links fall back to home.
+  // if (workProjects.some((p) => p.slug === path)) return { tab: 'work', workSlug: path };
   return { tab: 'home', workSlug: null };
 };
 

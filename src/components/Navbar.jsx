@@ -7,7 +7,7 @@ const Navbar = ({ onNavigate, activeTab }) => {
   const navItems = [
     { id: 'home', label: 'Home' },
     { id: 'projects', label: 'Projects' },
-    { id: 'work', label: 'Work' },
+    // { id: 'work', label: 'Work' }, // temporarily hidden
     { id: 'experiences', label: 'Timeline' },
     { id: 'hackathons', label: 'The Streak' },
     { id: 'contact', label: 'Contact' }

@@ -19,7 +19,7 @@ const ExperienceCard = ({ experience }) => {
 };
 
 const ExperiencesSection = () => {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState('swe');
   const timelineRef = useRef(null);
   const toggleFilter = (nextFilter) => {
     setActiveFilter((prev) => (prev === nextFilter ? 'all' : nextFilter));
