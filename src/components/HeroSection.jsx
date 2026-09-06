@@ -375,8 +375,7 @@ const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
           </h1>
           <h2 className="profile-role">I am a fullstack engineer ☺️</h2>
           <p className="profile-desc">
-            - This year 2026, I attended{' '} 15 hackathons in 12 weeks
-            . I've been to 21 hackathons in 2026,{' '}
+            - I've been to 22 hackathons in 2026,{' '}
             <a href="/hackathons" onClick={(e) => goToTab(e, 'hackathons')}>
               15 in a row
             </a>
