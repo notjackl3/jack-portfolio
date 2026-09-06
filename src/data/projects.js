@@ -31,8 +31,19 @@ import mottoMotto from '../assets/motto-motto.webp';
 import soonBot from '../assets/soon-bot.webp';
 import agamotto from '../assets/agamotto.webp';
 import feetball from '../assets/feetball.webp';
+import spark from '../assets/spark.webp';
 
 export const projects = [
+  {
+    id: 35,
+    title: "Spark | SummerHacks, 1st Place 🥇",
+    description: "A camera rover that follows user and turns the footage into a Gaussian-splat memory you can walk back into, with moments, audio, and paths",
+    technologies: ["Next.js", "Three.js", "Swift/ARKit", "Python", "COLMAP", "ESP32"],
+    githubUrl: "https://github.com/sai3000pro/spark",
+    liveUrl: "https://devpost.com/software/spark-350yoq",
+    image: spark,
+    category: "hackathon"
+  },
   {
     id: 33,
     title: "Agamotto | Agentic AI Build Week, Winner 🏆",
