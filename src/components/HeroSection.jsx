@@ -408,18 +408,12 @@ const HeroSection = ({ onMapEnter, onMemorySelect, onNavigate }) => {
               <a className="resume-option" href="/jack-le-fullstack-resume.pdf" target="_blank" rel="noopener noreferrer">
                 fullstack
               </a>
-              {/* <a className="resume-option" href="/jack-le-backend-resume.pdf" target="_blank" rel="noopener noreferrer">
-                backend
+              <a className="resume-option" href="/jack-le-backend-resume.pdf" target="_blank" rel="noopener noreferrer">
+                backend/cloud
               </a>
-              <a className="resume-option" href="/jack-le-mobile-resume.pdf" target="_blank" rel="noopener noreferrer">
-                mobile
+              <a className="resume-option" href="/jack-le-ai-resume.pdf" target="_blank" rel="noopener noreferrer">
+                ai/ml
               </a>
-              <a className="resume-option" href="/jack-le-cloud-resume.pdf" target="_blank" rel="noopener noreferrer">
-                cloud
-              </a>
-              <a className="resume-option" href="/jack-le-data-resume.pdf" target="_blank" rel="noopener noreferrer">
-                analyst
-              </a> */}
             </div>
           </div>
         </div>
