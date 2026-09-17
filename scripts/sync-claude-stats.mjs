@@ -93,15 +93,17 @@ function transform(cache) {
     })
     .sort((a, b) => a.date.localeCompare(b.date));
 
-  // Headline token total = input + output across models (excludes cache tokens,
-  // matching the figure Claude Code shows on the Stats tab).
+  // Headline token total = the sum of the per-day totals the heatmap shows, so
+  // the number under the graph is always exactly the graph's own total. (These
+  // per-day figures include cache read/creation tokens, so this runs well ahead
+  // of the input+output figure on Claude Code's Stats tab.)
+  const totalTokens = heatmap.reduce((s, d) => s + d.tokens, 0);
+
   const models = cache.modelUsage || {};
-  let totalTokens = 0;
   let favoriteModel = null;
   let favoriteTokens = -1;
   for (const [id, u] of Object.entries(models)) {
     const t = (u.inputTokens || 0) + (u.outputTokens || 0);
-    totalTokens += t;
     if (t > favoriteTokens) {
       favoriteTokens = t;
       favoriteModel = id;

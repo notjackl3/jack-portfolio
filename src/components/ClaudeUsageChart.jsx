@@ -184,6 +184,13 @@ const ClaudeUsageChart = () => {
   const [ai, setAi] = useState(null);
   const [gh, setGh] = useState(null);
 
+  // Always total the cells we actually render, so the headline can't drift from
+  // the graph (older payloads carry a totalTokens computed a different way).
+  const aiTokens = useMemo(
+    () => (ai ? ai.heatmap.reduce((s, c) => s + (c.tokens || 0), 0) : 0),
+    [ai]
+  );
+
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -234,7 +241,7 @@ const ClaudeUsageChart = () => {
             ) : null}
             <div className="claude-usage-stats">
               <span>
-                <strong>{ai ? formatTokens(ai.totalTokens) : '—'}</strong> tokens
+                <strong>{ai ? formatTokens(aiTokens) : '—'}</strong> tokens
               </span>
               <span className="claude-usage-dot">·</span>
               <span>
