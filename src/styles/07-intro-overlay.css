@@ -1,0 +1,205 @@
+/* Landing greeting — frosted pane that blurs the page while the note types out */
+
+.intro-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px max(20px, env(safe-area-inset-left, 0px));
+    text-align: center;
+    background: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px) saturate(100%);
+    -webkit-backdrop-filter: blur(0px) saturate(100%);
+    opacity: 0;
+    transition:
+        opacity 0.6s ease,
+        background-color 0.6s ease,
+        backdrop-filter 0.6s ease,
+        -webkit-backdrop-filter 0.6s ease;
+}
+
+.intro-overlay--visible {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.62);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+/* Leaving is slower than arriving — it drifts off rather than snapping away. */
+.intro-overlay--leaving {
+    opacity: 0;
+    pointer-events: none;
+    transition-duration: 1.4s;
+    transition-timing-function: ease-in-out;
+}
+
+.intro-overlay-card {
+    width: 100%;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Heading: slides up and tightens its tracking as it lands. */
+.intro-overlay-heading {
+    font-size: clamp(1.4rem, 7.6vw, 2.7rem);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text-dark);
+    letter-spacing: 0.32em;
+    padding-left: 0.14em; /* offsets the trailing letter-space so it stays centred */
+    white-space: nowrap; /* tracking is vw-based, so it fits on one line at any width */
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity 0.55s ease,
+        transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+        letter-spacing 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.intro-overlay--visible .intro-overlay-heading {
+    opacity: 1;
+    transform: translateY(0);
+    letter-spacing: 0.14em;
+}
+
+.intro-overlay-lines {
+    margin-top: 18px;
+    width: 100%;
+}
+
+.intro-overlay-line {
+    position: relative;
+    font-size: clamp(0.98rem, 4.2vw, 1.3rem);
+    line-height: 1.55;
+    font-weight: 500;
+    color: var(--text-dark);
+    letter-spacing: -0.2px;
+}
+
+.intro-overlay-line:last-child {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* The ghost copy is laid out normally (reserving the wrapped height on narrow
+   screens) but stays invisible; the typed copy sits on top of it. */
+.intro-overlay-line-ghost {
+    visibility: hidden;
+}
+
+.intro-overlay-line-typed {
+    position: absolute;
+    inset: 0;
+}
+
+.intro-overlay-caret {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -0.16em;
+    background: var(--text-muted);
+    animation: intro-caret-blink 1s steps(1, end) infinite;
+}
+
+@keyframes intro-caret-blink {
+    0%,
+    50% {
+        opacity: 1;
+    }
+    50.01%,
+    100% {
+        opacity: 0;
+    }
+}
+
+.intro-overlay-skip {
+    margin-top: 26px;
+    padding: 9px 16px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    color: var(--text-subtle);
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    cursor: pointer;
+    opacity: 0;
+    transition:
+        opacity 0.5s ease 0.6s,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.intro-overlay--visible .intro-overlay-skip {
+    opacity: 1;
+}
+
+.intro-overlay-skip:hover {
+    color: var(--text-main);
+    border-color: var(--hover-border);
+}
+
+/* Wording follows the input device rather than the viewport width. */
+.intro-overlay-skip-touch {
+    display: none;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .intro-overlay-skip-pointer {
+        display: none;
+    }
+
+    .intro-overlay-skip-touch {
+        display: inline;
+    }
+}
+
+@media (max-width: 600px) {
+    .intro-overlay-card {
+        max-width: 380px;
+    }
+
+    .intro-overlay-lines {
+        margin-top: 14px;
+    }
+
+    .intro-overlay-skip {
+        margin-top: 22px;
+    }
+}
+
+/* Short / landscape phones: keep everything inside the viewport. */
+@media (max-height: 460px) {
+    .intro-overlay-heading {
+        font-size: clamp(1.5rem, 7vh, 2.2rem);
+    }
+
+    .intro-overlay-lines {
+        margin-top: 10px;
+    }
+
+    .intro-overlay-skip {
+        margin-top: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .intro-overlay,
+    .intro-overlay-heading,
+    .intro-overlay-skip {
+        transition-duration: 0.01ms;
+    }
+
+    .intro-overlay-heading {
+        transform: none;
+    }
+
+    .intro-overlay-caret {
+        animation: none;
+        opacity: 0;
+    }
+}
