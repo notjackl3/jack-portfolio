@@ -8,7 +8,6 @@ import ContactSection from './components/ContactSection';
 import SkillsSection from './components/SkillsSection';
 import HackathonsSection from './components/HackathonsSection';
 import BackgroundMap from './components/BackgroundMap';
-import IntroOverlay from './components/IntroOverlay';
 import { workProjects } from './data/work';
 
 // 'work' temporarily hidden — omitted so /work and work deep links fall back to home.
@@ -121,7 +120,6 @@ function App() {
           Esc · Exit
         </button>
       ) : null}
-      <IntroOverlay />
     </div>
   );
 }
