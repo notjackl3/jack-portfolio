@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-layer"></div>
+  <br>
+  <div class="content">
+    <header id="header" class="header">
+      <a href="/home" class="logo"> Jack Le </a>
+      <nav id="navbar" class="navbar">
+        <a href="#"> About </a>
+        <a href="assets/Huu An Duc (Jack) Le Resume.pdf" target="_blank">Resume</a>
+        <a id="contact" href="https://linktr.ee/jackl3"> Contact </a>
+      </nav>
+    </header>
+
+    <div class="scroll-locked"></div>
+
+    <div class="container-right container-top" onmouseover="contact()" onmouseout="uncontact()">
+      <div class="hover-overlay"> Get in touch! </div>
+      <div class="bio">
+        <h1> Huu An Duc Le </h1>
+        <h3> "I will never be perfect, but tomorrow I will be better than myself today!" </h3>
+        <p> Hey there! I'm Jack — a student at the University of Toronto who loves building cool things with code and solving interesting problems. 
+        When I’m not working on projects or learning something new, you’ll probably find me playing games, editing videos, or exploring random creative ideas. I like to keep things simple, stay curious, and have fun along the way. </p>
+      </div>
+      <div class="profile-wrapper">
+        <img src="assets/bis-portrait.webp" alt="Avatar" class="profile-image">
+      </div>
+    </div>
+        
+    <div class="container-right project-title">
+      <h1 id="scroll-text"> Projects </h1>
+    </div>
+  
+    <div class="container-middle">
+      <div class="container-right">
+        <div class="info">
+          <h1> Job Hunter </h1>
+          <p> Job Hunter automates job discovery and analysis. It scrapes opportunities from platforms like Google, LinkedIn, and Indeed, then generates tailored cover letters for each position accordingly. I also implemented a natural language processing algorithm to extract in-demand skills and technologies from job descriptions, producing real-time charts that highlight market trends. </p>
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/job-hunter.webp" alt="Avatar" class="project-image job-hunter">
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/job-hunter-chart.webp" alt="Avatar" class="project-image job-hunter-chart">
+        </div>
+      </div>
+
+      <div class="container-left">
+        <div class="info">
+          <h1> YaaS </h1>
+          <p> Youtube as a Service (YaaS) is a Django web app that converts files into YouTube videos for virtually unlimited, lossless storage. I designed a compression-tolerant pipeline with 99.9% bit-level recovery accuracy. With the current design, each frame in the video can store up to 129,600 bytes! </p>
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/YaaS.webp" alt="Avatar" class="project-image">
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/YaaS-showcase.webp" alt="Avatar" class="project-image yaas-showcase">
+        </div>
+      </div>
+
+      <div class="container-right">
+        <div class="info">
+          <h1> Resume Builder </h1>
+          <p> Resume Builder is a Python-based tool that uses OpenAI to analyze job descriptions, extract key terms, and rewrite the inputted resume content. It then generates a polished LaTeX resume tailored to the target job. This can improve ATS keyword match rates significantly, increasing the chances of receiving more interview opportunities. </p>
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/resume-builder.webp" alt="Avatar" class="project-image resume-builder">
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/resume-builder-showcase.webp" alt="Avatar" class="project-image resume-builder-showcase">
+        </div>
+      </div>
+
+      <div class="container-left">
+        <div class="info">
+          <h1> Organiser </h1>
+          <p> Organizer App is a productivity tool built in Unity, designed to help me as a students manage their time, tasks, and academic goals more effectively. </p>
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/cs-ia.webp" alt="Avatar" class="project-image cs-ia">
+        </div>
+        <div class="project-wrapper">
+          <img src="assets/cs-ia-showcase.webp" alt="Avatar" class="project-image cs-ia-showcase">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-right project-title exp-title">
+    <h1 id="scroll-text2"> Experiences </h1>
+  </div>
+
+  <div class="container-middle">
+    <div class="roadmaps">
+      <div class="roadmap-card">
+        <video src="assets/performance.mp4" autoplay muted loop playsinline class="project-video"></video>
+        <div class="overlay">
+          <p class="card-text"> I had my first solo rap performance in front of 2,000 attendees. It was first horrifying but ended up being the most memorable moment of my life! </p>
+        </div>
+      </div>
+      <div class="roadmap-card youtube">
+        <img src="assets/christmas.webp" alt="Roadmap 1">
+        <div class="overlay">
+          <p class="card-text"> I collected the products we have created in "Create and Care" and "Design Now" club to sell them during seasonal markets and raised money for charity! </p>
+        </div>
+      </div>
+      <div class="roadmap-card">
+        <img src="assets/academic-mentor.webp" alt="Roadmap 1">
+        <div class="overlay">
+          <p class="card-text"> I mentored over 30 students and they bought me a lot of gifts: a cup of coffee, coloured pencils, but this letter was definitely my favourite! </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmaps">
+      <div class="roadmap-card">
+        <img src="assets/local-students.webp" alt="Roadmap 1">
+        <div class="overlay">
+          <p class="card-text"> I hosted workshops weekly to teach local students how to create handmade clay models, totebags and other accessories. </p>
+        </div>
+      </div>
+      <div class="roadmap-card">
+        <img src="assets/design-now.webp" alt="Roadmap 1">
+        <div class="overlay">
+          <p class="card-text"> As a design and technology ambassador introduced students to woodworking, aluminium crafting and 3D printing. </p>
+        </div>
+      </div>
+      <div class="roadmap-card">
+        <img src="assets/youtube.webp" alt="Roadmap 1">
+        <div class="overlay">
+          <p class="card-text"> I created content on Youtube and gained over 3 million views. Thus, I also worked on many video projects as a side job. </p>
+        </div>
+      </div>
+      <div class="roadmap-card">
+        <img src="assets/prefect.webp" alt="Roadmap 1">
+        <div class="overlay">
+          <p class="card-text"> I was chosen to be a Prefect student and responsible for ensuring an inclusive and welcoming environment on campus. </p>
+        </div>
+      </div>
+      <div class="roadmap-card">
+        <video src="assets/newjeans-drawing.mp4" autoplay muted loop playsinline class="project-video"></video>
+        <div class="overlay">
+          <p class="card-text"> I love drawing pencil portraits since I started drawing since grade 9. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    function contact() {
+      const contact = document.getElementById("contact");
+      contact.style.color = "white";
+      contact.style.backgroundColor = "red";
+      contact.style.padding = "0px 10px 0px 10px";
+      contact.style.borderRadius = "5px";
+      contact.style.fontSize = "28px";
+    }
+
+    function uncontact() {
+      const contact = document.getElementById("contact");
+      contact.style.backgroundColor = "";
+      contact.style.fontSize = "18px";
+      contact.style.color = "rgb(70, 130, 169)";
+    }
+
+    var lastScrollTop = 0;
+    var threshold = 200;
+    navbar = document.getElementById("header");
+    window.addEventListener("scroll", function() {
+    var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    if (scrollTop > threshold) {
+      if (scrollTop > lastScrollTop) {
+        navbar.style.top = "-80px";
+        navbar.style.filter = "blur(20px)"; 
+      } else {
+        navbar.style.top = "0";  
+        navbar.style.filter = "blur(0)";  
+      }
+    } else {
+      navbar.style.top = "0";
+      navbar.style.filter = "blur(0)";
+    }
+    lastScrollTop = scrollTop; 
+  });
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const text = document.getElementById('scroll-text');
+    const moveAmount = scrollY * 1; // Adjust multiplier for speed
+    text.style.transform = `translateX(${moveAmount}px)`;
+  });
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const text = document.getElementById('scroll-text2');
+    const moveAmount = scrollY * 0.25; // Adjust multiplier for speed
+    text.style.transform = `translateX(${moveAmount}px)`;
+  });
+  </script>
+</body>
+</html>

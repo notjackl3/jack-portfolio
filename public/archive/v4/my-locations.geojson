@@ -1,0 +1,635 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "TRG International"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.719878,
+          10.782204
+        ]
+      },
+      "id": "trg-international"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "UTM Career Center"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.662211,
+          43.548302
+        ]
+      },
+      "id": "utm-career-center"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Go On Hacks"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.492244,
+          43.45076
+        ]
+      },
+      "id": "go-on-hacks"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "EmberHacks"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.666345,
+          43.550479
+        ]
+      },
+      "id": "ember-hacks"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "University of Toronto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.661532,
+          43.548052
+        ]
+      },
+      "id": "university-of-toronto"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "TechTO Hackathon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.382409,
+          43.670868
+        ]
+      },
+      "id": "techto-hackathon"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hack The North"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.538655,
+          43.473069
+        ]
+      },
+      "id": "hack-the-north"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Ignition Hacks"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.380312,
+          43.671038
+        ]
+      },
+      "id": "ignition-hacks"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "AWS Summit"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3851,
+          43.6431
+        ]
+      },
+      "id": "aws-summit"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Google DevFest"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.38,
+          43.65
+        ]
+      },
+      "id": "google-devfest"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Murder Mystery Party"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -123.25101,
+          49.27398
+        ]
+      },
+      "id": "murder-mystery-party"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shut Up & Code"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.38203,
+          43.6499
+        ]
+      },
+      "id": "shut-up-and-code"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "WallyHacks"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.66587,
+          43.55101
+        ]
+      },
+      "id": "wallyhacks"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "UofTHacks 13"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3957,
+          43.6629
+        ]
+      },
+      "id": "uofthacks-13"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "DeltaHacks"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.919243,
+          43.258567
+        ]
+      },
+      "id": "deltahacks"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hack Canada 2026"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.5275,
+          43.4738
+        ]
+      },
+      "id": "hack-canada-2026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "UTRA Hacks 2026"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3957,
+          43.661
+        ]
+      },
+      "id": "utra-hacks-2026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "QHacks"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -76.4951,
+          44.2253
+        ]
+      },
+      "id": "qhacks"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Kingston Mayor's Innovation Challenge"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -76.486,
+          44.231
+        ]
+      },
+      "id": "kingston-mayors-innovation-challenge"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hack The Globe"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3832,
+          43.6532
+        ]
+      },
+      "id": "hack-the-globe"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "DeerHacks V"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.6625,
+          43.5489
+        ]
+      },
+      "id": "deerhacks-v"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stupid Ideas Hackathon (Toronto W26)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.407349,
+          43.641859
+        ]
+      },
+      "id": "stupid-ideas-hackathon"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SmileHacks 2026"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3959,
+          43.6605
+        ]
+      },
+      "id": "smilehacks-2026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "AI Agents Waterloo Voice Hackathon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -80.4926,
+          43.4519
+        ]
+      },
+      "id": "ai-agents-waterloo-voice-hackathon"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Stan x HackAI Toronto Hackathon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3816,
+          43.654
+        ]
+      },
+      "id": "stan-hackai-toronto"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hack The Future"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.376,
+          43.6489
+        ]
+      },
+      "id": "hack-the-future"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "sandcastle by SANDBOX"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3859,
+          43.6566
+        ]
+      },
+      "id": "sandcastle-sandbox"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NVIDIA Spark Hack – Toronto"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3905,
+          43.6426
+        ]
+      },
+      "id": "nvidia-spark-hack-toronto"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SOON Hackathon"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.184615,
+          44.038879
+        ]
+      },
+      "id": "soon-hackathon"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "GenAI Genesis 2026"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3963,
+          43.6601
+        ]
+      },
+      "id": "genai-genesis-2026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "CodeQuest"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.6619,
+          43.5485
+        ]
+      },
+      "id": "codequest"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "BearHacks 2025"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.647033,
+          43.591203
+        ]
+      },
+      "id": "bearhacks-2025"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "FrasersHacks 2026"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.716419,
+          43.559813
+        ]
+      },
+      "id": "frasershacks-2026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Bell SAP Case Competition"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.661979,
+          43.548187
+        ]
+      },
+      "id": "bell-sap-case-competition"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "CUTC 2026: Transform"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3788,
+          43.6577
+        ]
+      },
+      "id": "cutc-2026"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Homecoming (Toronto Tech Week)"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3186,
+          43.6606
+        ]
+      },
+      "id": "homecoming-ttw"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Cohere Party"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.43492,
+          43.670512
+        ]
+      },
+      "id": "cohere-party"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "The AI Collective — Ontario Hackathons Mixer"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.396,
+          43.658
+        ]
+      },
+      "id": "ai-collective-ontario-hackathons-mixer"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Google Office Tour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.375482,
+          43.649487
+        ]
+      },
+      "id": "google-office-tour"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Microsoft Canadian Headquarters"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3784,
+          43.6447
+        ]
+      },
+      "id": "microsoft-canada-hq"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Amazon Fulfillment Center Tour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.82,
+          43.689
+        ]
+      },
+      "id": "amazon-fulfillment-center"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Shopify Office Tour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.4012,
+          43.6443
+        ]
+      },
+      "id": "shopify-office-tour"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Deloitte Office Tour"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.3802,
+          43.6506
+        ]
+      },
+      "id": "deloitte-office-tour"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Joining Aucctus AI — Software Engineer Intern"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -79.398373,
+          43.642352
+        ]
+      },
+      "id": "aucctus-ai-internship"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Agentic AI Build Week"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          106.7861,
+          10.8558
+        ]
+      },
+      "id": "agentic-ai-build-week"
+    }
+  ]
+}

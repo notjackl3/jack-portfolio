@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="image_src" href="assets/thumbnail.webp">
+  <link rel="icon" href="assets/fav-icon.webp" type="image/x-icon">
+  <title>Jack Le's Space</title>
+</head>
+
+<body>
+  <nav>
+    <div class="logo">
+      <h1>@notjackl3 // Jack Le</h1>
+    </div>
+    <ul>
+      <li> <a style="color: var(--color-primary)">#<a class="hoverable" href="#projects"
+            onclick="scrollToTop(event, 'projects')" style="padding-left: 0px;">my-projects</a></a> </li>
+      <li> <a style="color: var(--color-primary)">#<a class="hoverable" href="#contact"
+            onclick="scrollToCenter(event, 'contact')" style="padding-left: 0px;">my-contacts</a></a> </li>
+      <li> <a style="color: var(--color-primary)">#<a class="hoverable" href="#journey"
+            onclick="scrollToTop(event, 'journey')" style="padding-left: 0px;">my-journey</a></a> </li>
+      <li> <a style="color: var(--color-primary)">#<a class="hoverable" href="assets/resume.pdf"
+            download="Jack-Le-Resume.pdf" style="padding-left: 0px;">my-resume</a></a> </li>
+    </ul>
+    <div class="theme-toggle">
+      <button id="theme-toggle-button">🌇 ㅤ|ㅤ 🌃</button> 
+    </div>
+    <div class="hamburger">
+      <span class="line"></span>
+      <span class="line"></span>
+      <span class="line"></span>
+    </div>
+  </nav>
+
+  <section id="welcome-section" class="welcome-section">
+    <div id="intro-text">
+      <h1 class="anim anim-typewriter1 anim-glow">hi there, my name is <span class="marker" style="color: var(--color-primary);">Jack Le</span></h1>
+      <h1 class="anim anim-typewriter2 anim-glow">i'm a <span class="select-me anim-oops">human </span>cool
+        software developer</h1>
+      <a style="margin-top: 40px;" class="button intro-wait unselectable" href="#projects"
+        onclick="scrollToTop(event, 'projects')">view my projects</a>
+      <a class="button intro-wait unselectable" href="#contact" onclick="scrollToCenter(event, 'contact')">get my
+        contacts</a>
+      <a class="button intro-wait unselectable" href="#journey" onclick="scrollToTop(event, 'journey')">see my
+        journey</a>
+      <a class="button intro-wait unselectable" style="color: var(--color-text); border-color: var(--color-text);" href="assets/resume.pdf" download="Jack Le Resume.pdf">-> check my resume <-</a>
+          <br>
+          <div style="width: 320px; margin-bottom: 10px;">
+            <p style="margin-left: 0; line-height: 1.5;" class="skills intro-wait unselectable"><a style="margin-right: 0; color: var(--color-primary)" class="skills intro-wait unselectable">i am best at: </a>python, django, flask, java, javascript, html, css, bootstrap, sql, postgresql, supabase, git, mapbox, aws (iam, ec2, s3, cloudfront, lambda, dynamodb, eventbridge)</p>
+          </div>
+          <div style="width: 320px; margin-bottom: 10px;">
+            <p style="margin-left: 0; line-height: 1.3; color: var(--color-hidden)"
+              class="skills intro-wait unselectable"><a style="margin-right: 0; color: var(--color-primary-light)"
+                class="skills intro-wait unselectable">i am good at: </a>nginx, postman, tailwind, google cloud platform, render, openai api, latex, power app/automate </p>
+          </div>
+    </div>
+  </section>
+
+  <div style="display: flex; background-color: var(--color-secondary); margin-top: 50px;">
+    <h1> <a style="margin-left: 20px; color: var(--color-primary)">#<a style="padding-left: 0px; color: var(--color-text);">my-projects</a></a>
+    </h1>
+    <h1 style="margin-left: 20px; color: var(--color-primary)">─────</h1>
+  </div>
+
+  <section id="projects" class="projects-section">
+    <div class="project">
+      <h2 class="project-title">UTM Live</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/utm-live.webp" alt="UTM-Live">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">An interactive, 3D map. UTM students can find the perfect study spots around the campus!</p>
+      <div style="display: flex; justify-content: center; column-gap: 10px;">
+        <a href="https://utm-live.onrender.com/" class="project-link" style="text-align: center; margin-bottom: 15px;" target="_blank">live demo</a>
+        <a href="#utm-live" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'utm-live')">story behind this</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <h2 class="project-title">Image Gallery</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/image-gallery.webp" alt="Organese">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">A fast image gallery app. Users choose a gallery and upload images (publicly) onto
+        it. Others can upload new images or download existing ones.</p>
+      <div style="display: flex; justify-content: center;">
+        <a href="#image-gallery" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'image-gallery')">story behind this</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <h2 class="project-title" style="color: var(--color-text);">Portfolio Site</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" style="filter: brightness(100%);" src="assets/portfolio.webp" alt="Organese">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description" style="color: var(--color-text);">You are in it right now. 😎</p>
+    </div>
+    <div class="project">
+      <h2 class="project-title">Organese</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/organese.webp" alt="Organese">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">A quick and easy scheduling app. Users can create personalized timetables, share
+        booking links, and manage their tasks more efficiently.</p>
+      <div style="display: flex; justify-content: center;">
+        <a href="#organese" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'organese')">story behind this</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <h2 class="project-title">Job-Hunter</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/job-hunter.webp" alt="Job Hunter project">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">A multi-platform job searching app. It can hunt for latest jobs posts, analyse
+        market demand, and write tailored cover letters for users.</p>
+      <div style="display: flex; justify-content: center;">
+        <a href="#job-hunter" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'job-hunter')">story behind this</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <h2 class="project-title">SOP-ify</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/sop-ify.webp" alt="SOP-ify project">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">A version control app. Users can track real-time changes between two offline Word
+        documents.</p>
+      <div style="display: flex; justify-content: center;">
+        <a href="#sop-ify" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'sop-ify')">story behind this</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <h2 class="project-title">Youtube as a Service</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/youtube-as-a-service.webp" alt="Youtube as a Service project">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">An unlimited storage app. This app compresses any files into Youtube videos. Users
+        can reconstruct these files with 99.9% accuracy.</p>
+      <div style="display: flex; justify-content: center;">
+        <a href="#youtube-as-a-service" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'youtube-as-a-service')">story behind this</a>
+      </div>
+    </div>
+
+    <div class="project">
+      <h2 class="project-title">Resume Builder</h2>
+      <div class="project-divider"></div>
+      <div class="project-img-container">
+        <img class="project-img" src="assets/projects/resume-builder.webp" alt="Resume Builder project">
+      </div>
+      <div class="project-divider"></div>
+      <p class="project-description">A resume optimization tool. It can tailor resumes that match job descriptions,
+        produce keyword-optimized PDFs for ATS scoring.</p>
+      <div style="display: flex; justify-content: center;">
+        <a href="#resume-builder" class="project-link" style="text-align: center; margin-bottom: 15px;"
+          onclick="scrollToCenter(event, 'resume-builder')">story behind this</a>
+      </div>
+    </div>
+  </section>
+
+    <section id="contact" class="footer-section">
+    <p class="marker">@<a href="https://www.instagram.com/notjackl3/" class="hoverable">my-instagram</a></p>
+    <p class="marker">@<a href="https://www.github.com/notjackl3" class="hoverable">my-github</a></p>
+    <p class="marker">@<a href="https://www.linkedin.com/in/huu-an-duc-le/" class="hoverable">my-linkedin</a></p>
+    <p class="marker">@<a href="mailto:huuanducle@gmail.com" class="hoverable">my-email</a></p>
+  </section>
+
+    <div style="display: flex; justify-content: center;">
+    <div class="slider-container" id="slider">
+      <div class="slider-track" id="track">
+        <div class="slider-item">
+          <img src="assets/highlights/wallyhacks.webp" alt="1">
+          <div class="subtitle">my first hackathon, won 2nd place</div>
+        </div>
+        <div class="slider-item">
+          <img src="assets/highlights/ignitionhacks.webp" alt="2">
+          <div class="subtitle">second hackathon, now i am a workshop lead</div>
+        </div>
+        <div class="slider-item">
+          <img src="assets/highlights/trg.webp" alt="3">
+          <div class="subtitle">my first internship at TRG International</div>
+        </div>
+        <div class="slider-item">
+          <video src="assets/highlights/studying.mp4" alt="4" autoplay loop muted></video>
+          <div class="subtitle">the place where magic happens</div>
+        </div>
+        <div class="slider-item">
+          <img src="assets/highlights/family.webp" alt="5">
+          <div class="subtitle">my dad and my mom, who always believe in me</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="journey">
+    <div class="sub-journey">
+      <div style="display: flex; background-color: var(--color-secondary); margin-top: 50px;">
+        <h1> <a style="margin-left: 20px; color: var(--color-primary)">#<a
+              style="padding-left: 0px; color: var(--color-text);">programming-journey</a></a>
+        </h1>
+        <h1 style="margin-left: 20px; color: var(--color-primary)">
+          <span class="long-line">─────</span>
+          <span class="short-line">───</span>
+          <span class="super-short-line">──</span>
+        </h1>
+      </div>
+
+      <section id="journey" class="journey-section">
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2025</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">September</a> - Hacker at Canada's Biggest Hackathon</h3>
+                <p class="timeline-paragraph">
+                  <b class="important">Hack The North</b> is coming soon.
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">August</a> - Project Lead at UofT Blueprint</h3>
+                <p class="timeline-paragraph">
+                  I will be working with a team of developers to build custom software solutions for local NGOs.
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">May</a> - Vice President of Technology at UTMSAM</h3>
+                <p class="timeline-paragraph">
+                  My role is to <b class="important">lead 6 technical associates</b> to <b class="important">host
+                    hackathon, workshops, and guest-speaking events</b>. So far we have created a treasure hunt orientation event for new students. I also took part in <b class="important">outreach efforts</b> by contacting potential sponsors for our upcoming hackathon. Currently, I am involved on a <b class="important">rebranding campaign</b>, a redesign of the website, and creating an <b class="important">end-to-end web development course</b> for students.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 id="sop-ify" class="timeline-date"><a class="month">May</a> - First Internship - TRG International
+                </h3>
+                <p class="timeline-paragraph">
+                  Going back to Vietnam for summer, I searched for internships. Then I came across TRG and applied in
+                  the <b class="important">Standard Operation Procedure Intern</b> position.
+                  <span class="more-text" style="display: none;">
+                    Despite being in the HR department, I joined with goal to learn soft-skills and understand how a
+                    company works. Spoiler alert! I earned the title "Star Intern" 🌟. I tried my best to look for further opportunities within my work, which pushes me to
+                    <b class="important">represent TRG in 2 career fairs</b>, <b class="important">onboard new
+                      interns</b>, and <b class="important">interview incoming interns</b>. Notably, I used my
+                    programming skills to <b class="important">create a Python app</b> to simulate git-diff
+                    functionality for Word document. This allows me to work more efficient since offline Word document
+                    drived me crazy with their version control. Moreover, I <b class="important">built a virtual agent</b> that sends event notifications for up to 150+ employees. I helped a colleague by <b class="important">automating address geocoding</b> and compiling geospatial datasets for map visualizations. And one funny thing is that I <b class="important">hosted Q/A sharing session</b> between the CEO and 20+ interns. Why did this happen? I was the only intern to <b class="important">message the CEO asking for a coffee chat!</b>
+
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">March</a> - First Hackathon - WallyHacks</h3>
+                <p class="timeline-paragraph">
+                  I participated in WallyHacks 2025, a <b class="important">one-day hackathon</b> focused on
+                  sustainability in urban environments. Our team, the Red Hats Hackers, <b class="important">won second
+                    place!</b>
+                  <span class="more-text" style="display: none;">
+                    Our project, the <b class="important">Street Roamer S3000</b>, is a sensor-driven prototype that
+                    detects flickering streetlights and uneven sidewalks to support real-time urban maintenance, reduce
+                    energy waste, and improve safety. We used a <b class="important">photoresistor</b> for flicker
+                    detection, a <b class="important">gyroscope</b> to measure tilt and road bumps, and an <b
+                      class="important">ultrasonic sensor</b> for obstacle avoidance, all integrated <b
+                      class="important">using C++</b>. I contributed by developing and fine-tuning the sensor code,
+                    organizing the circuitry, and creating both the <b class="important">presentation slides and final
+                      project video</b>.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">January</a> - University Volunteer</h3>
+                <p class="timeline-paragraph">
+                  After getting used to life in Canada, I volunteered to be a <b class="important">note-taker for 2
+                    courses</b>. I also came to weekly office hours to help other students,
+                  <span class="more-text" style="display: none;">
+                    and <b class="important">made 507 online contributions</b> in one Computer Science course alone.
+                    Each week, I would spend time to <b class="important">mentor my friends in Python</b> for their
+                    other coding courses.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2024</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">August</a> - University Freshman</h3>
+                <p class="timeline-paragraph">
+                  I flied to Canada on my 19th birthday. Life in university was full of excitement and unexpected turns.
+                  From making new friends to being taken to the hospital
+                  <span class="more-text" style="display: none;">
+                    after one month here. And from being suspected cheating to forgeting to answer 2 full pages in my
+                    final exam. I still ended up with a <b class="important">3.9 CPGA</b>, which is <b
+                      class="important">in the Dean's List Scholar</b>.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div style="display: flex; background-color: var(--color-secondary); margin-top: 30px;">
+        <h1> <a style="margin-left: 20px; color: var(--color-primary)">#<a
+              style="padding-left: 0px;">personal-projects</a></a>
+        </h1>
+        <h1 style="margin-left: 20px; color: var(--color-primary)">
+          <span class="long-line">─────</span>
+          <span class="short-line">───</span>
+          <span class="super-short-line">──</span>
+        </h1>
+      </div>
+
+      <section id="journey" class="journey-section">
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="utm-live" class="timeline-date">Resume For Me</h3>
+                <p class="timeline-subtitle">Python-Django, PostgreSQL-Supabase</p>
+                <p class="timeline-paragraph">
+                  I am currently creating an app that allows me to quickly customize my resume quickly so I can send out resumes rapidly to job posts! I learnt how to use WebSockets to make smooth UI/UX interactions.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="utm-live" class="timeline-date">UTM Live 👍</h3>
+                <p class="timeline-subtitle">Python-Django, Mapbox-GL-Studio, AWS-S3, PostgreSQL-Supabase</p>
+                <p class="timeline-paragraph">
+                  I was wondering how many study spots are there at UTM, and whether there is a list of these places out there. But there is none! Thus, I wanted to created an app that allows students to view all of the study spots. I also thought it would be cool to make the map 3D!
+                  <span class="more-text" style="display: none;">
+                    I added in real-time dynamic lighting/weather effects that will change according to the live data of Mississauga. I also manually modeled 80+ campus locations by hand using Mapbox GL and custom GeoJSON data. I learnt how to secure user access with JWT-based auth and Django session. Moreover, I included a routing system where user can see the path to get from one location to the other. Lastly, for now, the user can input there own custom spots too! I am still working on the project so there will be more to come!
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="organese" class="timeline-date">Image Gallery</h3>
+                <p class="timeline-subtitle">Python-FastAPI, AWS-EC2-S3-CloudFront-EventBridge-Lambda-DynamoDB, nginx</p>
+                <p class="timeline-paragraph">
+                  I was curious cloud infrastructure. So I build a simple but powerful image gallery web app using
+                  FastAPI. The app allows users to join galleries, upload images, and view or delete existing images in
+                  real-time.
+                  <span class="more-text" style="display: none;">
+                    I store all images in Amazon S3, serve them globally through CloudFront CDN for faster load times,
+                    and deploy it using an EC2 instance configured with nginx. There is also a client-side image
+                    compression using the Canvas API. Additionally, I set up a daily image cleanup process using AWS Lambda and DynamoDB, which automatically removes expired images to keep the storage efficient and organized. This project helps me understand RESTful API design, cloud deployment workflows, and performance optimization with caching and compression.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 class="timeline-date">SOP-ify</h3>
+                <p class="timeline-subtitle">Python-Flask, python-docx, watchdog</p>
+                <p class="timeline-paragraph">
+                  Version control on Word offline sucks. So I make a Flask application to help me with determining what
+                  changes have been made, to assist me with my tasks as a SOP Intern at TRG International.
+                  <span class="more-text" style="display: none;">
+                    I learn about polling techniques which allows me to display changes in real-time, and I use watchdog
+                    library to let the app integrate with my OS system, which lets it run in the background as I edit
+                    the documents.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="organese" class="timeline-date">Organese</h3>
+                <p class="timeline-subtitle">Python-Django, HTML/CSS/JS-Bootstrap, PostgreSQL-Supabase, REST</p>
+                <p class="timeline-paragraph">
+                  I was struggling with time management. So I build a full-stack scheduling web app using Django
+                  back-end and vanilla HTML/CSS/JS for front-end.
+                  <span class="more-text" style="display: none;">
+                    This app allows users to create multiple customizable timetables, mark their availability, and share
+                    public guest links for others to book meetings. I build RESTful API endpoints to handle CRUD
+                    operations. More specifically, this project helps me strengthen my skills in database design, more
+                    standardized API practices, and smooth communications between the server and clients.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="job-hunter" class="timeline-date">Job Hunter</h3>
+                <p class="timeline-subtitle">Python-Django, HTML/CSS/JS, PostgreSQL-Supabase, AWS-EC2, NPTK, Jobspy,
+                  Beautiful Soup, OpenAI, Matplotlib, Chart.js</p>
+                <p class="timeline-paragraph">
+                  I wanted to avoid being flooded with job posts. This app helps you find the latest jobs by scraping
+                  Google, Linkedin, and Indeed based on input queries.
+                  <span class="more-text" style="display: none;">
+                    It collects and displays the most relevant, high demand technologies, along with other statistics,
+                    with addition of natural language processing algorithms. I also use Django's authentication and
+                    permission system for access control. There is an option for users to input their resume, and the
+                    app will produce a cover letter that matches different jobs immediately. All of the job postings are
+                    stored as a PostgreSQL database online via Supabase. The app is then deployed using EC2.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="youtube-as-a-service" class="timeline-date">Youtube as a Service 👍</h3>
+                <p class="timeline-subtitle">Python-Django, HTML/CSS/JS-Tailwind, PostgreSQL, Google Cloud Platform,
+                  AWS-S3, OpenCV, Numpy</p>
+                <p class="timeline-paragraph">
+                  I wanted to explore more. I notice Youtube allows users to have unlimited video uploads, thus, I try
+                  to find a loophole, which I find out
+                  <span class="more-text" style="display: none;">
+                    that I can convert any files into binary, then match those binary values into specific pixel colors
+                    (e.g 00 is red, 01 is blue). These pixel colors are placed into a grid of 480x270 pixels in order.
+                    When the grid gets full, it continues onto a new one. These grid images are then compiled into a
+                    video with 24 fps. The video finally will be uploaded to Youtube. And users can upload as many video
+                    files, thus it allows unlimited storage. I make a decompression algorithm such that we can
+                    redownload the video, tune resolutions, and retrieve the bits values. These bits are then recompiled
+                    back to the original file, with a 99.9% accuracy!
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 id="resume-builder" class="timeline-date">Resume Builder</h3>
+                <p class="timeline-subtitle">Python, LaTeX, OpenAI, Jinja, Tkinter, PyQt5, OOP</p>
+                <p class="timeline-paragraph">
+                  I took what I've learnt in class about OOP to create my first personal project. This tool combines
+                  both CLI and Tkinter+PyQt5 for the interface, which takes in a resume and a job description, then uses
+                  textract to extract keywords.
+                  <span class="more-text" style="display: none;">
+                    These keywords are sent to OpenAI API to produce key bullet points. These sentences are combined
+                    with Jinja and LaTeX to then output a newly formatted PDF resume. The new resume ensures keywords
+                    are incuded to improve ATS scores. The user may also change the document after if needed. A simple
+                    PostgreSQL database is used to store all the resumes and job descriptions locally.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="sub-journey">
+      <div style="display: flex; background-color: var(--color-secondary); margin-top: 50px;">
+        <h1> <a style="margin-left: 20px; color: var(--color-primary)">#<a
+              style="padding-left: 0px; color: var(--color-text);">personal-journey</a></a>
+        </h1>
+        <h1 style="margin-left: 20px; color: var(--color-primary)">
+          <span class="long-line">─────</span>
+          <span class="short-line">───</span>
+          <span class="super-short-line">──</span>
+        </h1>
+      </div>
+
+      <section id="journey" class="journey-section">
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2025</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">October</a> - Organizer/Coordinator for EmberHacks</h3>
+                <p class="timeline-paragraph">
+                  Coming soon.
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">August</a> - Workshop Lead at Ignition Hacks V6</h3>
+                <p class="timeline-paragraph">
+                  I delivered a technical workshop on Mapbox for a 36-hour hackathon with 200+ participants.
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2024</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">June</a> - Private Tutoring</h3>
+                <p class="timeline-paragraph">
+                  I started finding summer jobs and ended up as a <b class="important">private tutor</b>. I <b
+                    class="important">taught English to 1 student</b>
+                  and <b class="important">Math to 4 students</b>, some were in person and others were online on Preply.
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2023</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">September</a> - President of Design Now</h3>
+                <p class="timeline-paragraph">
+                  I started my own club with 2 friends. We <b class="important">instructed 20+ students</b> on how to
+                  use <b class="important">CAD software</b> such
+                  as <b class="important">Fusion360, Adobe Photoshop, Adobe Illustrator</b>, etc.
+                  <span class="more-text" style="display: none;">
+                    Students asked for our help to <b class="important">produce 3D printed acrylic</b> products. Some
+                    others wanted to <b class="important">design with plywood</b> (one student chose to make a real-size
+                    knife!)
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">June</a> - Product Designer - SAGE Competition</h3>
+                <p class="timeline-paragraph">
+                  I collaborated with a team of five to develop a social enterprise start-up focused on <b class="important">creating special braille books</b>, and <b class="important">won 3rd place!</b>
+                  <span class="more-text" style="display: none;">
+                    Our product combined <b class="important">textured materials</b> with a built-in <b class="important">digital voice-over</b>, offering visually impaired users both a physical and auditory reading experience. I played a key role in shaping our business model, coming up with potential designs, and conducting market research to ensure the product’s relevance and impact.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">February</a> - Rap Performer 👍</h3>
+                <p class="timeline-paragraph">
+                  My best friend dared me to perform on stage which him, which I did. In total I have <b
+                    class="important">performed 5 times</b> on stage, with <b class="important">2000+ audiences</b>.
+                  <span class="more-text" style="display: none;">
+                    My first rap song is <b class="important">"Com Tam Rap"</b> during Vietnamese Tet Holiday at school.
+                    Following that is another rap song <b class="important">"Song Cho Het Doi Thanh Xuan"</b> and <b
+                      class="important">dance performance</b> during BISHCMC International Day. Lastly, I performed <b
+                      class="important">"Di Ve Nha"</b> with my best friend in the 2024 Tet Holiday, and did 1 solo
+                    performance <b class="important">"Lop 13"</b> on my own in that same event.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2022</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">December</a> - BISHCMC Prefect Student</h3>
+                <p class="timeline-paragraph">Out of 110 students, 30 was chosen as Prefect Students to <b
+                    class="important">be a role model</b> for students in younger
+                  years.</p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">November</a> - Academic Mentoring</h3>
+                <p class="timeline-paragraph">
+                  I <b class="important">helped students</b> with their <b class="important">weekly homework</b>.
+                  These sessions were hosted by the school and it can reach up to <b class="important">30+ students</b>.
+                  <span class="more-text" style="display: none;">
+                    At the end of the year, I remembered being the only student who received gifts from
+                    students. I was given chocolate bars, a hand-written note, and coffee.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">November</a> - Design Technology Ambassador</h3>
+                <p class="timeline-paragraph">
+                  I <b class="important">hosted 3 welcoming events</b> for students and parents from up to <b
+                    class="important">50+ nationalities</b>. I <b class="important">introduced 150+ guests</b> to the
+                  subject through live-actions, presentations, and
+                  interactive 3D softwares.
+                  <span class="more-text" style="display: none;">
+                    We <b class="important">used Fusion360, Adobe Illustrator</b>, and techniques such as <b
+                      class="important">aluminium die-casting, acrylic printing, wood-working</b>, etc. After each
+                    event, the head techer always gave me a bar of
+                    chocolate to say thank you.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">October</a> - BISHCMC Wellbeing Committee Associate</h3>
+                <p class="timeline-paragraph">I took part in the <b class="important">Mental Awareness week</b> and
+                  other initiatives regarding student's wellness.</p>
+                <br><br>
+              </div>
+
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">September</a> - Co-President of Create and Care</h3>
+                <p class="timeline-paragraph">
+                  I <b class="important">joined a team of 8</b> to teach secondary students how to <b
+                    class="important">design clay products, totebags, bracelets</b>, and many more hand-made ideas.
+                  <span class="more-text" style="display: none;">
+                    All students really enjoyed the club, some of them even asked me to add friend them on
+                    Facebook! Following that, we took the hand-made products to sell them at <b class="important">3
+                      seasonal events</b> and
+                    generated <b class="important">$1,200+ in revenue.</b>
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2020</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">May</a> - Content Creation & Video Editing 👍</h3>
+                <p class="timeline-paragraph">
+                  I started with <b class="important">editing Minecraft videos on Filmora</b>. In 2021, I took video
+                  editing more seriously
+                  and started <b class="important">learning Adobe Premiere and After Effects</b>. Finally, it paid off
+                  in summer of 2022
+                  where one video blew up,
+                  <span class="more-text" style="display: none;">
+                    reaching <b class="important">10,000 views</b> in a few days. Then I had videos with <b
+                      class="important">100,000 views</b>, finally <b class="important">500,000
+                      views</b>, then the video that I spent 30 hours editing, peaked at <b class="important">600,000
+                      views</b>.
+                  </span>
+                  <button class="read-more">[Read more]</button>
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="width: 100%; margin-bottom: 5px;">
+          <h2 style="margin: 0;"><a style="margin-left: 10px; color: var(--color-primary)">*<a
+                style="padding-left: 0px; color: var(--color-hidden)">2019</a></a></h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-content">
+              <div class="timeline-group">
+                <h3 class="timeline-date"><a class="month">September</a> - Portrait Drawing</h3>
+                <p class="timeline-paragraph">
+                  I attended class about <b class="important">pencil portrait drawing</b> and adopted this hobby from
+                  then on. I loved to draw movie actors, models, and even abstract drawings. My art can be found in my
+                  Instagram: <b class="important">@notjackl3</b>.
+                </p>
+                <br>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section id="footer" class="footer-section">
+    <p class="marker">© 2025 Jack Le</p>
+  </section>
+
+  <!-- <div style="display: flex; flex-direction: row; justify-content: end;">
+      <img class="project-img portrait" style="width: 15rem; height: 15rem;" src="assets/portrait-square.webp" alt="Portrait">
+    </div> -->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="animation.css">
+  <script src="scripts.js"></script>
+</body>
+
+</html>
