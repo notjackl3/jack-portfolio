@@ -106,7 +106,17 @@ const Notes = ({ style = 'napkin', hand = 'caveat' }) => {
         body: JSON.stringify({ body: text }),
       });
       const d = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(d?.error || 'could not save');
+      if (!r.ok) {
+        // A 4xx is written for whoever is holding the pen — "slow down",
+        // "nothing written" — so it goes on the sheet as-is. A 5xx is the
+        // server talking to itself; that goes to the console and the sheet
+        // says something plain instead.
+        if (r.status >= 500) {
+          console.error('[goals] save failed:', d?.error || r.status);
+          throw new Error('could not save — try again later');
+        }
+        throw new Error(d?.error || 'could not save');
+      }
       setSaved(d.body || text);
       setDraft(null);
     } catch (err) {
