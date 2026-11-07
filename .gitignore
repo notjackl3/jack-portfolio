@@ -26,7 +26,11 @@ dist-ssr
 # OS metadata
 .DS_Store
 Thumbs.db
-# Local env. Never commit: scripts/goals.mjs reads GOALS_ADMIN_SECRET from here.
-.env
-.env.local
-.env.*.local
+
+# Local env. Never commit: scripts/goals.mjs reads GOALS_ADMIN_SECRET out of
+# .env, and `vercel link` writes BLOB_READ_WRITE_TOKEN into .env.local.
+.env*
+!.env.example
+
+# Vercel CLI project link
+.vercel
