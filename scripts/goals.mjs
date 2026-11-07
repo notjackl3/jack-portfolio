@@ -29,7 +29,15 @@ const secret = await (async () => {
 })();
 
 const get = async (withLog = false) => {
-  const r = await fetch(ENDPOINT, {
+  // The edge cache keys on the URL alone — it does not vary on the secret
+  // header — so an admin GET can be handed the short public response a
+  // visitor warmed seconds earlier, which carries no `history` at all and
+  // makes the log read as empty. The handler never runs to say otherwise.
+  // Asking for a URL nobody else has is the only way past it from here.
+  const url = withLog
+    ? `${ENDPOINT}${ENDPOINT.includes('?') ? '&' : '?'}_=${Date.now()}`
+    : ENDPOINT;
+  const r = await fetch(url, {
     cache: 'no-store',
     // The log is only returned to the secret, so asking for it is still a
     // read — reading what people wrote never writes anything itself.
