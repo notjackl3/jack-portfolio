@@ -1,0 +1,155 @@
+/* ── the trigger ────────────────────────────────────────────────────
+   The one control inside a blog entry or a hackathon write-up, so it is an
+   actual button: a pill with an outline, on its own line under the text.
+   Quiet enough for the page, solid enough to be found. */
+
+.photos-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 11px;
+  padding: 7px 14px 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 14px;
+  color: var(--muted);
+  background: var(--bg);
+  transition:
+    color var(--t) var(--ease),
+    border-color var(--t) var(--ease),
+    background-color var(--t) var(--ease),
+    transform var(--t) var(--ease);
+}
+
+/* The button sits as close under the writing as the writing sits under the
+   headline, so the block before it gives up its bottom margin. */
+.post-para:has(+ .photos-btn),
+.post-list:has(+ .photos-btn) { margin-bottom: 0; }
+
+.photos-btn svg { flex: none; color: var(--faint); transition: color var(--t) var(--ease); }
+
+.photos-btn:hover {
+  color: var(--text);
+  border-color: var(--muted);
+  background: rgba(44, 43, 40, 0.04);
+  transform: translateY(-1px);
+}
+
+.photos-btn:hover svg { color: var(--text); }
+
+.photos-btn:active { transform: none; }
+
+/* The photo gallery for one blog entry, over the page. A mosaic rather
+   than a uniform grid: each photo takes columns according to its shape. */
+
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 40px 24px;
+  overflow-y: auto;
+  /* Warm, not black — the page underneath is paper, and a hard scrim
+     against it reads as a different site. */
+  background: rgba(42, 40, 36, 0.42);
+  backdrop-filter: blur(3px);
+  animation: lb-in 180ms var(--ease) both;
+}
+
+@keyframes lb-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lb-panel {
+  width: 100%;
+  max-width: 940px;
+  margin: auto;
+  padding: 20px;
+  background: var(--bg);
+  box-shadow:
+    0 2px 6px rgba(44, 43, 40, 0.1),
+    0 30px 70px rgba(44, 43, 40, 0.22);
+  animation: lb-rise 220ms var(--ease) both;
+}
+
+@keyframes lb-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.lb-head {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.lb-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.lb-close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: var(--muted);
+  transition: color var(--t) var(--ease), background-color var(--t) var(--ease);
+}
+
+.lb-close:hover { color: var(--text); background: rgba(44, 43, 40, 0.06); }
+
+/* A justified gallery: each row is scaled so it ends flush with both
+   edges, which keeps every gap identical and leaves no holes punched
+   through the grid. Within a row the widths are proportional to the
+   photos' own ratios, so their heights come out equal.
+   `--r` is the photo's width/height, set per item. */
+.lb-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lb-item {
+  margin: 0;
+  overflow: hidden;
+  background: var(--line);
+  min-width: 0;
+  /* Grow in proportion to the ratio, starting from a ~170px-tall row. */
+  flex: var(--r) 1 calc(var(--r) * 170px);
+  aspect-ratio: var(--r);
+}
+
+/* A last row with one or two photos would stretch them far past the rest.
+   This soaks up the leftover width so they keep roughly the row height
+   everything else settled on. */
+.lb-grid::after {
+  content: '';
+  flex-grow: 1000;
+  min-width: 25%;
+}
+
+.lb-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 760px) {
+  /* A little more air down the sides of the sheet on a phone. */
+  .lb { padding: 18px 20px; }
+  .lb-panel { padding: 14px; }
+  /* Shorter rows, so two photos still fit across rather than one. */
+  .lb-item { flex-basis: calc(var(--r) * 110px); }
+  .lb-grid { gap: 6px; }
+}

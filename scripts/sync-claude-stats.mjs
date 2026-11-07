@@ -17,7 +17,7 @@
  *     "minIntervalMinutes": 30 }
  * If that file is missing, the push is skipped silently.
  */
-import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -65,6 +65,122 @@ function computeStreaks(dates) {
     else break;
   }
   return { current, longest, activeDays: sorted.length };
+}
+
+// ── Transcript fallback ────────────────────────────────────────────────
+// Claude Code only recomputes stats-cache.json when you open the Stats tab,
+// so it is usually days behind. Session transcripts are written as you go,
+// so anything after the cache's last computed date is read from those.
+const PROJECTS_DIR = join(HOME, '.claude', 'projects');
+
+const localDate = (iso) => {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return null;
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+};
+
+function walkJsonl(dir, out = []) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return out;
+  }
+  for (const e of entries) {
+    const full = join(dir, e.name);
+    if (e.isDirectory()) walkJsonl(full, out);
+    else if (e.name.endsWith('.jsonl')) out.push(full);
+  }
+  return out;
+}
+
+function extendWithTranscripts(cache) {
+  if (!existsSync(PROJECTS_DIR)) return cache;
+
+  const since = cache.lastComputedDate || '0000-00-00';
+  const sinceMs = Date.parse(`${since}T00:00:00Z`) || 0;
+
+  const byDate = new Map(); // date -> { messages, tokensByModel, sessions:Set }
+  let scanned = 0;
+
+  for (const file of walkJsonl(PROJECTS_DIR)) {
+    // Skip files untouched since the cache was computed.
+    try {
+      if (statSync(file).mtimeMs < sinceMs) continue;
+    } catch {
+      continue;
+    }
+
+    let text;
+    try {
+      text = readFileSync(file, 'utf8');
+    } catch {
+      continue;
+    }
+
+    for (const line of text.split('\n')) {
+      if (!line) continue;
+      let row;
+      try {
+        row = JSON.parse(line);
+      } catch {
+        continue;
+      }
+      const usage = row?.message?.usage;
+      if (!usage || !row.timestamp) continue;
+
+      const date = localDate(row.timestamp);
+      if (!date || date <= since) continue;
+
+      const tokens =
+        (usage.input_tokens || 0) +
+        (usage.output_tokens || 0) +
+        (usage.cache_creation_input_tokens || 0) +
+        (usage.cache_read_input_tokens || 0);
+
+      let day = byDate.get(date);
+      if (!day) {
+        day = { messages: 0, tokensByModel: {}, sessions: new Set() };
+        byDate.set(date, day);
+      }
+      day.messages += 1;
+      const model = row.message.model || 'unknown';
+      day.tokensByModel[model] = (day.tokensByModel[model] || 0) + tokens;
+      if (row.sessionId) day.sessions.add(row.sessionId);
+      scanned += 1;
+    }
+  }
+
+  if (!byDate.size) return cache;
+
+  const dates = [...byDate.keys()].sort();
+  const dailyActivity = [...(cache.dailyActivity || [])];
+  const dailyModelTokens = [...(cache.dailyModelTokens || [])];
+  let addedSessions = 0;
+  let addedMessages = 0;
+
+  for (const date of dates) {
+    const day = byDate.get(date);
+    dailyActivity.push({ date, messageCount: day.messages, sessionCount: day.sessions.size });
+    dailyModelTokens.push({ date, tokensByModel: day.tokensByModel });
+    addedSessions += day.sessions.size;
+    addedMessages += day.messages;
+  }
+
+  log(
+    `extended with ${dates.length} day(s) from transcripts`,
+    `(${dates[0]} → ${dates[dates.length - 1]}, ${scanned} messages)`
+  );
+
+  return {
+    ...cache,
+    dailyActivity,
+    dailyModelTokens,
+    totalSessions: (cache.totalSessions || 0) + addedSessions,
+    totalMessages: (cache.totalMessages || 0) + addedMessages,
+    lastComputedDate: dates[dates.length - 1],
+  };
 }
 
 function transform(cache) {
@@ -137,7 +253,7 @@ function main() {
 
   let slim;
   try {
-    const cache = JSON.parse(readFileSync(STATS_CACHE, 'utf8'));
+    const cache = extendWithTranscripts(JSON.parse(readFileSync(STATS_CACHE, 'utf8')));
     slim = transform(cache);
   } catch (e) {
     log('failed to read/transform stats cache:', e.message);

@@ -1,0 +1,100 @@
+/* Activity — two small grids, no colour, no labels but the caption. */
+
+.heat + .heat { margin-top: 24px; }
+
+.heat-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 9px;
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.heat-caption {
+  margin-left: auto;
+  color: var(--faint);
+  transition: color var(--t) var(--ease);
+}
+
+.heat-caption[data-hot='true'] { color: var(--muted); }
+
+/* Two stacked grids: grey underneath, colour on top behind a circular
+   mask that follows the pointer. */
+.heat-stack {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+/* The data lands after the section has finished its entrance, so the grids
+   fade in on their own rather than appearing all at once. */
+.heat { animation: rise var(--t-slow) var(--ease) both; }
+
+.heat-layer {
+  display: flex;
+  gap: 2px;
+  width: 100%;
+}
+
+.heat-layer--colour {
+  position: absolute;
+  inset: 0 0 4px 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms var(--ease);
+  -webkit-mask-image: radial-gradient(
+    circle 92px at var(--mx, -400px) var(--my, -400px),
+    #000 0%,
+    #000 42%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    circle 92px at var(--mx, -400px) var(--my, -400px),
+    #000 0%,
+    #000 42%,
+    transparent 100%
+  );
+}
+
+.heat-stack[data-lit='true'] .heat-layer--colour { opacity: 1; }
+
+.heat-week {
+  flex: 1 1 0;
+  min-width: 0;
+  /* The weeks share the column, so a map covering a short span would draw
+     itself with enormous cells. At a full year this never binds; it only
+     catches the case where one source fails and the other renders alone. */
+  max-width: 15px;
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.heat-cell {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #eceade;
+}
+
+.heat-cell--pad { background: transparent; }
+
+.heat-cell[data-lvl='1'] { background: #ded9c9; }
+.heat-cell[data-lvl='2'] { background: #c3bdab; }
+.heat-cell[data-lvl='3'] { background: #9a9484; }
+.heat-cell[data-lvl='4'] { background: #6b6659; }
+
+/* GitHub reads green, Claude orange. */
+.heat[data-kind='gh'] .heat-layer--colour .heat-cell[data-lvl='0'] { background: #e6efe5; }
+.heat[data-kind='gh'] .heat-layer--colour .heat-cell[data-lvl='1'] { background: #cfe6cd; }
+.heat[data-kind='gh'] .heat-layer--colour .heat-cell[data-lvl='2'] { background: #8ecb8c; }
+.heat[data-kind='gh'] .heat-layer--colour .heat-cell[data-lvl='3'] { background: #4e9b55; }
+.heat[data-kind='gh'] .heat-layer--colour .heat-cell[data-lvl='4'] { background: #2f6b39; }
+
+.heat[data-kind='ai'] .heat-layer--colour .heat-cell[data-lvl='0'] { background: #f7ece2; }
+.heat[data-kind='ai'] .heat-layer--colour .heat-cell[data-lvl='1'] { background: #f7ddc6; }
+.heat[data-kind='ai'] .heat-layer--colour .heat-cell[data-lvl='2'] { background: #efb183; }
+.heat[data-kind='ai'] .heat-layer--colour .heat-cell[data-lvl='3'] { background: #d97f3f; }
+.heat[data-kind='ai'] .heat-layer--colour .heat-cell[data-lvl='4'] { background: #a85620; }
+
+.heat-layer--colour .heat-cell--pad { background: transparent; }
+

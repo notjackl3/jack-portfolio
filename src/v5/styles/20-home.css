@@ -1,0 +1,59 @@
+/* Home */
+
+.intro h1 {
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  margin-bottom: 18px;
+}
+
+.intro p + p { margin-top: 14px; }
+
+.intro-links {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.sep { color: var(--faint); }
+
+@media (max-width: 600px) {
+  .intro h1 { font-size: 29px; }
+}
+
+/* ── `now` and the note, side by side ──
+   What I'm doing on the left, what I want to do on the right. Two equal
+   halves: the rows need room for a title, a company and a date, and the
+   note is sized to the longest line the page's typeface sets. */
+
+.now-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.now-col { min-width: 0; }
+
+.note-col {
+  min-width: 0;
+  display: flex;
+  justify-content: flex-end;
+  /* Level with the first row rather than with the `now` heading: the note's
+     title is a heading of its own and the two should sit on a line. */
+  padding-top: 0;
+}
+
+/* One column, note under `now`. Same breakpoint as the rest of the page. */
+@media (max-width: 600px) {
+  .now-row {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .note-col { justify-content: flex-start; }
+}

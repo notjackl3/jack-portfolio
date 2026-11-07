@@ -1,0 +1,144 @@
+/* ──────────────────────────────────────────────────────────────
+   The box your cursors live in when they are not in your hand.
+   A row in the nav, beside the mark, holding the designs you are
+   not using at the size they will be under your hand. Geometry
+   mirrors the resting sizes in 96-cursor.css.
+   ────────────────────────────────────────────────────────────── */
+
+.bed {
+  flex: none;
+  display: flex;
+  align-items: stretch;
+  /* Well under the 40px avatars beside it, so it reads as a control set
+     among them rather than a third portrait, and never sets the nav's
+     height. The nav centres it against them. */
+  height: 24px;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  transition: border-color var(--t) var(--ease);
+}
+
+.bed:hover {
+  border-color: var(--faint);
+}
+
+/* ── A shape ──────────────────────────────────────────────────────
+      The button is a whole cell, so the hit area is the full height
+      of the row — a bracket drawn in hairlines has almost no area of
+      its own to aim at. */
+
+.bed-shape {
+  --stroke: var(--muted);
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+.bed-shape:hover,
+.bed-shape:focus-visible {
+  --stroke: var(--text);
+}
+
+.bed-shape::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 21px;
+  height: 21px;
+  margin: -10.5px 0 0 -10.5px;
+  border-radius: 50%;
+  background: var(--tint);
+  opacity: 0;
+  transition: opacity 160ms var(--ease);
+}
+
+.bed-shape:hover::before,
+.bed-shape:focus-visible::before {
+  opacity: 1;
+}
+
+.bed-art {
+  position: relative;
+  display: block;
+}
+
+/* ── The designs ──────────────────────────────────────────────────
+      Drawn at about three quarters of their resting size, and written
+      out rather than scaled: `transform: scale()` on a 1px hairline
+      renders it at some fraction of a pixel and the whole row goes soft.
+
+      Sized to look equal, not to measure equal. A square and a circle of
+      the same nominal size never read the same — equal area puts the
+      square at ~0.886 of the circle's diameter, and the square's corners
+      reach further from the centre than any point on the circle. Giving
+      the four their resting proportions, where the frame is the largest,
+      made it the biggest of the four twice over.
+
+      So the round pair are the large number and the square pair the
+      small one. The frame then takes a px back off the solid square: it
+      is the same shape drawn in four corners rather than a whole
+      perimeter, so there is less ink in it at the same size. ──────── */
+
+.bed-shape[data-shape='ring'] .bed-art {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--stroke);
+  border-radius: 50%;
+}
+
+.bed-shape[data-shape='square'] .bed-art {
+  width: 13px;
+  height: 13px;
+  border: 1px solid var(--stroke);
+}
+
+/* Two words different from the ring, the same way the two designs share
+   their rules in 96-cursor.css. At 1px a dotted border is single-pixel
+   dashes; 2px is where the dots are round, and separate. */
+.bed-shape[data-shape='dotted'] .bed-art {
+  /* A px wider than the solid ring, for the same reason a circle is wider
+     than a square: the eye reads this one along the centres of its dots,
+     which a 2px border sets a px inside the box, not along its outer edge.
+     Matched to the ring it measures 6% smaller than it looks. */
+  width: 15px;
+  height: 15px;
+  /* Still 2px: the dots are as wide as the border and sit that far apart,
+     so thinning it here would put the dashes back. */
+  border: 2px dotted var(--stroke);
+  border-radius: 50%;
+}
+
+.bed-shape[data-shape='frame'] .bed-art {
+  /* Level with the solid square rather than a px under it: at 13px a
+     single pixel is nearly a tenth of the shape, far too coarse to carry
+     the ink-weight difference it was correcting for. */
+  width: 13px;
+  height: 13px;
+}
+
+.bed-c {
+  position: absolute;
+  /* Short enough that the gaps between them stay open at this size: two
+     5px brackets on a 13px side leave a 3px slot, which reads as a solid
+     square with four nicks taken out of it rather than four corners. */
+  width: 4px;
+  height: 4px;
+  border: 1px solid var(--stroke);
+}
+
+.bed-c-tl { left: 0; top: 0; border-right: 0; border-bottom: 0; }
+.bed-c-tr { right: 0; top: 0; border-left: 0; border-bottom: 0; }
+.bed-c-bl { left: 0; bottom: 0; border-right: 0; border-top: 0; }
+.bed-c-br { right: 0; bottom: 0; border-left: 0; border-top: 0; }
+
+/* The component never mounts in either case; this is the belt to that
+   braces, so a stale box can never be left on screen. */
+@media (prefers-reduced-motion: reduce) { .bed { display: none; } }
+@media (pointer: coarse) { .bed { display: none; } }

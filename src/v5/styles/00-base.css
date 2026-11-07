@@ -1,0 +1,229 @@
+/* ──────────────────────────────────────────────────────────────
+   One typeface, one light tone, no decoration.
+   Everything that isn't text is either a photo or the dot field.
+   ────────────────────────────────────────────────────────────── */
+
+:root {
+  --bg: #fbfaf7;
+  --text: #2c2b28;
+  --muted: #8d8a83;
+  --faint: #c9c5bd;
+  --line: #e9e6df;
+  --hover: #111110;
+  /* The hover wash on a list row. Barely there on purpose: it says which
+     row answers to the pointer without turning the list into bands. */
+  --tint: rgba(44, 43, 40, 0.035);
+
+  --font: 'Instrument Sans', -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --t: 240ms;
+  --t-slow: 560ms;
+
+  --col: 720px;
+  --gutter: 24px;
+
+  /* Row rhythm. Flexbox has a single `gap`, but a row needs two different
+     spaces: one between the company square and the text, one between the
+     text and the date. Keeping them as separate tokens is what stops the
+     square drifting into the title when the row tightens up on a phone.
+     `--mark-gap` is deliberately the same at every width. */
+  --row-gap: 20px;
+  --mark-gap: 12px;
+}
+
+/* ── Breakpoints ──
+   600px  the one content breakpoint: type, row rhythm, section spacing.
+   520px  the nav only, which wraps when its own links stop fitting.
+   900px  the project preview, which needs room beside the column.
+   1180px the rail, which needs room outside it.
+   Anything else should use 600px rather than inventing a new number. */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body.v5-body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: #e8e4da; }
+
+h1, h2, h3 { margin: 0; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+p { margin: 0; }
+img { display: block; max-width: 100%; }
+
+button {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+/* ── Page shell: a single narrow column. ── */
+
+.v5 {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.v5-main {
+  flex: 1;
+  padding-top: 72px;
+  padding-bottom: 40px;
+}
+
+.v5-footer {
+  padding-top: 64px;
+  padding-bottom: 48px;
+  font-size: 13.5px;
+  color: var(--faint);
+}
+
+/* ── Links: one idiom everywhere. ── */
+
+a { color: inherit; text-decoration: none; }
+
+/* No rule at rest. The underline is the hover state — it draws in from the
+   left, and it is the whole affordance, so the pointer leaves these alone
+   rather than boxing them (see TARGETS in Cursor.jsx). */
+.link {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 92%;
+  transition: background-size var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+.link:hover { color: var(--hover); }
+
+/* The pointer draws this line itself (the `anchor` state), so CSS only has
+   to when there is no pointer to draw it — coarse pointers, reduced motion,
+   the System setting. Otherwise the two would stack. */
+html:not(.has-cursor) .link:hover { background-size: 100% 1px; }
+
+/* ── Sections ── */
+
+.block { margin-top: 56px; }
+
+.block > h2 {
+  margin-bottom: 14px;
+}
+
+.muted { color: var(--muted); }
+
+/* ── Rows: title + sub on the left, date on the right. ── */
+
+.row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--row-gap);
+  padding: 9px 0;
+  width: 100%;
+  transition: transform var(--t) var(--ease);
+}
+
+.row + .row { border-top: 1px solid var(--line); }
+
+.row:hover { transform: translateX(3px); }
+
+.row-main { flex: 1; min-width: 0; }
+
+.row-title { font-size: 15.5px; }
+
+.row-sub {
+  font-size: 15.5px;
+  color: var(--muted);
+}
+
+.row-date {
+  flex: none;
+  font-size: 13.5px;
+  color: var(--faint);
+  white-space: nowrap;
+  transition: color var(--t) var(--ease);
+}
+
+.row:hover .row-date { color: var(--muted); }
+
+/* ── Entrance: everything rises a little, once. ── */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* `backwards`, not `both`. The fill is only there for the stagger: it holds
+   the element at the `from` state through its delay instead of flashing it
+   in at full opacity. Holding the `to` state afterwards buys nothing — it is
+   the element's own resting style already — and it costs something real.
+   A filling animation never stops applying its value, and `transform: none`
+   applied by an animation computes as `matrix(1, 0, 0, 1, 0, 0)`, not as the
+   keyword. An identity matrix is still a transform, so every element that
+   had risen became a containing block for `position: fixed` descendants, for
+   good. That is why the photo overlay used to open as a panel the width of
+   the column instead of covering the page — but only after a tab change,
+   because on first load `.boot-still` means the animation never runs. */
+.rise {
+  animation: rise var(--t-slow) var(--ease) backwards;
+  animation-delay: var(--d, 0ms);
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity var(--t-slow) var(--ease) var(--d, 0ms),
+    transform var(--t-slow) var(--ease) var(--d, 0ms);
+}
+
+.reveal.is-in { opacity: 1; transform: none; }
+
+:focus-visible {
+  outline: 1px solid var(--text);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+@media (max-width: 600px) {
+  :root {
+    /* Only the date pulls in. `--mark-gap` is left alone so the square sits
+       the same distance from the title as it does on a laptop. */
+    --row-gap: 12px;
+  }
+
+  .v5-main { padding-top: 48px; }
+}

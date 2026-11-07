@@ -1,0 +1,33 @@
+/* First load only: a sheet of the page colour laid over everything, which
+   then erodes a block at a time from the middle outward. The page itself
+   doesn't move — see Boot.jsx. */
+
+.boot-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 200; /* over the pointer layer too */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* The canvas is drawn at CSS-pixel resolution, so let the browser show
+     the blocks as blocks rather than smoothing them on a retina screen. */
+  image-rendering: pixelated;
+}
+
+/* Nothing underneath plays its own entrance while the sheet is up: the
+   dissolve is the entrance, and a row caught mid-fade as it's uncovered is
+   exactly the per-element popping this replaced. */
+.v5-boot .rise {
+  animation: none;
+}
+
+/* ...and it stays sat out. Without this, lifting the suppression above
+   starts the entrance the element never played, right as the dissolve
+   ends. Applied in Boot.jsx to what was on the page at that moment. */
+.boot-still {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .boot-veil { display: none; }
+}

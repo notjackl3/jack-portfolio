@@ -1,0 +1,57 @@
+/* The rail: one tick per sentence, pinned to the left margin. It's a map of
+   the page; the lens around the read position is the only emphasis. */
+
+.rail {
+  position: fixed;
+  left: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  /* Wider than the ticks: an easy target to bring the colour up. */
+  width: 92px;
+  cursor: pointer;
+}
+
+.rail-tick {
+  position: absolute;
+  left: 0;
+  display: block;
+  /* Plain grey while you scroll — size alone shows where you are. Length is
+     driven per-frame by the lens, as a scaleX off this base width, so only
+     the colour is transitioned. The origin is the left edge: the ticks are
+     flush with the margin and grow rightwards out of it. */
+  transform-origin: left center;
+  background: rgba(44, 43, 40, 0.15);
+  transition: background-color 260ms var(--ease);
+}
+
+/* Touching the rail colours one tick only: the one being read out. */
+.rail[data-hover='true'] .rail-tick[data-state='cur'] {
+  background: var(--text);
+}
+
+.rail-label {
+  position: absolute;
+  left: 48px;
+  width: 270px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  /* The label hangs off a 1px tick, so centre it on that line. */
+  transform: translate(-5px, -0.72em);
+  opacity: 0;
+  pointer-events: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+
+.rail-label[data-on='true'] { opacity: 1; transform: translate(0, -0.72em); }
+
+@media (max-width: 1180px) {
+  .rail { display: none; }
+}

@@ -1,0 +1,437 @@
+/* ──────────────────────────────────────────────────────────────
+   The corner note. One list (src/v5/notes.js), six hands.
+
+   Five of them are paper and are allowed the one thing the rest of
+   the site is not — texture, tilt, a shadow. They read as an object
+   dropped on top of the page rather than part of it, which is the
+   whole point: it is the only thing here that isn't work. `plain`
+   is the way out, for anyone who wants the page quiet again.
+   ────────────────────────────────────────────────────────────── */
+
+.note {
+  /* In the flow of the page, in the right half of the `now` row — not
+     pinned to the window. The width is the column's, capped so the note
+     never outgrows the half it sits in. */
+  width: 100%;
+  max-width: 300px;
+
+  --hand: var(--font);
+  --ink: #554e42;
+  --paper: var(--bg);
+  --strike: currentColor;
+}
+
+.note-sheet {
+  position: relative;
+  padding: 15px 16px 13px;
+  background: var(--paper);
+  color: var(--ink);
+  transform: rotate(var(--tilt, 0deg));
+  transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+}
+
+.note-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.note-title {
+  font-family: var(--hand);
+  font-size: calc(18.5px * var(--hand-scale, 1));
+  line-height: 1.1;
+}
+
+/* The sheet itself. The hand, the size and the leading live here now that
+   the body is one document rather than a list of items. */
+.note-body {
+  font-family: var(--hand);
+  font-size: calc(15.5px * var(--hand-scale, 1));
+  line-height: 1.44;
+}
+
+/* ── sticky ──
+   Yellow, tilted, taped on. The gradient is the paper catching light at the
+   top and losing it at the curled bottom edge. */
+
+.note--sticky {
+  --paper: #fcf3b8;
+  --ink: #3b382e;
+  --tilt: -1.6deg;
+  padding-top: 8px;
+}
+
+.note--sticky .note-sheet {
+  padding-top: 20px;
+  background-image: linear-gradient(170deg, #fdf6c8 0%, #fbf0ad 62%, #f4e79b 100%);
+  box-shadow:
+    0 1px 1px rgba(44, 43, 40, 0.07),
+    0 10px 20px -8px rgba(44, 43, 40, 0.22),
+    /* the curl: a tighter, darker shadow along the bottom lip */
+    0 14px 10px -14px rgba(44, 43, 40, 0.5);
+}
+
+/* A strip of tape over the top edge. */
+.note--sticky .note-deco {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  width: 74px;
+  height: 19px;
+  transform: translateX(-50%) rotate(-2.4deg);
+  background: linear-gradient(100deg, rgba(255, 253, 240, 0.86), rgba(252, 248, 225, 0.5));
+  border-left: 1px solid rgba(255, 255, 255, 0.75);
+  border-right: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 1px 3px rgba(44, 43, 40, 0.16);
+}
+
+/* ── napkin ──
+   The one that is genuinely free-form: the lines scatter instead of
+   stacking, each on its own small tilt and offset, ballpoint blue, on
+   embossed quilting. */
+
+.note--napkin {
+  /* Beige, in the page's own warm range rather than against it: --bg is
+     #fbfaf7, so the napkin is a shade or two deeper than the paper it sits
+     on and reads as an object on the page, not a hole in it. The ink is
+     the site's --text warmed up, not a ballpoint blue. */
+  --paper: #f9f6ef;
+  --ink: #554e42;
+  --tilt: 0deg;
+}
+
+.note--napkin .note-sheet {
+  padding: 18px 19px 15px;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(90, 76, 54, 0.026) 0 1px, transparent 1px 8px),
+    repeating-linear-gradient(-45deg, rgba(90, 76, 54, 0.026) 0 1px, transparent 1px 8px);
+  box-shadow:
+    inset 0 0 0 1px rgba(74, 67, 56, 0.045),
+    0 5px 14px -10px rgba(44, 43, 40, 0.14);
+}
+
+/* The embossed border a folded napkin carries, a little in from the edge. */
+.note--napkin .note-deco {
+  position: absolute;
+  inset: 6px;
+  border: 1px dashed rgba(74, 67, 56, 0.11);
+  pointer-events: none;
+}
+
+.note--napkin .note-body { line-height: 1.52; }
+
+/* ── index ──
+   Ruled card with the red margin rule. The list sits on the rules, so its
+   line-height is the rule spacing — change one and change the other. */
+
+.note--card {
+  --paper: #fdfcf7;
+  --ink: #33312c;
+  --tilt: 0.5deg;
+  --rule: 25px;
+}
+
+.note--card .note-sheet {
+  padding: 12px 15px 13px 32px;
+  box-shadow:
+    0 1px 0 rgba(44, 43, 40, 0.06),
+    0 9px 18px -10px rgba(44, 43, 40, 0.2);
+}
+
+/* The margin rule, full height of the card. */
+.note--card .note-deco {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 24px;
+  width: 1px;
+  background: #e5a8a8;
+  opacity: 0.75;
+}
+
+.note--card .note-body {
+  line-height: var(--rule);
+  background-image: linear-gradient(to bottom, rgba(150, 183, 214, 0.42) 1px, transparent 1px);
+  background-size: 100% var(--rule);
+  /* The rule belongs under the baseline, not through the middle of the x-height. */
+  background-position: 0 calc(var(--rule) - 1px);
+}
+
+.note--card .note-head { margin-bottom: 8px; }
+
+/* ── torn ──
+   Notebook paper with the bottom ripped off. clip-path removes the box
+   shadow with the edge it clips, so the lift is a drop-shadow on the
+   element outside it instead. */
+
+.note--scrap {
+  --paper: #fdfdfa;
+  --ink: #2c2b28;
+  --tilt: 0.8deg;
+  --rule: 24px;
+  filter: drop-shadow(0 9px 14px rgba(44, 43, 40, 0.17));
+}
+
+.note--scrap .note-sheet {
+  padding: 12px 16px 26px;
+  /* Irregular on purpose. Evenly spaced points of equal depth read as a
+     sawtooth — a pennant, not a tear — so both the spacing between the
+     points and how deep each one bites vary. */
+  clip-path: polygon(
+    0 0, 100% 0,
+    100.0% 99.5%, 95.3% 99.5%, 91.7% 98.2%, 87.9% 99.9%, 85.3% 97.8%,
+    81.3% 97.6%, 76.4% 99.4%, 74.3% 98.2%, 72.5% 98.5%, 70.8% 99.6%,
+    66.3% 99.4%, 63.0% 99.6%, 60.5% 99.1%, 56.0% 99.7%, 53.7% 99.9%,
+    49.5% 99.2%, 46.5% 99.2%, 44.9% 97.7%, 41.7% 99.6%, 39.9% 99.3%,
+    37.4% 98.4%, 32.5% 99.9%, 30.1% 98.7%, 25.8% 98.1%, 22.6% 97.9%,
+    20.6% 99.9%, 17.6% 98.5%, 12.7% 99.7%, 8.0% 98.3%, 3.5% 99.9%, 0.0%
+    99.6%
+  );
+}
+
+.note--scrap .note-body {
+  line-height: var(--rule);
+  background-image: linear-gradient(to bottom, rgba(140, 176, 210, 0.38) 1px, transparent 1px);
+  background-size: 100% var(--rule);
+  background-position: 0 calc(var(--rule) - 1px);
+}
+
+.note--scrap .note-foot { margin-top: 2px; }
+
+/* ── margin ──
+   No paper at all. Pencil, straight onto the page, with an arrow back at
+   the site — the only style that admits what it is annotating. */
+
+.note--margin {
+  --paper: transparent;
+  /* A step darker than --muted: pencil, but still legible once a struck
+     line has taken another 40% off it. */
+  --ink: #7b776f;
+  width: clamp(210px, 21vw, 244px);
+}
+
+.note--margin .note-sheet {
+  padding: 0 2px 0 0;
+  background: none;
+  box-shadow: none;
+}
+
+.note--margin .note-title { opacity: 0.75; }
+.note--margin .note-body { font-size: 16px; line-height: 1.5; }
+
+.note--margin .note-arrow {
+  position: absolute;
+  left: -46px;
+  bottom: 6px;
+  width: 52px;
+  height: 32px;
+  color: var(--faint);
+  pointer-events: none;
+}
+
+/* ── plain ──
+   The site's own hand: its typeface, its hairline, its greys. No tilt, no
+   shadow, nothing borrowed from paper. */
+
+.note--plain {
+  --paper: var(--bg);
+  --ink: var(--text);
+  --strike: var(--muted);
+}
+
+.note--plain .note-sheet {
+  padding: 12px 14px 10px;
+  border: 1px solid var(--line);
+}
+
+.note--plain .note-title {
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.note--plain .note-body {
+  font-family: var(--font);
+  font-size: 13.5px;
+  line-height: 1.62;
+}
+
+.note--plain .note-sign {
+  font-family: var(--font);
+  font-size: 12px;
+  color: var(--faint);
+  opacity: 1;
+}
+
+/* ── Handwriting ──
+   One inline-block per glyph, rotated and lifted off the baseline by its
+   own small amount (Hand.jsx picks them, from the letter and where it sits,
+   never at random). Words are the inline-blocks that wrap; the spaces
+   between them stay ordinary text, or the line would break mid-word. */
+
+.hw-w {
+  display: inline-block;
+  white-space: pre;
+}
+
+.hw-c {
+  display: inline-block;
+  transform: rotate(var(--cr)) translateY(var(--cy));
+  margin-right: var(--ct);
+}
+
+/* Set in the page's own typeface — by the `plain` paper or by the default
+   hand — the jitter has nothing to sell. Caveat is irregular to begin with
+   and a tilted glyph reads as a pen moving; Instrument Sans is not, and the
+   same tilt reads as a rendering fault. */
+.note--plain .hw-c,
+.note[data-hand='default'] .hw-c {
+  transform: none;
+  margin-right: 0;
+}
+
+/* The page sets headings at 600; the note does not. It is a thing written
+   on a scrap of paper, and the title is the first line of it, not a
+   heading over it. */
+.note[data-hand='default'] .note-title,
+.note--plain .note-title {
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* ── Writing on it ──
+   The body is one sheet, always editable: click anywhere and write. The
+   newline characters between lines do the breaking, so the canvas has to
+   keep its whitespace — `pre-wrap` is load-bearing, not cosmetic. */
+
+.note-body {
+  display: block;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  outline: none;
+  /* The caret is the only part of the sheet allowed to be crisp. */
+  caret-color: currentColor;
+  cursor: text;
+
+  /* A fixed ten lines, whatever is written on it. A note that grew with its
+     contents pushed `activity` down the page every time somebody added a
+     line, and a sheet of paper does not get longer as you write on it.
+     `1lh` is this element's own computed line-height, so index and torn
+     keep their ruled spacing and each hand keeps its own leading — the one
+     expression works for all of them. Where `lh` is not supported the calc
+     is dropped and the note simply grows, which is the old behaviour. */
+  height: calc(var(--rows, 10) * 1lh);
+  overflow-y: auto;
+  /* Reaching the end of the note should not start scrolling the page. */
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, currentColor 20%, transparent) transparent;
+}
+
+.note-body:empty::before {
+  content: attr(data-placeholder);
+  opacity: 0.3;
+}
+
+/* Nothing at rest — no box, no field, no border. The sheet should read as
+   something written on, and only admit to being editable once you are in
+   it. */
+.note-body:focus-visible { outline: none; }
+
+.hw-l {
+  position: relative;
+  /* Inline, so the newline between lines is what breaks them. */
+}
+
+/* The `~` that makes a line struck. Dimmed rather than hidden: the caret is
+   placed by counting characters, so a glyph removed for looks would put
+   every caret after it one place out. */
+.hw-mark { opacity: 0.25; }
+
+.hw-l.is-struck {
+  opacity: 0.45;
+}
+
+.hw-l.is-struck::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: -2px;
+  top: 54%;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.6;
+  transform: rotate(-0.5deg);
+  pointer-events: none;
+}
+
+/* ── The foot: what it is, and the save line once it is dirty ── */
+
+.note-foot {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 6px;
+  font-family: var(--hand);
+  font-size: 12.5px;
+  /* The foot's own descenders are the bottom of the sheet; anything more
+     below them reads as the note having been cut off short. */
+  line-height: 1.15;
+}
+
+.note-hint {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+  opacity: 0.3;
+}
+
+.note-ok,
+.note-undo {
+  flex: none;
+  font-family: var(--hand);
+  font-size: 13px;
+  color: inherit;
+  transition: opacity var(--t) var(--ease);
+}
+
+.note-ok { opacity: 0.85; }
+.note-undo { opacity: 0.4; }
+.note-ok:hover, .note-undo:hover { opacity: 1; }
+.note-ok:disabled { opacity: 0.35; cursor: default; }
+
+/* ── Retracted ──
+   Folded down to its title, still draggable, still there. The `×` used to
+   remove the note outright, which left no way back to it except the fx
+   panel; folding keeps the way back on the note itself. */
+
+.note-tool {
+  flex: none;
+  font-family: var(--hand);
+  font-size: 15px;
+  line-height: 1;
+  color: inherit;
+  opacity: 0.3;
+  transition: opacity var(--t) var(--ease);
+}
+
+.note-tool:hover { opacity: 0.9; }
+
+.note.is-retracted { width: auto; }
+
+.note.is-retracted .note-sheet { padding-bottom: 9px; }
+
+.note.is-retracted .note-head { margin-bottom: 0; }
+
+/* On a phone the two halves of the row are stacked, so the note is simply
+   the thing under `now` — it covers nothing and has nowhere to be in the
+   way of. It used to be hidden here, back when it floated over the page. */
+@media (max-width: 600px) {
+  .note { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .note-sheet { transition: none; }
+}

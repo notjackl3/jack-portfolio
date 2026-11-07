@@ -3,15 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jack Le's Home</title>
+    <title>Jack Le</title>
+    <meta name="description" content="Jack Le, fullstack engineer. projects, work, and a 15-hackathon streak.">
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <script src='https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css' rel='stylesheet' />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Only what the stylesheets actually ask for: Instrument Sans at 400/500/600
+         and Caveat at 400. No italics, no 700, and no mono — nothing sets them. -->
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="v5-body">
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-    <div data-webring="ca" data-member="jack-le" style="position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%); z-index: 50;"></div>
+    <script type="module" src="/src/v5/main.jsx"></script>
+    <!-- The webring embed sits in the document flow, below the footer, rather
+         than position:fixed as it was on v4. Fixed, it floated over whatever the
+         active tab happened to put at the bottom of the viewport — on home that
+         was the activity graph. It stays here in index.html rather than in the
+         React tree so webring.ca's deferred embed.js always finds the node,
+         with no mount-order race. -->
+    <div data-webring="ca" data-member="jack-le" style="display: flex; justify-content: center; padding-bottom: 48px;"></div>
     <script src="https://webring.ca/embed.js" defer></script>
 </body>
 </html>

@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "sync-stats": "node scripts/sync-claude-stats.mjs --local",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "goals": "node scripts/goals.mjs"
   },
   "keywords": [],
   "author": "",

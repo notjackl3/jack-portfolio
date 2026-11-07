@@ -1,0 +1,131 @@
+/* Nav: plain text links. No bar, no border, no indicator. */
+
+.nav {
+  padding-top: 28px;
+  display: flex;
+  /* Centre, not baseline: an image's baseline is its bottom edge, so the
+     links used to sit level with the bottom of the two squares. */
+  align-items: center;
+  gap: 18px;
+}
+
+/* Two little squares where the wordmark used to be: the duck from GitHub,
+   and me. They overlap at rest and separate when you point at them. */
+.nav-mark {
+  display: flex;
+  align-items: center;
+  flex: none;
+}
+
+.nav-mark .avatar {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  transition: transform 320ms var(--ease);
+}
+
+.nav-mark .avatar + .avatar { margin-left: -11px; }
+
+.nav-mark:hover .avatar:first-child { transform: translateX(-4px) rotate(-3deg); }
+.nav-mark:hover .avatar + .avatar { transform: translateX(4px) rotate(3deg); }
+
+.nav-links {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.nav-link {
+  font-size: 15px;
+  color: var(--muted);
+  transition: color var(--t) var(--ease);
+}
+
+.nav-link:hover { color: var(--text); }
+.nav-link[aria-current='page'] { color: var(--text); }
+
+/* Two short rules, not three bars: the site has no borders anywhere else
+   and a drawn hamburger would be the heaviest mark on the page. They cross
+   into an x when the menu is open. Hidden above the breakpoint, where the
+   links are the nav. */
+.nav-burger {
+  display: none;
+  margin-left: auto;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.nav-bar {
+  display: block;
+  width: 18px;
+  height: 1px;
+  background: var(--muted);
+  transition:
+    transform var(--t) var(--ease),
+    width var(--t) var(--ease),
+    background var(--t) var(--ease);
+}
+
+.nav-burger:hover .nav-bar { background: var(--text); }
+
+.nav.is-open .nav-bar { width: 17px; }
+/* Half the gap plus half a bar, so the two meet in the middle. */
+.nav.is-open .nav-bar:first-child { transform: translateY(3.5px) rotate(45deg); }
+.nav.is-open .nav-bar:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+
+/* The nav keeps its own breakpoint rather than the shared 600px one: it
+   collapses when its links stop fitting, which is a question about the
+   nav's own width, not about the page being a phone. */
+@media (max-width: 520px) {
+  .nav {
+    gap: 12px;
+    flex-wrap: wrap;
+    /* The menu is positioned against the nav, not the page. */
+    position: relative;
+  }
+
+  .nav-burger { display: flex; }
+
+  .nav-links {
+    width: 100%;
+    margin-left: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    /* Collapsed by its own height rather than display:none, so opening it
+       is a movement and not a jump. */
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition:
+      max-height var(--t-slow) var(--ease),
+      opacity var(--t) var(--ease);
+  }
+
+  .nav.is-open .nav-links {
+    max-height: 60vh;
+    opacity: 1;
+    margin-top: 4px;
+  }
+
+  .nav-link {
+    width: 100%;
+    padding: 9px 0;
+    font-size: 15.5px;
+  }
+
+  .nav-link + .nav-link { border-top: 1px solid var(--line); }
+}
+
+/* A closed menu is not in the tab order, and a page read aloud should not
+   be offered links it cannot reach. */
+@media (max-width: 520px) {
+  .nav:not(.is-open) .nav-links { visibility: hidden; }
+}

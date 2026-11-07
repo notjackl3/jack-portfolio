@@ -1,0 +1,121 @@
+/* Projects — a plain list. Rows open in place. */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.filter { transition: color var(--t) var(--ease); }
+.filter:hover { color: var(--text); }
+.filter[aria-pressed='true'] { color: var(--text); }
+
+.proj + .proj { border-top: 1px solid var(--line); }
+
+.proj-head {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  /* Bleeds 12px past the column on both sides so the hover tint reads as a
+     full row — and so the pointer's box, which wraps the `.proj` with the
+     same 12px of air, lands exactly on the tint's edges. `100%` would be
+     the column's width shifted left, short by 12px on the right. */
+  width: calc(100% + 24px);
+  padding: 9px 12px;
+  margin: 0 -12px;
+  transition: background-color var(--t) var(--ease);
+}
+
+/* Barely there — just enough to say the whole row is a target. */
+.proj-head:hover { background: var(--tint); }
+
+.proj-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 15.5px;
+  transition: transform var(--t) var(--ease);
+}
+
+.proj-head:hover .proj-name { transform: translateX(3px); }
+
+.proj-note {
+  flex: none;
+  font-size: 13.5px;
+  color: var(--faint);
+  transition: color var(--t) var(--ease);
+}
+
+.proj-head:hover .proj-note { color: var(--muted); }
+.proj[data-open='true'] .proj-note { color: var(--muted); }
+
+.proj-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--t) var(--ease);
+}
+
+.proj[data-open='true'] .proj-body { grid-template-rows: 1fr; }
+
+.proj-body > div { overflow: hidden; min-height: 0; }
+
+.proj-body-inner {
+  padding-bottom: 16px;
+  opacity: 0;
+  transition: opacity var(--t) var(--ease);
+}
+
+.proj[data-open='true'] .proj-body-inner { opacity: 1; transition-delay: 80ms; }
+
+.proj-desc { font-size: 15px; color: var(--muted); max-width: 60ch; }
+
+.proj-tech {
+  margin-top: 6px;
+  font-size: 13.5px;
+  color: var(--faint);
+}
+
+.proj-links {
+  margin-top: 10px;
+  display: flex;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+/* ── Floating screenshot for the project under the pointer ──────── */
+
+.preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg);
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+  will-change: transform;
+  /* Three very soft layers rather than one hard drop: a hairline contact
+     edge, then two wide diffuse washes. Warm-tinted to match the paper, and
+     light enough that you read it as the card floating, not as a shadow. */
+  box-shadow:
+    0 1px 2px rgba(44, 43, 40, 0.05),
+    0 8px 20px rgba(44, 43, 40, 0.07),
+    0 26px 60px rgba(44, 43, 40, 0.09);
+}
+
+.preview[data-on='true'] { opacity: 1; }
+
+.preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+@media (max-width: 900px) {
+  .preview { display: none; }
+}

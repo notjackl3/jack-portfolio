@@ -1,0 +1,44 @@
+/* Hackathons — the streak, then everything either side of it. The entries
+   are the blog's list (55-blog.css) with a name where a headline would be,
+   so only the differences live here. */
+
+.hack-lede p { color: var(--muted); }
+.hack-lede p + p { margin-top: 14px; }
+.hack-lede { margin-bottom: 10px; }
+
+/* The name is set exactly like a blog headline — same size, same weight.
+   It is already the shortest thing on the row, and bolding fifteen of them
+   in a column made the list read as fifteen headings. */
+
+/* The win, as a medal or a trophy, pinned to the name it belongs to rather
+   than parked in a column of its own — on the right it read as a third
+   field, next to the name it reads as part of it. So the name takes only
+   the width it needs, the mark follows it, and the date keeps the far edge.
+   Two marks never split across lines. */
+.post--hack .post-head { gap: 9px; }
+.post--hack .post-title { flex: 0 1 auto; }
+
+.post-aside {
+  flex: none;
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.post--hack .post-date {
+  margin-left: auto;
+  padding-left: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* No rule above it — the heading and the gap already say it is a new
+   section, and a line there read as the end of the page. */
+.hack-rest { margin-top: 58px; }
+
+.hack-rest-note { margin: 0 0 14px; color: var(--muted); }
+
+@media (max-width: 600px) {
+  /* Stacked, each line has the column to itself, so nothing is pushed
+     anywhere. */
+  .post--hack .post-date { margin-left: 0; padding-left: 0; }
+}

@@ -1,0 +1,55 @@
+/* Experience — same row as everywhere else, with the note underneath. */
+
+.exp-note {
+  margin-top: 1px;
+  font-size: 14.5px;
+  color: var(--faint);
+}
+
+/* ── Company mark: a LinkedIn-style square ahead of the role. ── */
+
+.row-logo {
+  flex: none;
+  align-self: flex-start;
+  width: 36px;
+  height: 36px;
+  /* `.row`'s gap is sized for the date. Pull the square back by the
+     difference so what's left is exactly `--mark-gap`, whatever the row
+     gap happens to be at this width. */
+  margin: 1px calc(var(--mark-gap) - var(--row-gap)) 0 0;
+  object-fit: cover;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1px var(--line);
+  /* Sit back into the paper rather than on top of it, and hold the colour
+     back with it — a dozen brand squares all shouting at once is the one
+     thing that would pull the eye off the writing. The row you point at
+     comes the rest of the way forward and gets its colour back. */
+  opacity: 0.78;
+  filter: grayscale(1);
+  transition: opacity var(--t) var(--ease), filter var(--t) var(--ease);
+}
+
+.row:hover .row-logo {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+/* Orgs with no logo on LinkedIn get their initials in the same square. */
+.row-logo--mono {
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+  background: var(--line);
+  box-shadow: none;
+  opacity: 0.85;
+}
+
+@media (max-width: 600px) {
+  .row-logo { width: 30px; height: 30px; }
+}
+
+.row-logo--mono[data-len='3'] { font-size: 10.5px; }
+.row-logo--mono[data-len='4'] { font-size: 9px; letter-spacing: 0; }

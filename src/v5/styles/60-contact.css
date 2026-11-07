@@ -1,0 +1,12 @@
+/* Contact — a paragraph and a few links. */
+
+.contact p + p { margin-top: 14px; }
+
+.contact-links {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 15px;
+  color: var(--muted);
+}

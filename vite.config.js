@@ -9,6 +9,10 @@ const LOCATION_NOTES_PATH = resolve(__dirname, 'src/data/locationNotes.json')
 const LOCATION_DETAILS_PATH = resolve(__dirname, 'src/data/locationDetails.json')
 const LOCATION_IMAGES_DIR = resolve(__dirname, 'public/location-images')
 const LOCATIONS_GEOJSON_PATH = resolve(__dirname, 'public/my-locations.geojson')
+// Dev-only stand-in for the Blob store behind /api/goals. Git-ignored: it
+// is scratch, not content — the real edits live in Blob in production and
+// the originals live in src/v5/notes.js.
+const GOALS_DEV_PATH = resolve(__dirname, 'node_modules/.cache/v5-goals.json')
 
 const sanitize = (name) =>
   String(name || 'screen')
@@ -132,6 +136,64 @@ const workNodesPlugin = () => ({
         res.statusCode = 400
         res.end(`Bad Request: ${err.message}`)
       }
+    })
+
+    // /api/goals, locally. In production this is api/goals.js on Vercel,
+    // backed by Blob; `vite dev` serves no functions, so the same two routes
+    // are reimplemented here over a JSON file. Deliberately without the rate
+    // limiting and the admin secret: there is one visitor and it is you.
+    server.middlewares.use('/api/goals', async (req, res) => {
+      const send = (code, body) => {
+        res.statusCode = code
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(body))
+      }
+
+      const load = async () => {
+        try {
+          const { readFile } = await import('node:fs/promises')
+          return JSON.parse(await readFile(GOALS_DEV_PATH, 'utf8'))
+        } catch {
+          return { body: null, at: null, history: [] }
+        }
+      }
+
+      if (req.method === 'GET') {
+        const s = await load()
+        // No secret locally, so the log always comes back — scripts/goals.mjs
+        // can be pointed here with GOALS_URL and behave the same.
+        return send(200, { body: s.body, at: s.at, history: s.history || [] })
+      }
+
+      if (req.method === 'POST') {
+        try {
+          const { body, clear } = await readJsonBody(req)
+          const state = await load()
+          state.history = state.history || []
+          if (clear) {
+            state.body = null
+            state.at = null
+          } else {
+            const text = String(body ?? '')
+              .split('\n')
+              .map((l) => l.replace(/[^\S\n]+/g, ' ').trim())
+              .join('\n')
+              .trim()
+            if (!text) return send(400, { error: 'nothing written' })
+            state.history = [{ body: text, at: Date.now() }, ...state.history].slice(0, 40)
+            state.body = text
+            state.at = Date.now()
+          }
+          await mkdir(dirname(GOALS_DEV_PATH), { recursive: true })
+          await writeFile(GOALS_DEV_PATH, JSON.stringify(state, null, 2), 'utf8')
+          return send(200, { ok: true, body: state.body, at: state.at })
+        } catch (err) {
+          return send(400, { error: err.message })
+        }
+      }
+
+      res.statusCode = 405
+      res.end('Method Not Allowed')
     })
 
     // Save uploaded screen images into public/work-screens/

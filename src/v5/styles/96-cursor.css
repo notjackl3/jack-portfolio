@@ -1,0 +1,426 @@
+/* ──────────────────────────────────────────────────────────────
+   Pointer designs. The root is translated to the pointer and
+   carries --w / --h; each design decides what to draw there.
+   ────────────────────────────────────────────────────────────── */
+
+html.has-cursor,
+html.has-cursor * {
+  cursor: none !important;
+}
+
+.cursor,
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor[data-on='false'],
+.cursor-dot[data-on='false'] { opacity: 0; }
+
+.cursor > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transition:
+    width 200ms var(--ease),
+    height 200ms var(--ease),
+    margin 200ms var(--ease),
+    border-radius 200ms var(--ease),
+    border-color 200ms var(--ease),
+    border-width 200ms var(--ease),
+    background-color 200ms var(--ease),
+    transform 200ms var(--ease),
+    opacity 180ms var(--ease);
+}
+
+.cursor-glyph {
+  transform: translate(-50%, -50%);
+  font-size: 13px;
+  line-height: 1;
+  color: var(--text);
+}
+
+.cursor.is-down > span { transform: scale(0.82); }
+.cursor.is-down .cursor-glyph { transform: translate(-50%, -50%) scale(0.82); }
+
+/* ── Ring, and dotted: the same circle, drawn two ways ─────────────
+      `dotted` is not a second design so much as the ring with a different
+      stroke, so the two share every rule here and differ by one variable.
+      Copying the block would mean every later change to how a circle
+      answers a pill or an anchor had to be made twice, and the second one
+      would eventually be forgotten. ──────────────────────────────────── */
+
+.cursor {
+  --line-style: solid;
+  --line-weight: 1px;
+}
+
+.cursor[data-mode='dotted'] {
+  --line-style: dotted;
+  /* A border's dots are as wide as the border and sit that far apart, so
+     weight is the only handle there is on either. At 1px they are single
+     device pixels in single-pixel gaps, which reads as a grey line; 2px is
+     where they become round, and separate. */
+  --line-weight: 2px;
+}
+
+.cursor:is([data-mode='ring'], [data-mode='dotted']) .cursor-ring {
+  opacity: 1;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: var(--line-weight) var(--line-style) var(--muted);
+  border-radius: 50%;
+}
+
+/* Over anything clickable the ring squares off where it stands and then
+   opens out into a hairline box around the target. The size is eased in JS,
+   so CSS only morphs the shape — and it morphs in 65ms, the beat the JS
+   waits out before it starts growing, so the corners are already square by
+   the time the box moves. */
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='link'] .cursor-ring,
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='row'] .cursor-ring,
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='zoom'] .cursor-ring {
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border: var(--line-weight) var(--line-style) var(--muted);
+  border-radius: 4px;
+  background: transparent;
+  transition:
+    border-radius 65ms var(--ease),
+    border-color 65ms var(--ease),
+    opacity 65ms var(--ease);
+}
+
+/* A control that is already a pill isn't boxed — the ring takes its shape
+   and its size, landing on the border that is there, so the circle reads as
+   having turned into the button rather than ringing it. */
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='pill'] .cursor-ring {
+  opacity: 1;
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border: var(--line-weight) var(--line-style) var(--muted);
+  border-radius: 999px;
+  background: transparent;
+  transition:
+    border-color 65ms var(--ease),
+    opacity 65ms var(--ease);
+}
+
+/* A text link gets the line it used to wear all the time. Same move as the
+   box, one axis fewer: the circle squares off, drops three of its four
+   sides, and the one that is left stretches out under the words. */
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='anchor'] .cursor-ring {
+  opacity: 1;
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  /* No left offset: the root sits on the line's left end, so width grows
+     rightwards from a fixed start rather than out of the middle. */
+  margin: calc(var(--h, 28px) / -2) 0 0 0;
+  border: 0 var(--line-style) var(--muted);
+  border-bottom-width: var(--line-weight);
+  border-radius: 0;
+  background: transparent;
+  transition:
+    border-radius 65ms var(--ease),
+    border-width 65ms var(--ease),
+    border-color 65ms var(--ease),
+    opacity 65ms var(--ease);
+}
+
+/* A passage of text is not a target — it keeps the reading caret. */
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='text'] .cursor-ring {
+  width: 1px;
+  height: 20px;
+  margin: -10px 0 0 -0.5px;
+  border: 0;
+  border-radius: 0;
+  background: var(--muted);
+}
+
+/* ── Square: the one design that never changes shape ───────────────
+      The ring's whole move is morphing — a circle that squares off and
+      then opens out. The square's is the opposite: it is already the
+      shape it will be at every target on the site, so it only ever
+      changes size. No corner beat in the JS either, because there are no
+      corners to resolve: it leaves for the target immediately. ─────── */
+
+.cursor[data-mode='square'] .cursor-ring {
+  opacity: 1;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 1px solid var(--muted);
+  border-radius: 0;
+}
+
+.cursor[data-mode='square'][data-state='link'] .cursor-ring,
+.cursor[data-mode='square'][data-state='row'] .cursor-ring,
+.cursor[data-mode='square'][data-state='pill'] .cursor-ring,
+.cursor[data-mode='square'][data-state='zoom'] .cursor-ring {
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border: 1px solid var(--muted);
+  border-radius: 0;
+  background: transparent;
+  /* Only the colour is transitioned. Size is the JS spring's job and the
+     shape never moves, which is the entire design. */
+  transition:
+    border-color 120ms var(--ease),
+    opacity 120ms var(--ease);
+}
+
+/* A text link still gets a line rather than a box — three sides are
+   dropped and the fourth stretches, the same move the ring makes. Keeping
+   the box here would put a rectangle around three words mid-sentence. */
+.cursor[data-mode='square'][data-state='anchor'] .cursor-ring {
+  opacity: 1;
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 0;
+  border: 0 var(--line-style) var(--muted);
+  border-bottom-width: var(--line-weight);
+  border-radius: 0;
+  background: transparent;
+  transition:
+    border-width 65ms var(--ease),
+    border-color 65ms var(--ease),
+    opacity 65ms var(--ease);
+}
+
+/* A passage of text keeps the reading caret. */
+.cursor[data-mode='square'][data-state='text'] .cursor-ring {
+  width: 1px;
+  height: 20px;
+  margin: -10px 0 0 -0.5px;
+  border: 0;
+  background: var(--muted);
+}
+
+/* ── Frame: four brackets that latch onto what you point at ───── */
+
+.cursor[data-mode='frame'] .cursor-corner {
+  opacity: 1;
+  width: 8px;
+  height: 8px;
+  /* A hairline, like everything else that draws a line on this site. At
+     1.5px the brackets read as a heavier object than the thing they are
+     wrapping, which is backwards — the pointer is the annotation. */
+  border: 1px solid var(--text);
+}
+
+.cursor[data-mode='frame'] .c-tl {
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.cursor[data-mode='frame'] .c-tr {
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / 2 - 8px);
+  border-left: 0;
+  border-bottom: 0;
+}
+
+.cursor[data-mode='frame'] .c-bl {
+  margin: calc(var(--h, 28px) / 2 - 8px) 0 0 calc(var(--w, 28px) / -2);
+  border-right: 0;
+  border-top: 0;
+}
+
+.cursor[data-mode='frame'] .c-br {
+  margin: calc(var(--h, 28px) / 2 - 8px) 0 0 calc(var(--w, 28px) / 2 - 8px);
+  border-left: 0;
+  border-top: 0;
+}
+
+/* The anchor state is the one the JS parks at the line's left end rather
+   than its middle, so the underline draws out the way one is written. Every
+   other state is centre-anchored, and the brackets are laid out from the
+   centre — which put them half a width to the left of any text link they
+   wrapped. Here they are measured from the left edge instead: crop marks
+   around the words. */
+.cursor[data-mode='frame'][data-state='anchor'] .c-tl {
+  margin: calc(var(--h, 28px) / -2) 0 0 0;
+}
+
+.cursor[data-mode='frame'][data-state='anchor'] .c-tr {
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) - 8px);
+}
+
+.cursor[data-mode='frame'][data-state='anchor'] .c-bl {
+  margin: calc(var(--h, 28px) / 2 - 8px) 0 0 0;
+}
+
+.cursor[data-mode='frame'][data-state='anchor'] .c-br {
+  margin: calc(var(--h, 28px) / 2 - 8px) 0 0 calc(var(--w, 28px) - 8px);
+}
+
+.cursor[data-mode='frame'][data-state='text'] .cursor-corner { opacity: 0.25; }
+
+/* ── Glyphs show on the designs that have room for them ───────── */
+
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='zoom'] .cursor-glyph,
+.cursor[data-mode='square'][data-state='zoom'] .cursor-glyph,
+.cursor[data-mode='frame'][data-state='zoom'] .cursor-glyph { opacity: 1; }
+
+/* ── Picture: the pointer opens out around the project screenshot. Size is
+      eased in JS, so only the shape and the colour are transitioned here.
+
+      Each design answers in its own hand. This used to be written once, for
+      every mode at once — it lit the ring as a solid rectangle and hid the
+      brackets and the bars outright, so pointing at a project screenshot
+      turned the frame into a plain box. A design that drops its own idea at
+      the biggest target on the site is a design you cannot actually pick. ─────────────────────────────────── */
+
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='picture'] .cursor-ring,
+.cursor[data-mode='square'][data-state='picture'] .cursor-ring {
+  opacity: 1;
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border: var(--line-weight) var(--line-style) var(--muted);
+  border-radius: 0;
+  background: transparent;
+  transition:
+    border-radius 30ms var(--ease),
+    border-color 30ms var(--ease),
+    opacity 30ms var(--ease);
+}
+
+/* The frame keeps its gaps: the brackets already read off --w / --h, so
+   they simply land on the screenshot's four corners. */
+.cursor[data-mode='frame'][data-state='picture'] .cursor-corner {
+  border-color: var(--muted);
+}
+
+.cursor[data-state='picture'] .cursor-glyph { opacity: 0; }
+
+.cursor[data-state='picture'] ~ .cursor-dot { opacity: 0; }
+
+/* ── Over the rail the pointer gets out of the way entirely: the lens
+      already shows where you are, and two markers fight each other. ──── */
+
+.cursor[data-state='scroll'] > span { opacity: 0 !important; }
+
+/* Where the page already marks the spot — a heatmap's lit circle, a focused
+   note's own blinking caret — everything the designs draw stands down, so
+   there are never two of them. The exact dot (below) stays, so the mouse is
+   still somewhere. */
+.cursor[data-state='bare'] > span { opacity: 0 !important; }
+
+/* ── After a click ─────────────────────────────────────────────────
+      The pointer collapsed to a circle to be pressed, and over the thing it
+      just pressed it stays one. Without this it would land back on the
+      link rule and sit there as a small rounded square instead. ──────── */
+
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-quiet='true'] .cursor-ring {
+  opacity: 1;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: var(--line-weight) var(--line-style) var(--muted);
+  border-radius: 50%;
+  background: transparent;
+}
+
+/* The square comes back to its own resting size, square as ever. */
+.cursor[data-mode='square'][data-quiet='true'] .cursor-ring {
+  opacity: 1;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border: 1px solid var(--muted);
+  border-radius: 0;
+  background: transparent;
+}
+
+/* ── Held ──────────────────────────────────────────────────────────
+      Pressing doesn't scale whatever shape is out there — the box comes
+      back to your hand and becomes the resting circle again. The JS springs
+      --w / --h back to 28px; CSS only has to round the corners off. Placed
+      last because it ties with the state rules on specificity. ───────── */
+
+.cursor.is-down[data-mode='square'] .cursor-ring {
+  opacity: 1;
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border: 1px solid var(--muted);
+  border-radius: 0;
+  background: transparent;
+  transition:
+    border-width 200ms var(--ease),
+    border-color 200ms var(--ease),
+    background-color 200ms var(--ease);
+}
+
+.cursor.is-down:is([data-mode='ring'], [data-mode='dotted']) .cursor-ring {
+  opacity: 1;
+  width: var(--w, 28px);
+  height: var(--h, 28px);
+  margin: calc(var(--h, 28px) / -2) 0 0 calc(var(--w, 28px) / -2);
+  border: var(--line-weight) var(--line-style) var(--muted);
+  border-radius: 50%;
+  background: transparent;
+  transition:
+    border-radius 200ms var(--ease),
+    border-width 200ms var(--ease),
+    border-color 200ms var(--ease),
+    background-color 200ms var(--ease);
+}
+
+/* ── The exact dot ─────────────────────────────────────────────── */
+
+.cursor-dot {
+  width: 5px;
+  height: 5px;
+  margin: -2.5px 0 0 -2.5px;
+  border-radius: 50%;
+  background: var(--text);
+  opacity: 0;
+  transition: opacity 200ms var(--ease), width 200ms var(--ease), height 200ms var(--ease);
+}
+
+/* Shown for the designs that use a centre mark... */
+.cursor:is([data-mode='ring'], [data-mode='dotted']) ~ .cursor-dot,
+.cursor[data-mode='square'] ~ .cursor-dot,
+.cursor[data-mode='frame'] ~ .cursor-dot { opacity: 1; }
+
+/* ...but not where the mark itself already shows the spot. */
+.cursor[data-state='link'] ~ .cursor-dot,
+.cursor[data-state='pill'] ~ .cursor-dot,
+.cursor[data-state='row'] ~ .cursor-dot,
+.cursor[data-state='anchor'] ~ .cursor-dot,
+.cursor[data-state='text'] ~ .cursor-dot,
+.cursor[data-state='zoom'] ~ .cursor-dot,
+.cursor[data-state='scroll'] ~ .cursor-dot { opacity: 0; }
+
+/* With the ring out at the target's edge it no longer marks the pointer, so
+   the dot comes back for the states where that happens. */
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='link'] ~ .cursor-dot,
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='pill'] ~ .cursor-dot,
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='row'] ~ .cursor-dot,
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='anchor'] ~ .cursor-dot,
+.cursor:is([data-mode='ring'], [data-mode='dotted'])[data-state='zoom'] ~ .cursor-dot,
+.cursor[data-mode='square'][data-state='link'] ~ .cursor-dot,
+.cursor[data-mode='square'][data-state='pill'] ~ .cursor-dot,
+.cursor[data-mode='square'][data-state='row'] ~ .cursor-dot,
+.cursor[data-mode='square'][data-state='anchor'] ~ .cursor-dot,
+.cursor[data-mode='square'][data-state='zoom'] ~ .cursor-dot { opacity: 1; }
+
+.cursor-dot[data-on='false'] { opacity: 0 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html.has-cursor,
+  html.has-cursor * { cursor: auto !important; }
+  .cursor,
+  .cursor-dot { display: none; }
+}
