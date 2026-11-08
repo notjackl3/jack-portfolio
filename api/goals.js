@@ -63,7 +63,13 @@ const EMPTY = { body: null, at: null, history: [], recent: [] };
 const read = async () => {
   const { blobs } = await list({ prefix: BLOB_PATH, limit: 1 });
   if (!blobs.length) return { ...EMPTY };
-  const r = await fetch(blobs[0].url, { cache: 'no-store' });
+  // Blob serves its public URLs with `s-maxage=300`, and because the path
+  // never changes (addRandomSuffix: false) every write lands back on the
+  // same cached URL. `cache: 'no-store'` only governs this runtime's own
+  // fetch cache, not that CDN, so a read here could be served a copy up to
+  // five minutes old — a save would stick in the store and then appear to
+  // undo itself on the next load. A unique query string misses the cache.
+  const r = await fetch(`${blobs[0].url}?t=${Date.now()}`, { cache: 'no-store' });
   if (!r.ok) return { ...EMPTY };
   const j = await r.json();
   return {
@@ -80,6 +86,10 @@ const write = (state) =>
     contentType: 'application/json',
     addRandomSuffix: false,
     allowOverwrite: true,
+    // Default is a year. The read above busts the cache anyway, but the blob
+    // URL is public and guessable, so this keeps anyone who finds it from
+    // being told the napkin says something it stopped saying months ago.
+    cacheControlMaxAge: 60,
   });
 
 export default async function handler(req, res) {

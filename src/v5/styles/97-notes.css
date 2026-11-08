@@ -350,21 +350,27 @@
    every caret after it one place out. */
 .hw-mark { opacity: 0.25; }
 
+/* The strike used to be an absolutely positioned ::after. A relatively
+   positioned *inline* that wraps is still one element, so it got one box
+   spanning every row it occupied — and the rule was drawn once, across the
+   middle of the block, missing the first and last rows entirely. Only lines
+   short enough never to wrap looked right.
+
+   A background is painted per inline fragment once the box is cloned, so a
+   wrapped line gets a rule on each row it covers. The cost is the old
+   -0.5deg tilt: a background cannot be rotated. The colour is mixed to 60%
+   to keep the weight the ::after had from its own opacity. */
 .hw-l.is-struck {
   opacity: 0.45;
-}
-
-.hw-l.is-struck::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: -2px;
-  top: 54%;
-  height: 1px;
-  background: currentColor;
-  opacity: 0.6;
-  transform: rotate(-0.5deg);
-  pointer-events: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  background-image: linear-gradient(
+    color-mix(in srgb, currentColor 60%, transparent),
+    color-mix(in srgb, currentColor 60%, transparent)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  background-position: 0 54%;
 }
 
 /* ── The foot: what it is, and the save line once it is dirty ── */
