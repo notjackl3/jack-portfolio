@@ -9,12 +9,12 @@ export const experiences = [
     description: "🇨🇦 Bringing AI to people"
   },
   {
-    id: 22,
+    id: 27,
     company: "Aucctus AI",
-    position: "AI Software Engineer Intern",
+    position: "Software Engineer Intern (Part-time)",
     type: "swe",
-    duration: "May 2026 - Present",
-    description: "🤖 Build ai features for fortune 500 clients"
+    duration: "September 2026 - Present",
+    description: "⚙️ Build platform core services"
   },
   {
     id: 23,
@@ -49,12 +49,23 @@ export const experiences = [
     duration: "June 2026 - August 2026",
     description: "🛠️ Optimizing AI pipelines and agent harness"
   },
+  // The summer internship. The part-time role above (id 27) is the same
+  // company picked back up in September, on different work — two rows on
+  // LinkedIn, so two here.
+  {
+    id: 22,
+    company: "Aucctus AI",
+    position: "Software Engineer Intern",
+    type: "swe",
+    duration: "May 2026 - August 2026",
+    description: "🤖 Build custom ai features for fortune 500 clients"
+  },
   {
     id: 21,
     company: "UTMIST",
     position: "Infrastructure Engineer",
     type: "swe",
-    duration: "February 2026 - April 2026",
+    duration: "January 2026 - April 2026",
     description: "🚧 Manage VMs for LLM models"
   },
   {
