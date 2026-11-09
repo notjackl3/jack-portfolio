@@ -243,10 +243,20 @@ const Cursor = ({ mode = 'ring' }) => {
     };
 
     const frame = (now) => {
-      // Step in 60fps frames so the spring settles in the same time on a
-      // 120Hz display, and clamp it so a dropped frame can't make it blow up.
-      const dt = last ? Math.min((now - last) / 16.667, 1.2) : 1;
+      // Elapsed time in 60fps frames, so the spring settles in the same wall
+      // time whatever the refresh rate. Capped at four: coming back to a
+      // backgrounded tab should resume, not replay the whole gap.
+      const elapsed = last ? Math.min((now - last) / 16.667, 4) : 1;
       last = now;
+      // Then walked in steps no larger than one frame. This integrator goes
+      // unstable past a step of about 1.17 frames at this stiffness, and the
+      // step used to be clamped to 1.2 — just the wrong side of the line. Any
+      // display under ~50fps pinned it there every frame and the spring
+      // diverged: the ring reached the pointer, sailed straight through it
+      // and accelerated off the screen, never to return. Sub-stepping costs a
+      // little arithmetic on a slow frame instead of the whole animation.
+      const steps = Math.max(1, Math.ceil(elapsed));
+      const dt = elapsed / steps;
 
       let moving = false;
       let holding = false; // sitting out the squaring beat — keep ticking
@@ -337,12 +347,17 @@ const Cursor = ({ mode = 'ring' }) => {
           want.h = box.height + latchPad[1];
         }
       }
+      for (let s = 0; s < steps; s += 1) {
+        for (const k of ['x', 'y', 'w', 'h']) {
+          const axis = held ? 'press' : k === 'x' || k === 'y' ? 'pos' : 'size';
+          const d = want[k] - at[k];
+          vel[k] += (d * SPRING[axis] - vel[k] * DAMP[axis]) * dt;
+          at[k] += vel[k] * dt;
+        }
+      }
+      // Asked once, of where the spring actually ended up.
       for (const k of ['x', 'y', 'w', 'h']) {
-        const axis = held ? 'press' : k === 'x' || k === 'y' ? 'pos' : 'size';
-        const d = want[k] - at[k];
-        vel[k] += (d * SPRING[axis] - vel[k] * DAMP[axis]) * dt;
-        at[k] += vel[k] * dt;
-        if (Math.abs(d) > 0.3 || Math.abs(vel[k]) > 0.3) moving = true;
+        if (Math.abs(want[k] - at[k]) > 0.3 || Math.abs(vel[k]) > 0.3) moving = true;
       }
 
       root.style.transform = `translate3d(${at.x.toFixed(1)}px, ${at.y.toFixed(1)}px, 0)`;
@@ -463,10 +478,24 @@ const Cursor = ({ mode = 'ring' }) => {
     const onMove = (e) => {
       px = e.clientX;
       py = e.clientY;
+
+      // First sighting. The spring starts at the middle of the window because
+      // on load there is nowhere better to put it — but easing in from there
+      // reads as a ring flying at you out of the centre of the page. Begin it
+      // under the pointer instead, where it would have been all along.
+      if (!aimed) {
+        at.x = want.x = px;
+        at.y = want.y = py;
+        vel.x = 0;
+        vel.y = 0;
+      }
       aimed = true;
 
       // The dot never lags — it is the pointer.
-      if (dot) dot.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+      if (dot) {
+        dot.style.transform = `translate3d(${px}px, ${py}px, 0)`;
+        dot.dataset.on = 'true';
+      }
       root.dataset.on = 'true';
 
       queueAim();
@@ -557,7 +586,11 @@ const Cursor = ({ mode = 'ring' }) => {
         <span className="cursor-corner c-br" />
         <span className="cursor-glyph" ref={glyphRef} />
       </div>
-      <div className="cursor-dot" ref={dotRef} data-mode={mode} data-on="true" aria-hidden="true" />
+      {/* Off until the pointer is first seen. `has-cursor` hides the real
+          cursor the moment this mounts, and the dot has no transform yet, so
+          starting it on left a visible dot parked in the top-left corner
+          while the actual pointer was nowhere. */}
+      <div className="cursor-dot" ref={dotRef} data-mode={mode} data-on="false" aria-hidden="true" />
     </>
   );
 };
