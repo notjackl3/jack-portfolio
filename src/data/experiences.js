@@ -1,6 +1,14 @@
 export const experiences = [
   // ── Present ──────────────────────────────────────────────
   {
+    id: 28,
+    company: "Stan",
+    position: "Hackathon Host",
+    type: "volunteer",
+    duration: "November 2026 - December 2026",
+    description: "🏆 Giving out $25,000 cash prizes to hackers"
+  },
+  {
     id: 25,
     company: "The AI Fellowship",
     position: "Toronto Chapter Leader",
@@ -11,10 +19,10 @@ export const experiences = [
   {
     id: 27,
     company: "Aucctus AI",
-    position: "Software Engineer Intern (Part-time)",
+    position: "Software Engineer Intern",
     type: "swe",
     duration: "September 2026 - Present",
-    description: "⚙️ Build platform core services"
+    description: "⚙️ Part-time, building platform core services"
   },
   {
     id: 23,
@@ -22,7 +30,7 @@ export const experiences = [
     position: "Founding Software Engineer",
     type: "swe",
     duration: "May 2026 - Present",
-    description: "⚡ Connect energy professionals across Europe"
+    description: "⚡ Contract, connecting energy professionals across Europe"
   },
   {
     id: 24,

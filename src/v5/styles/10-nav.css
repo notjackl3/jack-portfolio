@@ -10,10 +10,11 @@
 }
 
 /* Two little squares where the wordmark used to be: the duck from GitHub,
-   and me. They overlap at rest and separate when you point at them. */
+   and me. They sit side by side, and tilt apart when you point at them. */
 .nav-mark {
   display: flex;
   align-items: center;
+  gap: 6px;
   flex: none;
 }
 
@@ -24,10 +25,8 @@
   transition: transform 320ms var(--ease);
 }
 
-.nav-mark .avatar + .avatar { margin-left: -11px; }
-
-.nav-mark:hover .avatar:first-child { transform: translateX(-4px) rotate(-3deg); }
-.nav-mark:hover .avatar + .avatar { transform: translateX(4px) rotate(3deg); }
+.nav-mark:hover .avatar:first-child { transform: translateX(-2px) rotate(-3deg); }
+.nav-mark:hover .avatar + .avatar { transform: translateX(2px) rotate(3deg); }
 
 .nav-links {
   margin-left: auto;

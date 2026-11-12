@@ -10,8 +10,8 @@ import { lowerLabel, plain } from '../text';
 // thousand words, and nobody scrolls that.
 
 const MONTHS = [
-  'january', 'february', 'march', 'april', 'may', 'june',
-  'july', 'august', 'september', 'october', 'november', 'december',
+  'jan', 'feb', 'mar', 'apr', 'may', 'jun',
+  'jul', 'aug', 'sep', 'oct', 'nov', 'dec',
 ];
 
 const parts = (iso) => {
@@ -19,7 +19,7 @@ const parts = (iso) => {
   return { y, m: MONTHS[Number(m) - 1], d: String(Number(d)) };
 };
 
-// "january 10–11, 2026" within a month, "february 27 – march 1, 2026"
+// "jan 10–11, 2026" within a month, "feb 27 – mar 1, 2026"
 // across one, and just the day for the one-day events.
 const when = (from, to) => {
   if (!from) return null;

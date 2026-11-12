@@ -87,9 +87,13 @@ export const lowerTitle = (value) =>
 export const lowerLabel = (value) =>
   String(value ?? '').replace(/[A-Za-z][A-Za-z'’.]*/g, lowerWord);
 
-// "May 2026 - Present" — the month is a name, "Present" is not.
+// "May 2026 - Present" → "May 2026 - present", and "November 2026 -
+// December 2026" → "Nov 2026 - Dec 2026". The month is a name, so it keeps
+// its capital, cut to three letters; "Present" is not a name.
 export const lowerDuration = (value) =>
-  String(value ?? '').replace(/\bPresent\b/g, 'present');
+  String(value ?? '')
+    .replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\b/g, '$1')
+    .replace(/\bPresent\b/g, 'present');
 
 // A project note is "<event>" or "<event>, <award>". The event is a name and
 // stays as written; only the award wording comes down.

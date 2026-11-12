@@ -11,6 +11,7 @@ import genaiGenesis from '../assets/logos/genai-genesis.webp';
 import ignition from '../assets/logos/ignition.webp';
 import knowidea from '../assets/logos/knowidea.webp';
 import soon from '../assets/logos/soon.webp';
+import stan from '../assets/logos/stan.webp';
 import trg from '../assets/logos/trg.webp';
 import uoft from '../assets/logos/uoft.webp';
 import utmCareer from '../assets/logos/utm-career.webp';
@@ -28,6 +29,7 @@ const LOGOS = {
   'Ignition Hacks': ignition,
   KNOWIDEA: knowidea,
   SOON: soon,
+  Stan: stan,
   'TRG International': trg,
   'University of Toronto': uoft,
   'UTM Career Center': utmCareer,
