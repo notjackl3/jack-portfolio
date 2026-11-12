@@ -30,6 +30,9 @@ const TARGETS = [
   // pointer stands down to its dot and lets the grid be the pointer.
   { sel: '.heat-stack', state: 'bare' },
   { sel: '.preview', state: 'zoom' },
+  // A work option answers the pointer itself — a highlighter stroke
+  // draws in behind it — so a box drawn round it would be a second answer.
+  { sel: '.wx-word', state: 'bare' },
   // A project row is boxed as a whole, the same as a blog entry: `box` is
   // the `.proj`, so the box lands on the dividers between rows and takes in
   // the description when one is opened. Ahead of the catch-all below, which
@@ -149,7 +152,7 @@ const DAMP = {
 // name. What differs is the shape each one takes on arrival, not whether it
 // goes.
 const LATCH = {
-  frame: { link: [16, 12], row: [16, 12], zoom: [16, 12], anchor: [10, 6], pill: [0, 0] },
+  frame: { link: [16, 12], row: [24, 0], zoom: [16, 12], anchor: [10, 6], pill: [0, 0] },
   // The square never changes shape, only size, so it cannot take a pill's
   // outline the way the ring does — a square drawn exactly on a stadium is
   // two different shapes sharing an edge. It wraps the button instead, with

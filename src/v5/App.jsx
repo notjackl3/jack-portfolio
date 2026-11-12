@@ -10,15 +10,16 @@ import { DEFAULT_HAND } from './hands';
 import Home from './components/Home';
 import Projects from './components/Projects';
 import Experience from './components/Experience';
+import Work from './components/Work';
 import Streak from './components/Streak';
-import Blog from './components/Blog';
-import Contact from './components/Contact';
+import Letters from './components/Letters';
 
 import './styles/00-base.css';
 import './styles/05-boot.css';
 import './styles/10-nav.css';
 import './styles/20-home.css';
 import './styles/30-projects.css';
+import './styles/35-work.css';
 import './styles/40-experience.css';
 import './styles/50-streak.css';
 import './styles/55-blog.css';
@@ -33,14 +34,15 @@ import './styles/98-bed.css';
 
 const TABS = [
   { id: 'home', label: 'home' },
-  { id: 'projects', label: 'projects' },
-  { id: 'experience', label: 'experience' },
-  { id: 'hackathons', label: 'hackathons' },
-  { id: 'blog', label: 'blog' },
-  { id: 'contact', label: 'contact' },
+  { id: 'work', label: 'work' },
+  { id: 'hackathons', label: 'competitions' },
+  { id: 'others', label: 'others' },
 ];
 
-const TAB_IDS = TABS.map((t) => t.id);
+// Pages that left the nav but still answer their old links: projects and
+// experience live under `work` now, blog and contact under `others`.
+const FOLDED = { projects: 'work', experience: 'work', blog: 'others', contact: 'others' };
+const TAB_IDS = [...TABS.map((t) => t.id), ...Object.keys(FOLDED)];
 
 // The tab lives in the hash, which is path-independent — it survived v5
 // moving from its own entry onto the root, and it means deep links never
@@ -119,7 +121,13 @@ function App() {
   const navigate = (tabId) => {
     setActiveTab(tabId);
     const next = tabId === 'home' ? '#/' : `#/${tabId}`;
-    if (window.location.hash !== next) window.history.pushState(null, '', next);
+    if (window.location.hash !== next) {
+      window.history.pushState(null, '', next);
+      // pushState fires nothing, so a tab that reads a sub-path from the
+      // hash (work's open drawer) would never hear that it went back to
+      // its own root. Tell everyone the hash moved.
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    }
     window.scrollTo(0, 0);
   };
 
@@ -129,12 +137,17 @@ function App() {
         return <Projects />;
       case 'experience':
         return <Experience />;
+      case 'work':
+        return <Work />;
       case 'hackathons':
         return <Streak />;
+      case 'others':
+        return <Letters />;
+      // The old addresses land on the part of `others` they used to be.
       case 'blog':
-        return <Blog />;
+        return <Letters />;
       case 'contact':
-        return <Contact />;
+        return <Letters toContact />;
       case 'home':
       default:
         return <Home noteStyle={noteStyle} hand={hand} />;
@@ -148,7 +161,7 @@ function App() {
       <Cursor mode={pointer} />
       <Nav
         tabs={TABS}
-        activeTab={activeTab}
+        activeTab={FOLDED[activeTab] || activeTab}
         onNavigate={navigate}
         aside={<CursorBed pointer={pointer} onEquip={changePointer} />}
       />

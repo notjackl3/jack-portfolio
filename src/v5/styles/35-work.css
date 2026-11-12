@@ -1,0 +1,95 @@
+/* Work — no boxes. The choice is a sentence, and the options are words in
+   it: dotted underneath, highlighted when you point at one. */
+
+.wx-sentence {
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.45;
+  color: var(--muted);
+  max-width: 19em;
+  padding-top: 16px;
+  transition: font-size var(--t-slow) var(--ease), padding var(--t-slow) var(--ease);
+}
+
+.wx-word {
+  display: inline-block;
+  white-space: nowrap;
+  vertical-align: bottom;
+  color: var(--text);
+  font-weight: 500;
+  transition: color var(--t) var(--ease);
+}
+
+/* The phrase itself, without its number: the underline and the highlight
+   belong to the words, and the little 01 / 02 / 03 sits outside both. */
+.wx-word-text {
+  position: relative;
+  /* Its own stacking context, so the highlight can sit behind the letters
+     without dropping behind the page. */
+  isolation: isolate;
+  /* Dotted at rest — it reads as something to press without a box. */
+  background-image: radial-gradient(circle, currentColor 0.7px, transparent 1px);
+  background-size: 5px 2px;
+  background-repeat: repeat-x;
+  background-position: 0 90%;
+}
+
+/* A highlighter stroke behind the lower half of the phrase. Nothing moves
+   at rest: it draws in, left to right, only on the one you point at, and
+   stays on the one you chose. */
+.wx-word-text::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: -0.08em;
+  right: -0.08em;
+  top: 46%;
+  bottom: 8%;
+  background: rgba(238, 206, 98, 0.42);
+  border-radius: 0.12em 0.2em 0.14em 0.18em;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 420ms var(--ease);
+}
+
+.wx-word:hover .wx-word-text::before,
+.wx-word[aria-pressed='true'] .wx-word-text::before { transform: scaleX(1); }
+
+/* Once highlighted, the dots have done their job. */
+.wx-word:hover .wx-word-text,
+.wx-word[aria-pressed='true'] .wx-word-text { background-image: none; }
+
+.wx-word-num {
+  font-size: 0.36em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--faint);
+  margin-left: 2px;
+  vertical-align: 1.3em;
+}
+
+.wx-sentence[data-open='true'] {
+  font-size: 21px;
+  padding-top: 0;
+  max-width: none;
+}
+
+/* The others only step back once one is chosen; before that every word is
+   an equal invitation. */
+.wx-sentence[data-open='true'] .wx-word[aria-pressed='false'] { color: var(--muted); }
+.wx-sentence[data-open='true'] .wx-word[aria-pressed='false']:hover { color: var(--text); }
+
+/* The same sentence for the project and blog filters. Full size while it is
+   all there is on the page; once a word is chosen it steps down, and the
+   list takes over. */
+.wx-sentence--small { margin-bottom: 18px; }
+.wx-sentence--small[data-open='true'] { margin-top: 14px; }
+
+.work-roles { margin-top: 44px; }
+
+@media (max-width: 600px) {
+  .wx-sentence { font-size: 26px; }
+  .wx-sentence[data-open='true'] { font-size: 18px; }
+}
+

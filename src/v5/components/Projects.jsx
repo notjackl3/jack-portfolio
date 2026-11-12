@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { projects } from '../../data/projects';
 import { lowerNote, lowerProse, plain } from '../text';
 import Preview from './Preview';
+import FilterSentence from './FilterSentence';
 
 // Titles in the data carry their own suffix ("| Hack The 6ix, Winner 🏆").
 // Split it so the row stays short and the note sits on the right. The name is
@@ -11,17 +12,12 @@ const split = (title) => {
   return { name: plain(name), note: lowerNote(plain(rest.join('|'))) };
 };
 
-const FILTERS = [
-  { id: 'all', label: 'all' },
-  { id: 'hackathon', label: 'hackathons' },
-  { id: 'personal', label: 'personal' },
-  { id: 'school', label: 'school' },
-];
-
+// Nothing is chosen until a word in the sentence is pressed, and until then
+// the sentence is all there is.
 const matches = (p, f) => (f === 'all' ? true : p.category === f);
 
 const Projects = () => {
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState(null);
   const [openId, setOpenId] = useState(null);
   const [previewId, setPreviewId] = useState(null);
   const pointer = useRef(null);
@@ -70,27 +66,25 @@ const Projects = () => {
     setPreviewId(null);
   };
 
-  const shown = useMemo(() => projects.filter((p) => matches(p, filter)), [filter]);
+  const shown = useMemo(() => (filter ? projects.filter((p) => matches(p, filter)) : []), [filter]);
 
   return (
     <div className="wrap">
       <section className="rise">
-        <div className="filters" style={{ marginTop: 14 }}>
-          {FILTERS.map((f) => (
-            <button
-              key={f.id}
-              type="button"
-              className="filter"
-              aria-pressed={filter === f.id}
-              onClick={() => {
-                setFilter(f.id);
-                setOpenId(null);
-              }}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
+        <FilterSentence
+          value={filter}
+          onChange={(id) => {
+            setFilter(id);
+            setOpenId(null);
+          }}
+        >
+          {(w) => (
+            <>
+              show me {w('all', 'everything i built')}, or just the {w('hackathon', 'hackathon builds')},{' '}
+              the {w('personal', 'personal projects')} or the {w('school', 'school work')}.
+            </>
+          )}
+        </FilterSentence>
 
         <div
           key={filter}

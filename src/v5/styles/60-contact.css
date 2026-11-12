@@ -10,3 +10,18 @@
   font-size: 15px;
   color: var(--muted);
 }
+
+/* ── Others: how to reach me, then the blogs ── */
+
+/* Each filter carries how many posts it holds, small and raised, the way
+   a footnote sits on a word. */
+.filter-count {
+  margin-left: 2px;
+  font-size: 10.5px;
+  color: var(--faint);
+  vertical-align: 0.6em;
+  line-height: 0;
+}
+
+.filter[aria-pressed='true'] .filter-count { color: var(--muted); }
+

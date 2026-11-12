@@ -86,6 +86,26 @@ export const blog = [
     ],
   },
   {
+    // Not a LinkedIn post, unlike the rest: the words are Jack's write-up
+    // from the competitions streak (src/data/hackathons.js, GenAI Genesis),
+    // so the hackathon he organized is under 'organizing' here too. The
+    // title is lifted from that write-up's opening line.
+    slug: 'genai-genesis',
+    date: '2026-03-15',
+    category: 'organizing',
+    images: [
+      { src: '/blog/genai-genesis-2.webp', w: 800, h: 600 },
+      { src: '/blog/genai-genesis-3.webp', w: 800, h: 600 },
+      { src: '/blog/genai-genesis-4.webp', w: 800, h: 534 },
+      { src: '/blog/genai-genesis-5.webp', w: 800, h: 600 },
+    ],
+    title: 'GenAI Genesis, the one I organized, for 1000+ people',
+    body: [
+      'As a director of GenAI Genesis I ran between buildings, followed the schedule minute by minute, and survived on four hours of sleep. I blew up a million balloons by mouth, moved gaming chairs across the street, stood in the cold handing out merch, set up a spicy ramen eating competition, and brought in fried chicken with seven different dipping sauces.',
+      'I also handled significant delays, broke our banner and our kart, ran the event while protests happened outside, and dealt with three separate emergencies. What I took from it is how much invisible work sits behind a hackathon that feels smooth, and it is the main reason SOON exists. Next time, come tell me a joke and I\'ll give you extra fried chicken.',
+    ],
+  },
+  {
     slug: 'amazon-fulfillment-centre',
     date: '2026-02-12',
     category: 'office',
